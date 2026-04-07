@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biologi åk 7 — Ekologi och samspel</title>
+<style>
+:root {
+  --bg:#ffffff; --bg2:#f5f4f0; --bg3:#eeede8;
+  --text:#1a1a18; --text2:#6b6a65;
+  --border:rgba(0,0,0,0.12); --border2:rgba(0,0,0,0.22);
+  --r:10px; --rl:14px;
+  --xp:#1D9E75; --xpl:#E1F5EE; --xpd:#085041;
+  --wrong:#E24B4A; --wrongl:#FCEBEB;
+  --streak:#EF9F27; --streakl:#FAEEDA;
+  --bl:#E6F1FB; --bd:#0C447C;
+  --lvl:#534AB7; --lvll:#EEEDFE; --lvld:#26215C;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1e1e1c; --bg2:#2a2a27; --bg3:#323230;
+  --text:#f0efe8; --text2:#9a9990;
+  --border:rgba(255,255,255,0.10); --border2:rgba(255,255,255,0.20);
+  --xpl:#04342C; --xpd:#9FE1CB;
+  --wrongl:#501313; --streakl:#412402;
+  --bl:#042C53; --bd:#85B7EB;
+  --lvll:#26215C; --lvld:#CECBF6;
+}}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 4rem;}
+#game{background:var(--bg);border-radius:var(--rl);border:0.5px solid var(--border);max-width:620px;width:100%;padding:2rem 1.75rem;position:relative;overflow:hidden;}
+h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;letter-spacing:0.05em;text-transform:uppercase;}
+#level-row{display:flex;align-items:center;gap:10px;margin-bottom:0.6rem;}
+#level-badge{font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;background:var(--lvll);color:var(--lvld);white-space:nowrap;}
+#xp-bar-wrap{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;}
+#xp-bar{height:100%;background:var(--lvl);border-radius:4px;transition:width 0.5s cubic-bezier(.4,0,.2,1);}
+#xp-label{font-size:12px;color:var(--text2);white-space:nowrap;}
+#topbar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap;}
+.stat{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:500;padding:4px 10px;border-radius:999px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);}
+.stat span{font-size:14px;font-weight:500;color:var(--text);}
+#q-bar-wrap{flex:1;min-width:80px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+#q-bar{height:100%;background:var(--xp);border-radius:3px;transition:width 0.4s ease;}
+#back-ingame{font-size:12px;color:var(--text2);background:none;border:none;cursor:pointer;padding:0 0 1rem 0;display:flex;align-items:center;gap:4px;font-family:inherit;}
+#back-ingame:hover{color:var(--text);}
+#card{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--rl);padding:1.5rem 1.5rem 1.25rem;min-height:120px;display:flex;flex-direction:column;gap:10px;margin-bottom:1.25rem;transition:background 0.2s,border-color 0.2s;}
+#card.shake{animation:shake 0.35s;}
+#card.correct-flash{background:var(--xpl);border-color:var(--xp);}
+#card.wrong-flash{background:var(--wrongl);border-color:var(--wrong);}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+#mode-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;align-self:flex-start;}
+.badge-mc{background:var(--xpl);color:var(--xpd);}
+.badge-tf{background:var(--streakl);color:#7a4800;}
+.badge-fill{background:var(--bl);color:var(--bd);}
+@media(prefers-color-scheme:dark){.badge-tf{color:#d4900a;}}
+#question-text{font-size:17px;font-weight:500;color:var(--text);line-height:1.5;}
+#sub-text{font-size:14px;color:var(--text2);line-height:1.6;}
+#options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem;}
+.opt-btn{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:10px 12px;font-size:14px;color:var(--text);cursor:pointer;text-align:left;line-height:1.4;transition:background 0.1s,border-color 0.1s;font-family:inherit;min-height:44px;}
+.opt-btn:hover:not(:disabled){background:var(--bg3);border-color:var(--border2);}
+.opt-btn.correct{background:var(--xpl);border-color:var(--xp);color:var(--xpd);font-weight:500;}
+.opt-btn.wrong{background:var(--wrongl);border-color:var(--wrong);color:#7a1212;}
+.opt-btn.selected-answer{border-color:var(--lvl);background:var(--lvll);color:var(--lvld);font-weight:600;box-shadow:0 0 0 2px var(--lvl);}
+.opt-btn:disabled{cursor:default;}
+.tf-btn.selected-answer{border-color:var(--lvl);background:var(--lvll);color:var(--lvld);font-weight:600;box-shadow:0 0 0 2px var(--lvl);}
+@media(prefers-color-scheme:dark){.opt-btn.wrong{color:#fca5a5;}}
+#fill-row{display:flex;gap:8px;margin-bottom:1rem;}
+#fill-input{flex:1;padding:9px 12px;font-size:15px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg);color:var(--text);outline:none;font-family:inherit;transition:border-color 0.15s;}
+#fill-input:focus{border-color:var(--xp);}
+#fill-submit{padding:9px 16px;font-size:14px;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--r);cursor:pointer;color:var(--text);font-family:inherit;}
+#fill-submit:hover{background:var(--bg3);}
+#tf-row{display:flex;gap:8px;margin-bottom:1rem;}
+.tf-btn{flex:1;padding:11px;font-size:15px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border);background:var(--bg2);cursor:pointer;color:var(--text);font-family:inherit;transition:background 0.1s;}
+.tf-btn:hover:not(:disabled){background:var(--bg3);}
+.tf-btn.correct{background:var(--xpl);border-color:var(--xp);color:var(--xpd);}
+.tf-btn.wrong{background:var(--wrongl);border-color:var(--wrong);color:#7a1212;}
+.tf-btn:disabled{cursor:default;}
+@media(prefers-color-scheme:dark){.tf-btn.wrong{color:#fca5a5;}}
+#self-rate{display:none;margin-bottom:1rem;}
+#self-rate p{font-size:13px;color:var(--text2);margin-bottom:8px;}
+#rate-row{display:flex;gap:8px;}
+.rate-btn{flex:1;padding:9px 8px;font-size:13px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border);cursor:pointer;font-family:inherit;transition:background 0.1s,transform 0.1s;}
+.rate-btn:hover{transform:translateY(-1px);}
+.rate-btn.r-hard{background:var(--wrongl);border-color:rgba(226,75,74,0.3);color:#7a1212;}
+.rate-btn.r-unsure{background:var(--streakl);border-color:rgba(239,159,39,0.3);color:#7a4800;}
+.rate-btn.r-easy{background:var(--xpl);border-color:rgba(29,158,117,0.3);color:var(--xpd);}
+@media(prefers-color-scheme:dark){.rate-btn.r-hard{color:#fca5a5;}.rate-btn.r-unsure{color:#d4900a;}}
+#feedback{font-size:14px;min-height:20px;margin-bottom:8px;line-height:1.5;color:var(--text2);}
+#feedback.ok{color:var(--xpd);}
+#feedback.err{color:var(--wrong);}
+#next-btn{width:100%;padding:11px;font-size:15px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);cursor:pointer;color:var(--text);display:none;transition:background 0.1s;font-family:inherit;}
+#next-btn:hover{background:var(--bg3);}
+.xp-pop{position:absolute;right:1.75rem;font-size:18px;font-weight:500;color:var(--xp);pointer-events:none;animation:floatUp 1.1s ease-out forwards;}
+.streak-pop{position:absolute;left:50%;font-size:15px;font-weight:500;color:var(--streak);pointer-events:none;white-space:nowrap;animation:floatUpC 1.4s ease-out forwards;}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-55px)}}
+@keyframes floatUpC{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-55px)}}
+#summary{display:none;padding:1rem 0 0.5rem;}
+#sum-header{text-align:center;margin-bottom:1.5rem;}
+#sum-header h2{font-size:26px;font-weight:500;margin-bottom:6px;}
+#sum-header p{font-size:15px;color:var(--text2);}
+#sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem;}
+.sum-stat{background:var(--bg2);border-radius:var(--r);padding:14px 6px;text-align:center;}
+.sum-stat .val{font-size:24px;font-weight:500;}
+.sum-stat .lbl{font-size:11px;color:var(--text2);margin-top:3px;}
+#sum-bar-section{margin-bottom:1.25rem;}
+#sum-bar-label{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:6px;}
+#sum-bar-wrap{height:10px;background:var(--bg3);border-radius:5px;overflow:hidden;}
+#sum-bar{height:100%;border-radius:5px;transition:width 1s ease;}
+#sum-cat{margin-bottom:1.25rem;}
+#sum-cat h3{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:8px;}
+.cat-stat-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:13px;}
+.csn{flex:1;color:var(--text2);}
+.csbar{width:80px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.csbar-fill{height:100%;border-radius:3px;}
+.cspct{font-size:12px;color:var(--text2);min-width:32px;text-align:right;}
+#sum-adaptive{margin-bottom:1.25rem;}
+#sum-adaptive h3{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:10px;}
+.rec-block{border-radius:var(--r);padding:10px 12px;margin-bottom:8px;border:0.5px solid var(--border);}
+.rec-block.rec-wrong{background:var(--wrongl);border-color:rgba(226,75,74,0.3);}
+.rec-block.rec-hard{background:var(--wrongl);border-color:rgba(226,75,74,0.15);}
+.rec-block.rec-unsure{background:var(--streakl);border-color:rgba(239,159,39,0.25);}
+.rec-block.rec-cat{background:var(--bg2);border-color:var(--border);}
+.rec-block.rec-history{background:var(--bg2);border-color:var(--border);}
+.rec-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);margin-bottom:7px;}
+.rec-block.rec-wrong .rec-label,.rec-block.rec-hard .rec-label{color:var(--wrong);}
+.rec-block.rec-unsure .rec-label{color:var(--streak);}
+.rec-item{font-size:13px;color:var(--text);line-height:1.45;padding:4px 0;border-bottom:0.5px solid var(--border);}
+.rec-item:last-of-type{border-bottom:none;padding-bottom:0;}
+.rec-clickable{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-bottom:0.5px solid var(--border);padding:6px 0;cursor:pointer;text-align:left;font-family:inherit;gap:8px;}
+.rec-clickable:last-of-type{border-bottom:none;}
+.rec-clickable:hover{opacity:0.75;}
+.rec-item-score{font-size:12px;color:var(--text2);white-space:nowrap;}
+.rec-run-btn{display:block;width:100%;margin-top:10px;padding:9px;font-size:13px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);cursor:pointer;color:var(--text);font-family:inherit;transition:background 0.1s;text-align:center;}
+.rec-run-btn:hover{background:var(--bg3);}
+.rec-run-top{margin-bottom:10px;margin-top:0;}
+#sum-history{margin-bottom:1.25rem;}
+#sum-history h3{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:8px;}
+.hist-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:var(--r);background:var(--bg2);margin-bottom:5px;font-size:13px;}
+.hist-date{color:var(--text2);}
+.hist-score{font-weight:500;}
+.hist-clear{font-size:12px;color:var(--text2);background:none;border:none;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;}
+.hist-clear:hover{color:var(--wrong);}
+#sum-btns{display:flex;gap:8px;}
+#restart-btn,#back-btn{flex:1;padding:11px;font-size:15px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);cursor:pointer;color:var(--text);font-family:inherit;transition:background 0.1s;}
+#restart-btn:hover,#back-btn:hover{background:var(--bg3);}
+#start-screen{text-align:center;padding:1.5rem 0 0.5rem;}
+#start-screen h2{font-size:22px;font-weight:500;margin-bottom:8px;}
+#start-screen .desc{font-size:14px;color:var(--text2);margin-bottom:1.75rem;line-height:1.6;max-width:380px;margin-left:auto;margin-right:auto;}
+.section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);margin-bottom:8px;text-align:left;}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:1.5rem;}
+.cat-btn{padding:9px 12px;font-size:13px;border-radius:var(--r);border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;text-align:left;font-family:inherit;transition:background 0.1s,color 0.1s;line-height:1.3;}
+.cat-btn:hover{background:var(--bg3);}
+.cat-btn.active{background:var(--bg3);border-color:var(--border2);color:var(--text);font-weight:500;}
+.len-row{display:flex;gap:6px;margin-bottom:1.5rem;}
+.len-btn{flex:1;padding:9px;font-size:14px;border-radius:var(--r);border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-family:inherit;transition:background 0.1s,color 0.1s;}
+.len-btn:hover{background:var(--bg3);}
+.len-btn.active{background:var(--bg3);border-color:var(--border2);color:var(--text);font-weight:500;}
+#start-btn{width:100%;padding:11px;font-size:15px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);cursor:pointer;color:var(--text);font-family:inherit;transition:background 0.1s;}
+#start-btn:hover{background:var(--bg3);}
+#start-history{margin-top:1.5rem;text-align:left;}
+#start-history h3{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);margin-bottom:8px;}
+#game-area{display:none;}
+@media(max-width:480px){
+  #options-grid{grid-template-columns:1fr;}
+  body{padding:1rem 0.5rem 3rem;}
+  #game{padding:1.25rem 1rem;}
+  #sum-grid{grid-template-columns:repeat(2,1fr);}
+  .cat-grid{grid-template-columns:1fr;}
+  #sum-btns{flex-direction:column;}
+  #rate-row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div id="game">
+  <h1 class="logo">Biologi åk 7 — Ekologi och samspel</h1>
+
+  <div id="start-screen">
+    <h2>Minnesåterkallning</h2>
+    <p class="desc">Träna med flervalsfrågor, sant/falskt och skriv-svar.<br>Fel svar dyker upp igen.</p>
+    <div class="section-label">Välj område</div>
+    <div class="cat-grid">
+      <button class="cat-btn active" data-cat="all" onclick="pickCat(this)">Alla områden</button>
+      <button class="cat-btn" data-cat="Fotosyntes och cellandning" onclick="pickCat(this)">Fotosyntes och cellandning</button>
+      <button class="cat-btn" data-cat="Ekosystem" onclick="pickCat(this)">Ekosystem</button>
+      <button class="cat-btn" data-cat="Ekologiska modeller" onclick="pickCat(this)">Ekologiska modeller</button>
+      <button class="cat-btn" data-cat="Populationens storlek" onclick="pickCat(this)">Populationens storlek</button>
+      <button class="cat-btn" data-cat="Att leva tillsammans" onclick="pickCat(this)">Att leva tillsammans</button>
+    </div>
+    <div class="section-label">Antal frågor</div>
+    <div class="len-row">
+      <button class="len-btn" data-n="10" onclick="pickLen(this)">10</button>
+      <button class="len-btn active" data-n="20" onclick="pickLen(this)">20</button>
+      <button class="len-btn" data-n="30" onclick="pickLen(this)">30</button>
+    </div>
+    <button id="start-btn" onclick="startGame()">Starta</button>
+    <div id="start-history"></div>
+  </div>
+
+  <div id="game-area">
+    <button id="back-ingame" onclick="goBack()">← Tillbaka</button>
+    <div id="level-row">
+      <div id="level-badge">Nybörjare — Nivå 1</div>
+      <div id="xp-bar-wrap"><div id="xp-bar" style="width:0%"></div></div>
+      <div id="xp-label">0 / 50 XP</div>
+    </div>
+    <div id="topbar">
+      <div class="stat">Streak <span id="streak-val">0</span></div>
+      <div class="stat">Rätt <span id="correct-val">0</span></div>
+      <div id="q-bar-wrap"><div id="q-bar" style="width:0%"></div></div>
+      <div class="stat" id="q-counter">0 / 0</div>
+    </div>
+    <div id="card">
+      <div id="mode-badge" class="badge-mc">Flerval</div>
+      <div id="question-text"></div>
+      <div id="sub-text" style="display:none"></div>
+    </div>
+    <div id="options-grid"></div>
+    <div id="fill-row" style="display:none">
+      <input id="fill-input" type="text" placeholder="Skriv svaret..." autocomplete="off"/>
+      <button id="fill-submit" onclick="submitFill()">Svara</button>
+    </div>
+    <div id="tf-row" style="display:none">
+      <button class="tf-btn" id="tf-true" onclick="answerTF(true)">Sant</button>
+      <button class="tf-btn" id="tf-false" onclick="answerTF(false)">Falskt</button>
+    </div>
+    <div id="feedback"></div>
+    <div id="self-rate">
+      <p>Hur säker var du på svaret?</p>
+      <div id="rate-row">
+        <button class="rate-btn r-hard" onclick="selfRate('hard')">Osäker</button>
+        <button class="rate-btn r-unsure" onclick="selfRate('unsure')">Ganska säker</button>
+        <button class="rate-btn r-easy" onclick="selfRate('easy')">Säker</button>
+      </div>
+    </div>
+    <button id="next-btn" onclick="nextQ()">Nästa fråga</button>
+  </div>
+
+  <div id="summary">
+    <div id="sum-header">
+      <div id="sum-medal" style="font-size:52px;margin-bottom:8px;line-height:1;"></div>
+      <h2 id="sum-title"></h2>
+      <p id="sum-desc"></p>
+    </div>
+    <div id="sum-grid">
+      <div class="sum-stat"><div class="val" id="s-xp">0</div><div class="lbl">Totalt XP</div></div>
+      <div class="sum-stat"><div class="val" id="s-correct">0</div><div class="lbl">Rätt</div></div>
+      <div class="sum-stat"><div class="val" id="s-streak">0</div><div class="lbl">Bästa streak</div></div>
+      <div class="sum-stat"><div class="val" id="s-pct">0%</div><div class="lbl">Träffsäkerhet</div></div>
+    </div>
+    <div id="sum-bar-section">
+      <div id="sum-bar-label"><span>Träffsäkerhet</span><span id="sum-bar-pct">0%</span></div>
+      <div id="sum-bar-wrap"><div id="sum-bar" style="width:0%"></div></div>
+    </div>
+    <div id="sum-cat"></div>
+    <div id="sum-adaptive"></div>
+    <div id="sum-history"></div>
+    <div id="sum-btns">
+      <button id="back-btn" onclick="goBack()">← Inställningar</button>
+      <button id="restart-btn" onclick="startGame()">Spela igen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BANK = [
+
+// ═══ FOTOSYNTES OCH CELLANDNING ═══════════════════════════════
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vad behöver växter för att utföra fotosyntes?",
+ opts:["Solljus, koldioxid och vatten","Syre, glukos och klorofyll","Kväve, fosfor och syre","Druvsocker, vatten och koldioxid"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vad bildas vid fotosyntesen?",
+ opts:["Druvsocker och syre","Koldioxid och vatten","Klorofyll och energi","Koldioxid och energi"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vilken formel beskriver fotosyntesen korrekt?",
+ opts:["Koldioxid + vatten + energi → socker + syre","Socker + syre → koldioxid + vatten + energi","Koldioxid + syre → vatten + socker + energi","Socker + koldioxid → vatten + syre"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vilken formel beskriver cellandningen korrekt?",
+ opts:["Socker + syre → koldioxid + vatten + energi","Koldioxid + vatten + energi → socker + syre","Koldioxid + syre → vatten + socker + energi","Socker + koldioxid → vatten + syre"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Varför kan inte djurceller utföra fotosyntes?",
+ opts:["Djurceller saknar klorofyll","Djurceller saknar cellkärna","Djurceller saknar cellvägg","Djurceller saknar glukos"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vilket ämne fångar upp solenergin i växtcellerna?",
+ opts:["Klorofyll","Glukos","Koldioxid","Cellmembran"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vilka organismer utför fotosyntes?",
+ opts:["Växter, alger och cyanobakterier","Alla organismer med cellkärna","Växter, djur och svampar","Enbart landlevande växter"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vilka organismer utför cellandning?",
+ opts:["Alla levande organismer","Enbart djur och svampar","Enbart växter och alger","Enbart organismer med cellkärna"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vad används energin till som frigörs vid cellandningen?",
+ opts:["Rörelse, tillväxt, kroppsvärme och att ersätta döda celler","Fotosyntes, klorofyllproduktion och celltillväxt","Att bilda koldioxid och vatten som avges till luften","Att lagra socker i blad och rötter"],
+ correct:0},
+
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Varför kallas fotosyntesen och cellandningen varandras motsatser?",
+ opts:["Det som bildas i den ena processen förbrukas i den andra","De sker vid exakt samma tidpunkt i växten","Fotosyntes producerar energi och cellandning förstör den","De sker vid exakt motsatta temperaturer"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vad händer med en växt som placeras i mörker under lång tid?",
+ opts:["Klorofyllet försvinner och sockret tar slut — växten dör","Växten överlever tack vare cellandningen som kompenserar","Växten övergår till att ta upp näring enbart via rötterna","Växten lagrar mer socker och klarar sig längre utan ljus"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Till vad används sockret som bildas vid fotosyntesen i en växt?",
+ opts:["Som energikälla i cellandningen och som byggmaterial för cellväggar","Det avges direkt som syre till luften","Det omvandlas till klorofyll och lagras i bladen","Det transporteras till djur via marken"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Fotosyntes sker i växternas celler med hjälp av klorofyll.", correct:true},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Djur kan utföra fotosyntes eftersom de andas in syre.", correct:false,
+ exp:"Fotosyntes kräver klorofyll, som djurceller saknar. Att andas in syre är cellandning, inte fotosyntes."},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Vid cellandningen bildas koldioxid, vatten och energi.", correct:true},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Enbart växter och djur utför cellandning.", correct:false,
+ exp:"Alla levande organismer utför cellandning."},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Det syre som bildas vid fotosyntesen kan sedan användas vid cellandningen.", correct:true},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Koldioxid som bildas vid cellandningen kan sedan användas vid fotosyntesen.", correct:true},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Växter utför cellandning enbart på natten.", correct:false,
+ exp:"Växter utför cellandning hela dygnet. Fotosyntesen sker enbart när det finns tillräckligt med ljus."},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Svampar har fotosyntes precis som växter.", correct:false,
+ exp:"Svampar saknar klorofyll och kan inte utföra fotosyntes. De är konsumenter."},
+
+{cat:"Fotosyntes och cellandning", mode:"fill",
+ q:"Vad kallas det gröna färgämnet i växtcellerna som fångar upp solenergin?",
+ correct:"klorofyll", accepted:["klorofyl","chlorofyll"]},
+
+{cat:"Fotosyntes och cellandning", mode:"fill",
+ q:"Vad kallas det energirika socker som bildas vid fotosyntesen?",
+ correct:"glukos", accepted:["druvsocker","glukose"]},
+
+{cat:"Fotosyntes och cellandning", mode:"fill",
+ q:"Vad kallas den process där levande celler förbränner socker med hjälp av syre och frigör energi?",
+ correct:"cellandning", accepted:["cell andning","cellandningen"]},
+
+{cat:"Fotosyntes och cellandning", mode:"fill",
+ q:"Vad kallas den process där växter omvandlar koldioxid och vatten till socker med hjälp av solenergi?",
+ correct:"fotosyntes", accepted:["fotosyntesen","foto syntes"]},
+
+// ═══ EKOSYSTEM ════════════════════════════════════════════════
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad kallas organismer som tillverkar energirika ämnen via fotosyntesen?",
+ opts:["Producenter","Konsumenter","Nedbrytare","Toppkonsumenter"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vilka av dessa är producenter?",
+ opts:["Växter, alger och cyanobakterier","Svampar, bakterier och maskar","Rovdjur, växtätare och allätare","Fåglar, fiskar och kräldjur"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad kallas organismer som äter växter eller andra djur för att få energi?",
+ opts:["Konsumenter","Producenter","Nedbrytare","Destruenter"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad kallas en växtätande konsument?",
+ opts:["Förstahandskonsument","Andrahandskonsument","Toppkonsument","Destruent"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad kallas ett rovdjur som äter växtätande djur?",
+ opts:["Andrahandskonsument","Förstahandskonsument","Producent","Nedbrytare"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad kallas en organism som bryter ned döda växter och djur?",
+ opts:["Nedbrytare","Konsument","Producent","Toppkonsument"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vilka av dessa är nedbrytare?",
+ opts:["Svampar, bakterier och maskar","Växter, alger och mossor","Rovdjur, fiskar och fåglar","Insekter, groddjur och kräldjur"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad kallas konsumenten överst i en näringspyramid som saknar naturliga fiender?",
+ opts:["Toppkonsument","Andrahandskonsument","Producent","Förstahandskonsument"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Varför är nedbrytarna viktiga för producenterna?",
+ opts:["De frigör mineraler ur döda organismer som producenterna sedan kan ta upp","De tillverkar klorofyll som producenterna behöver","De skyddar producenterna mot att bli uppätna","De skapar syre som producenterna behöver"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Varför kallas växter producenter?",
+ opts:["De producerar energirika kemiska ämnen via fotosyntesen","De producerar syre som alla djur andas in","De producerar mineraler ur marken","De producerar klorofyll som färgar bladen gröna"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Varför finns det inte så många toppkonsumenter i ett ekosystem?",
+ opts:["Mängden energi som producenterna tillverkar sätter gränsen","Det finns för lite vatten i ekosystemet för att försörja fler","Toppkonsumenter behöver mer syre än atmosfären kan ge","Nedbrytarna konkurrerar med toppkonsumenterna om födan"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad kallas helheten av organismer och den miljö de lever i, betraktad som ett system?",
+ opts:["Ekosystem","Ekologisk nisch","Näringsväv","Population"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad studerar ekologer?",
+ opts:["Hur olika organismer samspelar och påverkar varandra","Hur arter uppstår och försvinner under evolutionen","Hur celler är uppbyggda och fungerar","Hur genetisk information förs vidare"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Växter kallas producenter för att de tillverkar energirika ämnen via fotosyntesen.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Svampar är producenter eftersom de liknar växter.", correct:false,
+ exp:"Svampar saknar klorofyll och utför inte fotosyntes. De är konsumenter eller nedbrytare."},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"En toppkonsument saknar naturliga fiender i ekosystemet.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Nedbrytare är oviktiga i ekosystemet eftersom de bara äter döda organismer.", correct:false,
+ exp:"Nedbrytare frigör mineraler som producenterna behöver — de sluter kretsloppen och är avgörande."},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"En förstahandskonsument äter växter.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Alla organismer som äter andra organismer kallas producenter.", correct:false,
+ exp:"Organismer som äter andra kallas konsumenter. Producenter tillverkar energi via fotosyntesen."},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Bakterier och svampar är de viktigaste nedbrytarna i naturen.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"fill",
+ q:"Vad kallas en organism som får sin näring av att bryta ned döda organismer?",
+ correct:"nedbrytare", accepted:["destruent","nedbrytaren","destruenter"]},
+
+{cat:"Ekologiska modeller", mode:"fill",
+ q:"Vad kallas ett annat ord för nedbrytare?",
+ correct:"destruent", accepted:["destruenter","nedbrytare"]},
+
+{cat:"Ekologiska modeller", mode:"fill",
+ q:"Vad kallas den samlade massan av alla levande organismer?",
+ correct:"biomassa", accepted:["bio massa"]},
+
+{cat:"Ekosystem", mode:"fill",
+ q:"Vad kallas systemet av organismer och den miljö de lever i?",
+ correct:"ekosystem", accepted:["eko system","ekosystemet"]},
+
+// ═══ EKOLOGISKA MODELLER ══════════════════════════════════════
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad visar en näringskedja?",
+ opts:["Vem som äter vem i ett ekosystem","Hur populationerna förändras över tid","Hur mycket syre producenterna tillverkar","Vilka arter som lever i samma ekosystem"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad måste en korrekt näringskedja alltid börja med?",
+ opts:["En producent","En konsument","En nedbrytare","En toppkonsument"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad är en näringsväv?",
+ opts:["Flera sammankopplade näringskedjor som ger en mer komplett bild av ekosystemet","En enda lång kedja från producent till toppkonsument","En tabell som visar biomassan på varje nivå","En karta som visar var olika organismer lever"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad visar en näringspyramid?",
+ opts:["Hur biomassan och energin fördelar sig i en näringskedja","Hur många arter som finns på varje nivå","Hur snabbt olika organismer rör sig i ekosystemet","Vilka organismer som konkurrerar om samma föda"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Ungefär hur stor andel av energin förs vidare till nästa nivå i en näringskedja?",
+ opts:["Ungefär 10 procent","Ungefär 50 procent","Ungefär 90 procent","Ungefär 1 procent"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad händer med den energi som inte förs vidare i en näringskedja?",
+ opts:["Den avges som värme","Den återförs direkt till producenterna via marken","Den lagras permanent i nedbrytarnas celler","Den omvandlas till klorofyll hos producenterna"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vilken av dessa är en korrekt konstruerad näringskedja?",
+ opts:["Alg → mört → abborre → katt","Mört → alg → abborre → katt","Katt → abborre → mört → alg","Hoppkräfta → växtplankton → mört → gädda"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vilken organism bildar basen i en näringspyramid?",
+ opts:["Producenten","Toppkonsumenten","Nedbrytaren","Andrahandskonsumenten"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Varför innehåller näringspyramidens översta steg färre individer än det nedersta?",
+ opts:["Energin minskar för varje steg, vilket räcker till färre individer","Toppkonsumenter lever längre och behöver inte vara lika många","Nedbrytarna tar energi från varje steg uppåt i pyramiden","Producenterna konkurrerar aktivt ut konsumenterna"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Varför är en näringsväv en bättre modell av verkligheten än en enkel näringskedja?",
+ opts:["En näringsväv visar att de flesta djur äter flera olika saker","En näringsväv är enklare att rita och förstå","En näringsväv visar bara toppkonsumenternas föda","En näringsväv utesluter nedbrytarna för att göra bilden tydligare"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Det behövs ungefär 100 kg växtmaterial för att bygga en vessla som väger 1 kg. Vad beror det på?",
+ opts:["Det mesta av energin går åt till rörelse, värme och avföring — bara ca 10% förs vidare","Växtmaterial innehåller mycket vatten och lite näring","Vesslor är ineffektiva jägare och fångar bara en liten del av bytet","Producenterna lagrar enbart koldioxid och inte energirika ämnen"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"En korrekt näringskedja börjar alltid med en producent.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"En näringsväv är ett annat namn för en enda lång näringskedja.", correct:false,
+ exp:"En näringsväv visar alla sammankopplade näringskedjor i ett ekosystem och ger en mer verklighetstrogen bild."},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Ungefär 10 procent av energin förs vidare till nästa nivå i en näringspyramid.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Toppkonsumenten finns i basen av näringspyramiden.", correct:false,
+ exp:"Producenten bildar basen. Toppkonsumenten finns högst upp."},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Energi som inte förs vidare i en näringskedja avges bland annat som värme.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Det finns fler toppkonsumenter än producenter i ett ekosystem.", correct:false,
+ exp:"Det är tvärtom — det finns alltid många fler producenter än toppkonsumenter."},
+
+{cat:"Ekologiska modeller", mode:"fill",
+ q:"Vad kallas ett diagram som visar hur biomassan fördelar sig i en näringskedja?",
+ correct:"näringspyramid", accepted:["naringspyramid","näringspyramiden"]},
+
+{cat:"Ekologiska modeller", mode:"fill",
+ q:"Vad kallas ett diagram som visar vem som äter vem i en sekvens av organismer?",
+ correct:"näringskedja", accepted:["naringskedja","næringskedja","fodkedja"]},
+
+{cat:"Ekologiska modeller", mode:"fill",
+ q:"Vad kallas ett diagram som visar alla sammankopplade näringskedjor i ett ekosystem?",
+ correct:"näringsväv", accepted:["naringsvav","naringsväv","näringsvav"]},
+
+// ═══ POPULATIONENS STORLEK ════════════════════════════════════
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas det antal individer av en viss art som finns inom ett bestämt område?",
+ opts:["Population","Ekosystem","Flock","Samhälle"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas det maximala antalet individer som ett ekosystems resurser kan försörja?",
+ opts:["Bärkraft","Biomassa","Ekologisk nisch","Toppkonsumenter"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad är skillnaden mellan J-formad och S-formad tillväxtkurva?",
+ opts:["J-kurvan visar obegränsad tillväxt, S-kurvan visar att tillväxten avtar när bärkraften nås","S-kurvan visar snabbare tillväxt än J-kurvan","J-kurvan visar att populationen minskar, S-kurvan att den ökar","De är samma sak men med olika namn i olika länder"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad händer med en populations tillväxt när den når ekosystemets bärkraft?",
+ opts:["Tillväxten avtar och kurvan planar ut i S-form","Populationen fortsätter att växa exponentiellt","Populationen dör ut direkt","Populationen splittras i flera mindre grupper"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas det utrymme där en art har bäst chans att överleva och föröka sig?",
+ opts:["Ekologisk nisch","Ekosystem","Population","Biomassa"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad händer när två arter utnyttjar exakt samma ekologiska nisch?",
+ opts:["De konkurrerar tills enbart en av arterna återstår","De anpassar sig och delar nischen utan konflikt","Båda arterna gynnas av att dela resurser","Båda arterna dör ut på grund av för hård konkurrens"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas en organism som klarar sig i många olika miljöer och äter många sorters föda?",
+ opts:["Generalist","Specialist","Toppkonsument","Parasit"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas en organism som enbart kan överleva i en typ av miljö eller på en typ av föda?",
+ opts:["Specialist","Generalist","Nedbrytare","Producent"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vilket av dessa djur är ett exempel på en generalist?",
+ opts:["Räv","Koala","Jättepanda","Isbjörn"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vilket av dessa djur är ett exempel på en specialist?",
+ opts:["Koala","Räv","Kråka","Vildsvin"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad menas med konkurrens i biologin?",
+ opts:["Att organismer tävlar om samma begränsade resurser","Att organismer samarbetar för att överleva","Att organismer anpassar sig till olika ekologiska nischer","Att organismer byter näring med varandra"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad konkurrerar växter om?",
+ opts:["Solljus, vatten och mineraler i marken","Mat, boplatser och partners","Syre, koldioxid och druvsocker","Klorofyll, glukos och kväve"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad konkurrerar djur om?",
+ opts:["Mat, boplatser, vatten och partners","Solljus, vatten och mineraler","Syre, koldioxid och klorofyll","Glukos, biomassa och cellandning"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Hur driver konkurrensen på evolutionen?",
+ opts:["De bäst anpassade individerna överlever och för sina egenskaper vidare","Konkurrensen utrotar alla individer och tvingar fram helt nya arter","Konkurrensen hindrar evolution eftersom individer dödar varandra","De svagaste individerna bär evolutionen framåt"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Varför rör sig djur ibland till ett nytt område?",
+ opts:["För att hitta mer föda eller undvika konkurrens","För att söka sig till ett område med fler rovdjur","För att utöka sin ekologiska nisch","För att hjälpa andra individer av sin art"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas det hemområde som ett djur kontrollerar och försvarar mot andra individer av samma art?",
+ opts:["Revir","Ekologisk nisch","Population","Ekosystem"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Varför rymmer en regnskog så många olika arter?",
+ opts:["Regnskogen erbjuder många ekologiska nischer där olika arter kan leva","Regnskogen har få rovdjur","Regnskogen har ett kallt klimat som gynnar artrikedom","Regnskogen har lite konkurrens eftersom det finns gott om resurser"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Varför ökar och minskar populationer av rovdjur och bytesdjur i takt med varandra?",
+ opts:["När bytesdjuren minskar får rovdjuren mindre mat och minskar också, vilket låter bytesdjuren återhämta sig","Rovdjur och bytesdjur samarbetar och anpassar sina populationsstorlekar frivilligt","Klimatförändringar påverkar båda populationerna på exakt samma sätt","Bärkraften är densamma för rovdjur och bytesdjur"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"En generalist kan leva i många olika miljöer och äter många sorters föda.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Koalan är ett exempel på en generalist.", correct:false,
+ exp:"Koalan är en specialist — den är nästan helt beroende av eukalyptusblad."},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"När två arter utnyttjar exakt samma ekologiska nisch kan de leva sida vid sida utan problem.", correct:false,
+ exp:"De konkurrerar tills enbart en av arterna återstår i nischen."},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"Bärkraften bestämmer hur många individer ett ekosystem kan försörja.", correct:true},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"Populationerna av rovdjur och bytesdjur påverkar varandras storlek.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Konkurrens finns bara mellan individer av olika arter.", correct:false,
+ exp:"Konkurrens finns både inom en art och mellan olika arter."},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"En population som når ekosystemets bärkraft fortsätter att växa obegränsat.", correct:false,
+ exp:"När bärkraften nås avtar tillväxten och kurvan planar ut i S-form."},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas ett rovdjur med ett annat ord?",
+ correct:"predator", accepted:["predatorer","predatorn"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas det utrymme en art har bäst chans att överleva och föröka sig i?",
+ correct:"ekologisk nisch", accepted:["nisch","den ekologiska nischen"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas en allätare som klarar sig i många olika miljöer?",
+ correct:"generalist", accepted:["generalister"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas en organism som bara kan överleva i en smal nisch?",
+ correct:"specialist", accepted:["specialister"]},
+
+{cat:"Populationens storlek", mode:"fill",
+ q:"Vad kallas det maximala antal individer som ett ekosystems resurser kan försörja?",
+ correct:"bärkraft", accepted:["barkraft","bärkraften"]},
+
+{cat:"Populationens storlek", mode:"fill",
+ q:"Vad kallas det antal individer av en bestämd art som lever inom ett avgränsat område?",
+ correct:"population", accepted:["populationen","populationer"]},
+
+{cat:"Populationens storlek", mode:"fill",
+ q:"Vad kallas det hemområde ett djur kontrollerar och försvarar mot artfränder?",
+ correct:"revir", accepted:["reviret","revier"]},
+
+// ═══ ATT LEVA TILLSAMMANS ════════════════════════════════════
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas ett samspel där båda arterna tjänar på samarbetet?",
+ opts:["Mutualism","Kommensalism","Parasitism","Konkurrens"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas ett samspel där en art tjänar på det medan den andra inte påverkas?",
+ opts:["Kommensalism","Mutualism","Parasitism","Predation"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas ett samspel där en art tjänar på det och den andra tar skada?",
+ opts:["Parasitism","Mutualism","Kommensalism","Symbios"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vilket av dessa är ett exempel på mutualism?",
+ opts:["Blomväxter och pollinerande insekter","Fästing och hund","Lejon och zebra","Gök och rörsångare"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vilket av dessa är ett exempel på parasitism?",
+ opts:["Fästing och hund","Blomväxt och bi","Rovstekel och fjärilslarv","Svamp och algcell i en lav"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vilket av dessa är ett exempel på kommensalism?",
+ opts:["Stare och myror","Svamp och träd i mykorrhiza","Fästing och hund","Blomväxt och pollinerande insekt"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas den organism som en parasit lever på och tar näring från?",
+ opts:["Värdorganism","Toppkonsument","Destruent","Generalist"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas det övergripande begreppet för samlevnad mellan olika organismer?",
+ opts:["Symbios","Parasitism","Konkurrens","Predation"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är mykorrhiza?",
+ opts:["Samarbete mellan svamphyfer och trädets rötter — svampen hjälper trädet ta upp mineraler mot socker","Samarbete mellan alg och svamp som bildar en lav","En parasit som lever på trädets rötter","En nedbrytare som bryter ned döda löv"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är en lav?",
+ opts:["En symbios mellan en svamp och en alg","En typ av mossa som lever på steniga ytor","En parasit som lever på trädbarken","En nedbrytare som bryter ned döda växtdelar"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är en fördel med att leva i flock?",
+ opts:["Faror upptäcks snabbare och det är lättare att hitta mat","Varje individ får mer mat eftersom resurser delas lika","Rovdjur angriper aldrig stora flockar","Individer i flock förökar sig alltid snabbare"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är en nackdel med att leva i flock?",
+ opts:["Maten räcker kanske inte till alla och flocken är lättare för rovdjur att upptäcka","Individerna måste alltid dela sin föda med svagare flockkamrater","Det går inte att kommunicera med varandra i en stor flock","Rovdjur angriper alltid den starka kärnan i flocken"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad utmärker en social flock?",
+ opts:["Det finns en ledare, en rangordning och alla individer tillhör samma art","Alla individer är av olika arter och delar resurser","Det saknas rangordning och alla har lika hög status","Flocken byter ledare varje säsong"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är skillnaden mellan en flock utan ledare och en social flock?",
+ opts:["En flock utan ledare saknar rangordning, en social flock har ledare och rangordning","En flock utan ledare är alltid större än en social flock","En social flock består av olika arter","En flock utan ledare lever på land, en social flock i vatten"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Varför kan det vara positivt för en population att svaga individer blir uppätna av rovdjur?",
+ opts:["Konkurrensen om föda minskar och de bäst anpassade individerna överlever","Rovdjuren sprider sjukdomar och svaga individer kan sprida dem vidare","Populationen minskar totalt i antal, vilket minskar stressbelastningen","De svaga individerna lär sig fly bättre"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas det fenomen där ett ofarligt djur liknar ett farligt eller giftigt djur?",
+ opts:["Mimikry","Kamouflage","Parasitism","Kommensalism"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad kallas det fenomen där ett djur smälter ihop med bakgrunden för att inte synas?",
+ opts:["Kamouflage","Mimikry","Mutualism","Symbios"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Hur kan växter undvika att bli uppätna?",
+ opts:["Genom att vara taggiga, giftiga eller illasmakande","Genom att röra sig bort från växtätarna","Genom att producera mer socker som lockar insekter","Genom att bilda symbios med rovdjur"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Varför har giftiga eller farliga djur ofta starka, klara färger?",
+ opts:["Färgerna signalerar till potentiella rovdjur att djuret är farligt att äta","Starka färger lockar partners och ökar chansen att föröka sig","Starka färger är kamouflage i tropiska miljöer","Djuren kan inte kontrollera sin färg"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad gör putsarfiskar för de stora fiskarna?",
+ opts:["De äter parasiter från de stora fiskarna och får i utbyte föda och skydd","De jagar bytesdjur åt de stora fiskarna och delar sedan bytet","De lever som parasiter på de stora fiskarnas gälar","De äter alger från korallen åt de stora fiskarna"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Hur sprider fästingar sjukdomar som borrelia?",
+ opts:["De suger blod från värden och för över sjukdomsalstrare vid bettet","De lägger ägg inuti värdens kropp som kläcks och sprider infektion","De avger gifter via huden som tas upp av värden","De konkurrerar med nyttiga bakterier i värdens tarm"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vilka sätt kan djur försvara sig mot att bli uppätna?",
+ opts:["Slåss, fly, gömma sig, använda gift eller taggar","Bilda fotosyntes för att skrämma bort fiender","Leva i näringspyramidens bas","Bilda parasitiska förhållanden med rovdjuren"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Mutualism är ett samspel där båda arterna tjänar på samarbetet.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Parasitism är ett samspel där båda arterna gynnas lika mycket.", correct:false,
+ exp:"Vid parasitism gynnas parasiten medan värdorganismen tar skada."},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Kommensalism innebär att en art tjänar på samspelet och den andra varken vinner eller förlorar.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Kamouflage och mimikry är samma sak.", correct:false,
+ exp:"Kamouflage innebär att smälta ihop med bakgrunden. Mimikry innebär att likna en annan organism, till exempel en giftig art."},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"En blomfluga som liknar en geting är ett exempel på mimikry.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Fästing och hund är ett exempel på mutualism.", correct:false,
+ exp:"Det är ett exempel på parasitism — fästingen gynnas, hunden tar skada."},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Lavar är ett exempel på mutualism mellan svamp och alg.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Sociala flockar brukar bestå av individer av olika arter.", correct:false,
+ exp:"I sociala flockar brukar alla individer tillhöra samma art."},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Mykorrhiza är en form av symbios mellan svamp och träd.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Parasiter dödar alltid sin värdorganism snabbt.", correct:false,
+ exp:"Parasiter lever på värden utan att döda den direkt — värdorganismen blir ofta sjuk och svag men överlever en tid."},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Tarmbakterier hos människan är ett exempel på mutualism.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas samspel där båda arterna gynnas?",
+ correct:"mutualism", accepted:["mutualisme"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas samspel där en art gynnas och den andra tar skada?",
+ correct:"parasitism", accepted:["parasitisme"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas samspel där en art gynnas och den andra inte påverkas?",
+ correct:"kommensalism", accepted:["komensalism","kommensalisme"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas det när ett djur smälter ihop med sin omgivning för att inte synas?",
+ correct:"kamouflage", accepted:["camouflage","kamuflage"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas det när ett djur liknar en annan farlig eller giftig art för att skrämma bort fiender?",
+ correct:"mimikry", accepted:["mimicry","mimikri"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas samlevnad och samarbete mellan olika organismer som övergripande begrepp?",
+ correct:"symbios", accepted:["symbiosen","symbiosis"]},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas samarbetet mellan svamphyfer och trädets rötter?",
+ correct:"mykorrhiza", accepted:["mykorrhizan","mycorrhiza","mykoriza"]},
+
+
+// ═══ NYA FRÅGOR FRÅN MANUS — FOTOSYNTES OCH CELLANDNING ══════
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vad betyder ordet fotosyntes?",
+ opts:["Foto betyder ljus och syntes betyder sätta samman","Foto betyder vatten och syntes betyder dela upp","Foto betyder energi och syntes betyder lagra","Foto betyder grön och syntes betyder tillverka"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vad händer med det syre som bildas vid fotosyntesen men som växten inte behöver?",
+ opts:["Det släpps ut i luften som avfall","Det lagras i växtens rötter","Det används direkt av klorofyllet","Det omvandlas till koldioxid i bladen"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Varför behöver växtens rötter ta emot glukos från bladen?",
+ opts:["Rötterna befinner sig i mörker och kan inte utföra fotosyntes","Rötterna har klorofyll men behöver extra socker under vintern","Rötterna utför fotosyntes men producerar inte tillräckligt med energi","Rötterna lagrar glukos inför blomning och frösättning"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Till vad används cellulosa i en växt?",
+ opts:["Som byggmaterial i cellväggar — växtens skelett","Som energikälla i cellandningen","Som ämne som fångar in solljus","Som näring som skickas ner till rötterna"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"mc",
+ q:"Vad använder djur istället för cellulosa som byggmaterial i sina celler?",
+ opts:["Proteiner från födan","Cellulosa från de växter de äter","Glukos som omvandlas till cellulosa","Klorofyll från växtcellerna"],
+ correct:0},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Syre som bildas vid fotosyntesen är avfall för växten.", correct:true},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Cellulosa bildas av glukos och utgör byggmaterial i växtens cellväggar.", correct:true},
+
+{cat:"Fotosyntes och cellandning", mode:"tf",
+ q:"Växtens rötter kan utföra fotosyntes eftersom de tar upp vatten från marken.", correct:false,
+ exp:"Rötterna befinner sig i mörker och kan inte utföra fotosyntes. De är beroende av glukos från bladen."},
+
+{cat:"Fotosyntes och cellandning", mode:"fill",
+ q:"Vad kallas det ämne som bildas av glukos och används som byggmaterial i växtens cellväggar?",
+ correct:"cellulosa", accepted:["celulosa"]},
+
+// ═══ NYA FRÅGOR FRÅN MANUS — EKOSYSTEM ═══════════════════════
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad kallas icke-levande faktorer som temperatur, ljus och pH som påverkar ekosystemet?",
+ opts:["Abiotiska faktorer","Biotiska faktorer","Ekologiska faktorer","Demografiska faktorer"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad kallas levande faktorer som rovdjur och konkurrenter som påverkar ekosystemet?",
+ opts:["Biotiska faktorer","Abiotiska faktorer","Ekologiska faktorer","Demografiska faktorer"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vilka av dessa är abiotiska faktorer?",
+ opts:["Temperatur, ljus, pH-värde och vattentillgång","Rovdjur, bytesdjur och konkurrenter","Svampar, bakterier och växter","Populationsstorlek och bärkraft"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad kallas alla individer av samma art inom ett ekosystem?",
+ opts:["En population","Ett samhälle","En flock","En nisch"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad kallas alla populationer inom ett visst ekosystem tillsammans?",
+ opts:["Ett samhälle","En population","En flock","En nisch"],
+ correct:0},
+
+
+{cat:"Ekosystem", mode:"tf",
+ q:"Abiotiska faktorer är icke-levande faktorer som temperatur, ljus och pH-värde.", correct:true},
+
+{cat:"Ekosystem", mode:"tf",
+ q:"Biotiska faktorer är levande faktorer som rovdjur och konkurrenter.", correct:true},
+
+{cat:"Ekosystem", mode:"tf",
+ q:"En population är alla individer av olika arter inom ett ekosystem.", correct:false,
+ exp:"En population är alla individer av samma art inom ett ekosystem."},
+
+{cat:"Ekosystem", mode:"fill",
+ q:"Vad kallas icke-levande faktorer som temperatur och ljus som påverkar ekosystemet?",
+ correct:"abiotiska faktorer", accepted:["abiotiska","abiotisk faktor"]},
+// ═══ NYA FRÅGOR — EKOSYSTEM ══════════════════════════════════
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad kallas läran om hur levande organismer samspelar med varandra och sin omgivning?",
+ opts:["Ekologi","Ekosystem","Biologi","Geologi"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad är en individ?",
+ opts:["En enskild levande varelse, till exempel en fågel eller en växt","Alla individer av samma art inom ett område","Alla populationer av olika arter i ett ekosystem","Alla levande organismer på hela jorden"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad är ett samhälle i ekologisk mening?",
+ opts:["Alla populationer av olika arter i ett ekosystem","Alla individer av samma art inom ett område","En enskild levande varelse i ett ekosystem","Alla levande organismer på hela jordklotet"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vilket av dessa är ett exempel på en biotisk faktor?",
+ opts:["Att ett rovdjur äter växtätare och påverkar deras antal","Temperaturen i ett område","Markens pH-värde","Mängden ljus som når marken"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vilket av dessa är ett exempel på en abiotisk faktor?",
+ opts:["Markens pH-värde","Att ett rovdjur jagar bytesdjur","Att växter konkurrerar om utrymme","Att insekter pollinerar blommor"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vilket är det största möjliga ekosystemet?",
+ opts:["Hela jorden med alla levande organismer","En stor regnskog med hög artrikedom","Världshaven med allt marint liv","Den afrikanska savannen"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vad menas med att ekosystemets delar hänger ihop?",
+ opts:["En förändring i en del kan få konsekvenser för hela systemet","Alla organismer i ett ekosystem är av samma art","Ekosystemet förändras aldrig om inte människan ingriper","Varje art lever oberoende av de andra arterna"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Hur kan en förändring i temperatur påverka ett ekosystem?",
+ opts:["Det kan ändra vilka arter som överlever, vilket påverkar andra arter som är beroende av dem","Det påverkar bara de organismer som lever i vatten","Det har ingen effekt om förändringen är gradvis","Det påverkar bara abiotiska faktorer, inte biotiska"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"mc",
+ q:"Vilken nivå i ett ekosystem beskriver alla individer av samma art inom ett område?",
+ opts:["Population","Individ","Samhälle","Ekosystem"],
+ correct:0},
+
+{cat:"Ekosystem", mode:"tf",
+ q:"Ekologi är läran om hur levande organismer samspelar med varandra och sin omgivning.",
+ correct:true},
+
+
+{cat:"Ekosystem", mode:"tf",
+ q:"Ett samhälle i ekologisk mening består av alla populationer i ett ekosystem.",
+ correct:true},
+
+{cat:"Ekosystem", mode:"tf",
+ q:"Abiotiska och biotiska faktorer påverkar vilka organismer som kan leva i ett ekosystem.",
+ correct:true},
+
+{cat:"Ekosystem", mode:"tf",
+ q:"Ekosystem fungerar på helt olika sätt beroende på om de är stora eller små.",
+ correct:false,
+ exp:"Oavsett storlek fungerar ekosystem på liknande sätt — olika delar påverkar varandra."},
+
+{cat:"Ekosystem", mode:"fill",
+ q:"Vad kallas vetenskapen som studerar hur organismer samspelar med varandra och sin omgivning?",
+ correct:"ekologi",
+ accepted:["ekologin"]},
+
+{cat:"Ekosystem", mode:"fill",
+ q:"Vad kallas en enskild levande varelse i ett ekosystem?",
+ correct:"individ",
+ accepted:["individen","individer"]},
+
+{cat:"Ekosystem", mode:"fill",
+ q:"Vad kallas alla populationer av olika arter i ett ekosystem tillsammans?",
+ correct:"samhälle",
+ accepted:["ett samhälle","samhallet"]},
+
+{cat:"Ekosystem", mode:"fill",
+ q:"Vad kallas levande faktorer som påverkar ekosystemet?",
+ correct:"biotiska faktorer",
+ accepted:["biotiska","biotisk faktor"]},
+
+
+
+// ═══ NYA FRÅGOR FRÅN MANUS — EKOLOGISKA MODELLER ════════════
+
+
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vilken typ av organism är alltid förstahandskonsument i en näringskedja?",
+ opts:["En växtätare","Ett rovdjur","En nedbrytare","En toppkonsument"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Vad händer med de andra arterna i en näringsväv om en art helt försvinner?",
+ opts:["Det kan få kedjeeffekter — arter som åt den förlorar föda och arter som åts av den kan öka","Ingenting förändras eftersom ekosystemet alltid är stabilt","Bara toppkonsumenten påverkas","Enbart producenten påverkas"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"Varför kan en näringskedja sällan bli längre än tre eller fyra steg?",
+ opts:["Ungefär 90 procent av energin försvinner som värme i varje steg — snart räcker den inte till","Fler steg gör kedjan instabil och den kollapsar","Toppkonsumenten äter alltid upp alla arter under sig","Nedbrytarna bryter ned energin innan den hinner nå fler steg"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"mc",
+ q:"En isbjörnshane väger 500 kg. Ungefär hur mycket växtplankton behövdes för att bygga upp hans vikt?",
+ opts:["50 000 ton","5 000 ton","500 ton","50 ton"],
+ correct:0},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Förstahandskonsumenten i en näringskedja är alltid en växtätare.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"En organism som är andrahandskonsument i en kedja kan vara förstahandskonsument i en annan kedja.", correct:true},
+
+{cat:"Ekologiska modeller", mode:"tf",
+ q:"Om en art försvinner ur en näringsväv påverkas aldrig de andra arterna.", correct:false,
+ exp:"Om en art försvinner kan det få kedjeeffekter — arter som åt den svälter och arter som åts av den kan öka."},
+
+// ═══ NYA FRÅGOR FRÅN MANUS — POPULATIONENS STORLEK ══════════
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas antalet individer som föds in i en population under en period?",
+ opts:["Nativitet","Mortalitet","Immigration","Emigration"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas antalet individer som dör i en population under en period?",
+ opts:["Mortalitet","Nativitet","Immigration","Emigration"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas det när individer från ett annat område flyttar in till en population?",
+ opts:["Immigration","Emigration","Nativitet","Mortalitet"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas det när individer lämnar en population och flyttar till ett annat område?",
+ opts:["Emigration","Immigration","Mortalitet","Nativitet"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas djur som satsar på få ungar, lång omsorg och lång livslängd?",
+ opts:["Jämviktsarter","Opportunister","Generalister","Specialister"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad kallas djur som satsar på många ungar, kort omsorg och snabb könsmognad?",
+ opts:["Opportunister","Jämviktsarter","Specialister","Generalister"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vilket av dessa djur är ett exempel på en jämviktsart?",
+ opts:["Elefant","Råtta","Groda","Insekt"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vilket av dessa djur är ett exempel på en opportunist?",
+ opts:["Råtta","Elefant","Gorilla","Isbjörn"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Vad menas med att en population kraschar?",
+ opts:["Populationen minskar kraftigt i antal efter att ha vuxit långt över bärkraften","Populationen stabiliserar sig vid bärkraften i en S-kurva","Populationen dör ut helt och för alltid","Populationen splittras i flera separata grupper"],
+ correct:0},
+
+
+
+{cat:"Populationens storlek", mode:"mc",
+ q:"Varför bildar rödhakehannar revir på våren?",
+ opts:["För att skydda resurser och locka honor att föröka sig","För att skydda sig mot rovdjur under häckningssäsongen","För att markera var de övervintrar","För att visa sin rang för andra fågelarter"],
+ correct:0},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"Nativitet är antalet individer som föds i en population under en period.", correct:true},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"Mortalitet är antalet individer som flyttar ut ur en population.", correct:false,
+ exp:"Mortalitet är antalet individer som dör. Det som beskriver individer som flyttar ut är emigration."},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"Jämviktsarter som elefanten får stora barnkullar med korta mellanrum.", correct:false,
+ exp:"Jämviktsarter har små barnkullar med långa mellanrum och satsar på hög omsorg av varje unge."},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"Opportunister som råttan kan föröka sig snabbt och anpassa sig efter tillgängliga resurser.", correct:true},
+
+{cat:"Populationens storlek", mode:"tf",
+ q:"Lämmelpopulationer kan krascha och sedan växa upp igen i J-formade kurvor som avlöser varandra.", correct:true},
+
+
+
+{cat:"Populationens storlek", mode:"fill",
+ q:"Vad kallas det när individer lämnar sin population och flyttar till ett annat område?",
+ correct:"emigration", accepted:["emigrationen"]},
+
+// ═══ NYA FRÅGOR FRÅN MANUS — ATT LEVA TILLSAMMANS ═══════════
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Varför är ett fiskstim svårt för ett rovdjur att anfalla?",
+ opts:["Stimmet ser ut som en stor skrämmande varelse och individerna byter ständigt plats","Fiskarna är alltid giftiga och rovdjuret lär sig det","Stimmet rör sig alltid mot rovdjuret för att skrämma det","Rovdjuret föredrar alltid ensamma fiskar"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vilket djur leder en elefantflock?",
+ opts:["Den äldsta och största honan","Den starkaste hanen","Den yngsta honan","Den individ som fött flest ungar"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är en fördel med att jaga i flock för vargar och lejon?",
+ opts:["De kan fälla större bytesdjur än de skulle klara ensamma","De behöver inte dela bytet med varandra","De kan undvika att bli uppätna av andra rovdjur","De kan springa snabbare tillsammans"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är oxhackare och vattenbuffel ett exempel på?",
+ opts:["Mutualism — oxhackaren äter parasiter från buffeln och buffeln blir av med dem","Kommensalism — oxhackaren tjänar och buffeln påverkas inte","Parasitism — oxhackaren tar blod från buffeln","Predation — oxhackaren jagar buffeln"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är göken och rörsångaren ett exempel på?",
+ opts:["Parasitism — göken lägger sina ägg i rörsångarens bo och rörsångaren förlorar","Mutualism — båda arterna tjänar på samarbetet","Kommensalism — göken tjänar men rörsångaren påverkas inte","Predation — göken äter rörsångarens ungar"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är rovstekel och fjärilslarv ett exempel på?",
+ opts:["Parasitism — rovstekeln lägger ägg i larven som äts upp inifrån","Mutualism — båda tjänar på samspelet","Kommensalism — rovstekeln tjänar och larven påverkas inte","Predation — rovstekeln äter larven utifrån"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Vad är predation?",
+ opts:["Samspel där ett rovdjur dödar och äter ett bytesdjur","Samspel där en parasit lever på en värdorganism utan att döda den","Samspel där båda arterna gynnas","Samspel där en art gynnas och den andra inte påverkas"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Varför kan predation vara positivt för bytesdjurens population trots att individer dör?",
+ opts:["Rovdjuret dödar svaga individer, konkurrensen minskar och de starkaste överlever","Rovdjuret ökar den totala energin i ekosystemet","Bytesdjuren förökar sig snabbare när rovdjuret är nära","Rovdjuret sprider frön från bytesdjurens föda"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Hur skiljer sig parasitism från predation?",
+ opts:["Parasiten dödar sällan sin värdorganism direkt, rovdjuret dödar bytesdjuret","Parasitism gynnar båda parter medan predation skadar båda","Parasiten lever alltid utanför värden, rovdjuret lever inuti bytet","Predation är alltid positivt för ekosystemet, parasitism alltid negativt"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Varför kan giraff och dikdikantilop leva i samma ekosystem utan att konkurrera ut varandra?",
+ opts:["De äter blad på olika höjder av akaciabusken och har olika ekologiska nischer","De äter exakt samma föda men vid olika tider på dygnet","De bildar en social flock och delar resurserna lika","De reglerar varandras populationer"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"mc",
+ q:"Hur kan det vara positivt för björnbärsväxten att hasselmusen äter dess bär?",
+ opts:["Fröna passerar hasselmusens matspjälkning och sprids till nya platser","Hasselmusen pollinerar blomman när den äter bären","Hasselmusen gödslar rötterna med sina exkrementer","Hasselmusen skyddar busken mot andra växtätare"],
+ correct:0},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Predation innebär att ett rovdjur dödar och äter ett bytesdjur.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Parasitism och predation är samma sak.", correct:false,
+ exp:"Vid parasitism lever parasiten på värden utan att döda den direkt. Vid predation dödar rovdjuret bytesdjuret."},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Oxhackare och vattenbuffel är ett exempel på mutualism.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Göken, som lägger ägg i andra fåglars bon, är ett exempel på en parasit.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"Organismer med olika ekologiska nischer kan leva i samma ekosystem utan att konkurrera ut varandra.", correct:true},
+
+{cat:"Att leva tillsammans", mode:"tf",
+ q:"En elefantflock leds av den starkaste hanen.", correct:false,
+ exp:"En elefantflock leds av den äldsta och största honan."},
+
+{cat:"Att leva tillsammans", mode:"fill",
+ q:"Vad kallas samspelet där ett rovdjur dödar och äter ett bytesdjur?",
+ correct:"predation", accepted:["predationen"]},
+
+];
+
+// ══════════════════════════════════════════════════════════════
+// KONSTANTER & STATE
+// ══════════════════════════════════════════════════════════════
+const CAT_COLORS = {
+  "Fotosyntes och cellandning":"#1D9E75",
+  "Ekosystem":"#534AB7",
+  "Ekologiska modeller":"#EF9F27",
+  "Populationens storlek":"#E24B4A",
+  "Att leva tillsammans":"#0C447C"
+};
+const LVL_NAMES = ["Nybörjare","Lärling","Elev","Kunnig","Expert","Mästare"];
+const XP_PER_LVL = 50;
+const STORAGE_KEY = "bio7_samspel_v2";
+
+let selCat="all", selN=20;
+let queue=[], spacingBuf=[], recentKeys=[];
+let uniqueAnswered=0, completedCount=0, correct=0, xp=0, streak=0, bestStreak=0;
+let current=null, currentCorrect=null;
+let catStats={}, selfRatings={}, answeredKeys=new Set();
+let waitingForRate=false, currentIsFirst=true, lastPickedMode=null;
+let pendingIsOk=false, pendingCorrectDisplay='', pendingCorrectText='';
+let clickedBtn=null;
+let persist=loadData();
+
+function loadData(){
+  try{let d=localStorage.getItem(STORAGE_KEY);if(d)return JSON.parse(d);}catch(e){}
+  return{history:[],adaptive:{},totalXP:0};
+}
+function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(persist));}catch(e){}}
+
+// Full category + first 40 chars of question = unique, robust key
+function qKey(q){return q.cat+"|"+q.q.slice(0,40);}
+
+function pickCat(btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); selCat=btn.dataset.cat;
+}
+function pickLen(btn){
+  document.querySelectorAll('.len-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); selN=parseInt(btn.dataset.n);
+}
+function renderStartHistory(){
+  let el=document.getElementById('start-history');
+  if(!persist.history||persist.history.length===0){el.innerHTML='';return;}
+  let html='<h3>Tidigare sessioner</h3>';
+  persist.history.slice(-5).reverse().forEach(h=>{
+    let col=h.pct>=70?'var(--xpd)':h.pct>=50?'#7a4800':'var(--wrong)';
+    html+=`<div class="hist-row"><span class="hist-date">${h.date} · ${h.cat==='all'?'Alla områden':h.cat}</span><span class="hist-score" style="color:${col}">${h.correct}/${h.total} (${h.pct}%)</span></div>`;
+  });
+  html+=`<div style="text-align:right;margin-top:6px"><button class="hist-clear" onclick="clearHistory()">Rensa historik</button></div>`;
+  el.innerHTML=html;
+}
+function clearHistory(){persist.history=[];persist.adaptive={};persist.totalXP=0;saveData();renderStartHistory();}
+
+function startGame(){
+  let pool=selCat==="all"?[...BANK]:BANK.filter(q=>q.cat===selCat);
+  let weighted=[];
+  pool.forEach(q=>{
+    let k=qKey(q),a=persist.adaptive[k];
+    if(a){if(a.hard>(a.easy||0)){weighted.push(q);weighted.push(q);}else if(a.unsure>(a.easy||0))weighted.push(q);}
+    weighted.push(q);
+  });
+  weighted=shuffle(weighted);
+  let seen=new Set(),deduped=[];
+  weighted.forEach(q=>{let k=qKey(q);if(!seen.has(k)){seen.add(k);deduped.push(q);}});
+  if(selCat==="all")deduped=interleave(deduped);
+  // Clamp to available questions — fixes "1 question" bug when pool < selN
+  let effectiveN=Math.min(selN,deduped.length);
+  queue=deduped.slice(0,effectiveN).map(item=>({item}));
+  selN=effectiveN;
+  catStats={};selfRatings={};uniqueAnswered=0;completedCount=0;correct=0;xp=0;streak=0;bestStreak=0;lastPickedMode=null;
+  answeredKeys=new Set();waitingForRate=false;currentIsFirst=true;lastPickedMode=null;spacingBuf=[];recentKeys=[];
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('summary').style.display='none';
+  document.getElementById('game-area').style.display='block';
+  updateHUD();showNext();
+}
+
+function interleave(arr){
+  let cats={};
+  arr.forEach(q=>{if(!cats[q.cat])cats[q.cat]=[];cats[q.cat].push(q);});
+  let keys=Object.keys(cats),out=[],i=0;
+  while(keys.some(k=>cats[k].length>0)){let k=keys[i%keys.length];if(cats[k].length>0)out.push(cats[k].shift());i++;}
+  return out;
+}
+
+function showNext(){
+  if(waitingForRate)return;
+  if(completedCount>=selN){showSummary();return;}
+  spacingBuf.forEach(e=>e.delay--);
+  let ready=spacingBuf.filter(e=>e.delay<=0);
+  spacingBuf=spacingBuf.filter(e=>e.delay>0);
+
+  // Pick from ready or queue, preferring a different question mode than the previous one.
+  // Spaced-repetition revisits bypass mode-variety (they have priority).
+  function drawEntry(){
+    if(ready.length>0&&(queue.length===0||Math.random()<0.5)){
+      ready.sort((a,b)=>a.delay-b.delay);
+      let e=ready.shift(); ready.forEach(x=>{x.delay=1;spacingBuf.push(x);}); return e;
+    }
+    if(queue.length>0) return queue.shift();
+    if(ready.length>0){
+      ready.sort((a,b)=>a.delay-b.delay);
+      let e=ready.shift(); ready.forEach(x=>{x.delay=1;spacingBuf.push(x);}); return e;
+    }
+    if(spacingBuf.length>0){spacingBuf.forEach(e=>e.delay=0); return spacingBuf.shift();}
+    return null;
+  }
+
+  // Mode-variety: if enough queue items remain, try to avoid repeating the same mode
+  if(lastPickedMode && queue.length>=3 && ready.length===0){
+    let altIdx=queue.findIndex(e=>e.item.mode!==lastPickedMode);
+    if(altIdx>0 && altIdx<=5){
+      let alt=queue.splice(altIdx,1)[0]; queue.unshift(alt);
+    }
+  }
+
+  let entry=drawEntry();
+  if(!entry){showSummary();return;}
+
+  lastPickedMode=entry.item.mode;
+  current=entry.item;
+  let k=qKey(current);
+  recentKeys.push(k);if(recentKeys.length>8)recentKeys.shift();
+  currentIsFirst=!answeredKeys.has(k);
+  if(currentIsFirst){answeredKeys.add(k);uniqueAnswered++;catStats[current.cat]=catStats[current.cat]||{q:0,c:0};catStats[current.cat].q++;}
+  renderQ();
+}
+
+function renderQ(){
+  let card=document.getElementById('card');card.className='';
+  document.getElementById('feedback').textContent='';document.getElementById('feedback').className='';
+  document.getElementById('next-btn').style.display='none';
+  document.getElementById('self-rate').style.display='none';
+  document.getElementById('options-grid').innerHTML='';
+  document.getElementById('fill-row').style.display='none';
+  document.getElementById('tf-row').style.display='none';
+  document.getElementById('sub-text').style.display='none';
+  let tT=document.getElementById('tf-true'),tF=document.getElementById('tf-false');
+  tT.disabled=false;tT.className='tf-btn';tF.disabled=false;tF.className='tf-btn';
+  clickedBtn=null;pendingIsOk=false;pendingCorrectDisplay='';pendingCorrectText='';
+  let q=current,badge=document.getElementById('mode-badge'),qt=document.getElementById('question-text');
+  if(q.mode==='mc'){
+    badge.textContent='Flerval';badge.className='badge-mc';qt.textContent=q.q;
+    let ct=q.opts[q.correct],opts=shuffle([...q.opts]),grid=document.getElementById('options-grid');
+    opts.forEach(o=>{let b=document.createElement('button');b.className='opt-btn';b.textContent=o;b.onclick=()=>answerMC(o===ct,b,ct);grid.appendChild(b);});
+    currentCorrect=ct;
+  }else if(q.mode==='tf'){
+    badge.textContent='Sant eller falskt';badge.className='badge-tf';qt.textContent=q.q;
+    document.getElementById('tf-row').style.display='flex';currentCorrect=q.correct;
+  }else{
+    badge.textContent='Skriv svaret';badge.className='badge-fill';qt.textContent=q.q;
+    document.getElementById('fill-row').style.display='flex';
+    let inp=document.getElementById('fill-input');inp.value='';inp.disabled=false;
+    setTimeout(()=>inp.focus(),50);currentCorrect=q.correct;
+  }
+  updateHUD();
+}
+
+function answerMC(isOk,btn,ct){
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected-answer'));
+  btn.classList.add('selected-answer');clickedBtn=btn;pendingIsOk=isOk;pendingCorrectDisplay=ct;pendingCorrectText=ct;
+  document.getElementById('self-rate').style.display='block';
+}
+function answerTF(answer){
+  let tT=document.getElementById('tf-true'),tF=document.getElementById('tf-false');
+  tT.classList.remove('selected-answer');tF.classList.remove('selected-answer');
+  if(answer===true)tT.classList.add('selected-answer');else tF.classList.add('selected-answer');
+  pendingIsOk=answer===currentCorrect;pendingCorrectDisplay=current.exp||(currentCorrect?'Sant.':'Falskt.');pendingCorrectText='';
+  document.getElementById('self-rate').style.display='block';
+}
+function submitFill(){
+  if(waitingForRate)return;
+  let inp=document.getElementById('fill-input'),val=inp.value.trim();if(!val)return;
+  pendingIsOk=checkFill(val,current);pendingCorrectDisplay=current.correct;pendingCorrectText='';
+  document.getElementById('self-rate').style.display='block';
+}
+function checkFill(input,q){
+  let n=normFill(input),targets=[normFill(q.correct)];
+  if(q.accepted)q.accepted.forEach(a=>targets.push(normFill(a)));
+  targets.forEach(t=>stemVariants(t).forEach(v=>{if(!targets.includes(v))targets.push(v);}));
+  if(targets.includes(n))return true;
+  if(stemVariants(n).some(v=>targets.includes(v)))return true;
+  return targets.some(t=>editDist(n,t)<=1);
+}
+function normFill(s){return String(s).toLowerCase().trim().replace(/å/g,'a').replace(/ä/g,'a').replace(/ö/g,'o').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ');}
+function stemVariants(w){
+  let v=[w];
+  ['erna','arna','arnas','en','et','er','ar','or','an','as','ns','ts','s','t','n','a'].forEach(s=>{if(w.endsWith(s)&&w.length-s.length>=3)v.push(w.slice(0,w.length-s.length));});
+  if(w.length>=3)['er','ar','en','et','an','or','erna','arna'].forEach(s=>v.push(w+s));
+  return[...new Set(v)];
+}
+function editDist(a,b){
+  let m=a.length,n=b.length,d=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=a[i-1]===b[j-1]?d[i-1][j-1]:1+Math.min(d[i-1][j],d[i][j-1],d[i-1][j-1]);
+  return d[m][n];
+}
+
+function handle(isOk,correctDisplay){
+  let cat=current.cat,fb=document.getElementById('feedback'),card=document.getElementById('card');
+  if(currentIsFirst)completedCount++;
+  if(isOk){
+    if(currentIsFirst){correct++;if(catStats[cat])catStats[cat].c++;}
+    streak++;if(streak>bestStreak)bestStreak=streak;
+    let gain=10+Math.min(streak-1,5)*2;xp+=gain;persist.totalXP=(persist.totalXP||0)+gain;saveData();
+    card.classList.add('correct-flash');
+    if(pendingCorrectText){document.querySelectorAll('.opt-btn').forEach(b=>{if(b.textContent===pendingCorrectText)b.classList.add('correct');});}
+    else if(current.mode==='tf'){let tT=document.getElementById('tf-true'),tF=document.getElementById('tf-false');if(currentCorrect===true)tT.classList.add('correct');else tF.classList.add('correct');}
+    fb.className='ok';fb.textContent=streak>=3?`Rätt! ${streak} i rad! +${gain} XP`:`Rätt! +${gain} XP`;
+    popXP(gain);if(streak>=3&&streak%3===0)popStreak(`🔥 ${streak} i rad!`);
+    updateHUD();setTimeout(()=>{waitingForRate=false;showNext();},1400);
+  }else{
+    streak=0;card.classList.add('wrong-flash');
+    if(pendingCorrectText){document.querySelectorAll('.opt-btn').forEach(b=>{if(b.textContent===pendingCorrectText)b.classList.add('correct');});if(clickedBtn&&!clickedBtn.classList.contains('correct'))clickedBtn.classList.add('wrong');}
+    else if(current.mode==='tf'){let tT=document.getElementById('tf-true'),tF=document.getElementById('tf-false');if(currentCorrect===true)tT.classList.add('correct');else tF.classList.add('correct');}
+    fb.className='err';let disp=String(correctDisplay);if(disp.length>90)disp=disp.slice(0,90)+'…';fb.textContent=`Rätt svar: ${disp}`;
+    if(currentIsFirst)spacingBuf.push({item:current,delay:4});
+    document.getElementById('next-btn').style.display='block';updateHUD();
+  }
+}
+function nextQ(){waitingForRate=false;showNext();}
+function selfRate(rating){
+  waitingForRate=true;
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  let tT=document.getElementById('tf-true'),tF=document.getElementById('tf-false');tT.disabled=true;tF.disabled=true;
+  let inp=document.getElementById('fill-input');inp.disabled=true;
+  let k=qKey(current);if(!persist.adaptive[k])persist.adaptive[k]={};
+  persist.adaptive[k][rating]=(persist.adaptive[k][rating]||0)+1;saveData();selfRatings[k]=rating;
+  document.getElementById('self-rate').style.display='none';
+  if(pendingIsOk&&currentIsFirst){if(rating==='hard')spacingBuf.push({item:current,delay:3});else if(rating==='unsure')spacingBuf.push({item:current,delay:5});}
+  handle(pendingIsOk,pendingCorrectDisplay);
+}
+
+function updateHUD(){
+  document.getElementById('streak-val').textContent=streak;
+  document.getElementById('correct-val').textContent=correct;
+  let done=Math.min(completedCount,selN),pct=selN>0?Math.round((done/selN)*100):0;
+  document.getElementById('q-bar').style.width=pct+'%';
+  document.getElementById('q-counter').textContent=`${done} / ${selN}`;
+  let totalXP=persist.totalXP||0,lv=Math.floor(totalXP/XP_PER_LVL)+1;
+  document.getElementById('level-badge').textContent=(LVL_NAMES[Math.min(lv-1,LVL_NAMES.length-1)])+' — Nivå '+lv;
+  let xpInLv=totalXP%XP_PER_LVL;
+  document.getElementById('xp-bar').style.width=(xpInLv/XP_PER_LVL*100)+'%';
+  document.getElementById('xp-label').textContent=totalXP+' / '+(Math.floor(totalXP/XP_PER_LVL)+1)*XP_PER_LVL+' XP';
+}
+function popXP(n){let el=document.createElement('div');el.className='xp-pop';el.style.top='60px';el.textContent='+'+n+' XP';document.getElementById('game').appendChild(el);setTimeout(()=>el.remove(),1200);}
+function popStreak(txt){let el=document.createElement('div');el.className='streak-pop';el.style.top='50px';el.textContent=txt;document.getElementById('game').appendChild(el);setTimeout(()=>el.remove(),1500);}
+
+function showSummary(){
+  document.getElementById('game-area').style.display='none';
+  document.getElementById('summary').style.display='block';
+  let total=Math.max(completedCount,1),pct=Math.round((correct/total)*100);
+  let medal='',title='';
+  if(pct>=90){medal='\uD83E\uDD47';title='Suveränt!';}else if(pct>=70){medal='\uD83E\uDD48';title='Bra jobbat!';}else if(pct>=50){medal='\uD83E\uDD49';title='Nästan där!';}else{medal='';title='Fortsätt träna!';}
+  document.getElementById('sum-medal').textContent=medal;
+  document.getElementById('sum-title').textContent=title;
+  document.getElementById('sum-desc').textContent=`Du svarade på ${total} frågor och fick ${correct} rätt.`;
+  document.getElementById('s-xp').textContent=persist.totalXP||xp;
+  document.getElementById('s-correct').textContent=correct;
+  document.getElementById('s-streak').textContent=bestStreak;
+  document.getElementById('s-pct').textContent=pct+'%';
+  document.getElementById('sum-bar-pct').textContent=pct+'%';
+  let bar=document.getElementById('sum-bar');bar.style.background=pct>=70?'var(--xp)':pct>=50?'var(--streak)':'var(--wrong)';
+  setTimeout(()=>bar.style.width=pct+'%',100);
+  let catHtml='<h3>Resultat per område</h3>',weakCats=[];
+  Object.keys(catStats).sort().forEach(cat=>{let s=catStats[cat],p=s.q>0?Math.round(s.c/s.q*100):0,col=CAT_COLORS[cat]||'var(--xp)';if(p<70)weakCats.push({cat,p});catHtml+=`<div class="cat-stat-row"><span class="csn">${cat}</span><div class="csbar"><div class="csbar-fill" style="width:${p}%;background:${col}"></div></div><span class="cspct">${s.c}/${s.q}</span></div>`;});
+  document.getElementById('sum-cat').innerHTML=catHtml;
+  let hardQs=[],unsureQs=[];
+  BANK.forEach(q=>{let k=qKey(q),r=selfRatings[k];if(r==='hard')hardQs.push(q.q);else if(r==='unsure')unsureQs.push(q.q);});
+  let wrongFromBuf=spacingBuf.map(e=>e.item.q);
+  let persistentlyHard=[];BANK.forEach(q=>{let k=qKey(q),a=persist.adaptive[k]||{},th=(a.hard||0)+(a.unsure||0);if(!selfRatings[k]&&th>(a.easy||0)&&th>=2)persistentlyHard.push(q.q);});
+  let recHtml='<h3>Vad du bör träna mer på</h3>',hasAny=false;
+  if(wrongFromBuf.length>0){hasAny=true;recHtml+=`<div class="rec-block rec-wrong"><div class="rec-label">Fel svar — träna igen</div>`;wrongFromBuf.slice(0,6).forEach(q=>{recHtml+=`<div class="rec-item">${q}</div>`;});recHtml+='</div>';}
+  if(hardQs.length>0){hasAny=true;recHtml+=`<div class="rec-block rec-hard"><div class="rec-label">Osäker på — öva extra</div>`;hardQs.slice(0,6).forEach(q=>{recHtml+=`<div class="rec-item">${q}</div>`;});recHtml+='</div>';}
+  if(unsureQs.length>0){hasAny=true;recHtml+=`<div class="rec-block rec-unsure"><div class="rec-label">Ganska säker — repetera snart</div>`;unsureQs.slice(0,6).forEach(q=>{recHtml+=`<div class="rec-item">${q}</div>`;});recHtml+='</div>';}
+  if(weakCats.length>0){hasAny=true;recHtml+=`<div class="rec-block rec-cat"><div class="rec-label">Områden med lägre resultat — klicka för att träna</div>`;weakCats.sort((a,b)=>a.p-b.p).forEach(({cat,p})=>{let col=CAT_COLORS[cat]||'var(--xp)';recHtml+=`<button class="rec-item rec-clickable" onclick="startFocusCat('${cat.replace(/'/g,"\\'")}')"><span style="color:${col};font-weight:500">${cat}</span><span class="rec-item-score">${p}% rätt — träna nu →</span></button>`;});recHtml+='</div>';}
+  if(persistentlyHard.length>0){hasAny=true;recHtml+=`<div class="rec-block rec-history"><div class="rec-label">Återkommande svårigheter (historik)</div>`;persistentlyHard.slice(0,4).forEach(q=>{recHtml+=`<div class="rec-item">${q}</div>`;});recHtml+=`<button class="rec-run-btn" onclick="startFocusAdaptive()">Öva igen på det som var svårt →</button></div>`;}
+  if(wrongFromBuf.length>0||hardQs.length>0||unsureQs.length>0){recHtml=recHtml.replace('<h3>Vad du bör träna mer på</h3>','<h3>Vad du bör träna mer på</h3><button class="rec-run-btn rec-run-top" onclick="startFocusAdaptive()">Öva igen på det som var svårt →</button>');}
+  if(!hasAny){recHtml+='<p style="font-size:14px;color:var(--text2);margin-top:4px">Inga specifika områden att prioritera — bra jobbat!</p>';}
+  document.getElementById('sum-adaptive').innerHTML=recHtml;
+  let now=new Date(),dateStr=now.toLocaleDateString('sv-SE',{day:'numeric',month:'short'})+' '+now.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+  persist.history.push({date:dateStr,cat:selCat,n:selN,correct,total,pct});
+  if(persist.history.length>20)persist.history=persist.history.slice(-20);saveData();
+  let histHtml='';
+  if(persist.history.length>1){histHtml='<h3>Sessionshistorik</h3>';persist.history.slice(-5).reverse().forEach(h=>{let col=h.pct>=70?'var(--xpd)':h.pct>=50?'#7a4800':'var(--wrong)';histHtml+=`<div class="hist-row"><span class="hist-date">${h.date} · ${h.cat==='all'?'Alla':h.cat.split(' ')[0]}</span><span class="hist-score" style="color:${col}">${h.correct}/${h.total} (${h.pct}%)</span></div>`;});histHtml+=`<div style="text-align:right;margin-top:6px"><button class="hist-clear" onclick="clearHistory()">Rensa historik</button></div>`;}
+  document.getElementById('sum-history').innerHTML=histHtml;
+}
+
+function goBack(){document.getElementById('summary').style.display='none';document.getElementById('game-area').style.display='none';document.getElementById('start-screen').style.display='block';renderStartHistory();}
+function startFocusCat(cat){selCat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));startGame();}
+function startFocusAdaptive(){
+  let weakKeys=new Set();spacingBuf.forEach(e=>weakKeys.add(qKey(e.item)));Object.keys(selfRatings).forEach(k=>{if(selfRatings[k]==='hard'||selfRatings[k]==='unsure')weakKeys.add(k);});
+  let focusPool=BANK.filter(q=>weakKeys.has(qKey(q)));
+  if(focusPool.length===0){focusPool=BANK.filter(q=>{let a=persist.adaptive[qKey(q)]||{};return(a.hard||0)+(a.unsure||0)>(a.easy||0);});}
+  if(focusPool.length===0){startGame();return;}
+  queue=shuffle(focusPool).map(item=>({item}));spacingBuf=[];recentKeys=[];
+  uniqueAnswered=0;completedCount=0;correct=0;xp=0;streak=0;bestStreak=0;answeredKeys=new Set();selfRatings={};waitingForRate=false;currentIsFirst=true;lastPickedMode=null;selN=focusPool.length;
+  document.getElementById('summary').style.display='none';document.getElementById('start-screen').style.display='none';document.getElementById('game-area').style.display='block';
+  updateHUD();showNext();
+}
+
+function shuffle(a){let r=[...a];for(let i=r.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    let next=document.getElementById('next-btn'),fill=document.getElementById('fill-input');
+    if(next.style.display==='block'){nextQ();return;}
+    if(!waitingForRate&&document.getElementById('fill-row').style.display!=='none'&&!fill.disabled)submitFill();
+  }
+});
+renderStartHistory();
+</script>
+</body>
+</html>
