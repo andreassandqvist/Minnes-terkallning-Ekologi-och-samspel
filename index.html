@@ -246,7 +246,7 @@ h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;l
     <div id="options-grid"></div>
 
     <div id="confidence-prompt">
-      <p>Hur väl stämde ditt svar?</p>
+      <p>Hur säker är du på ditt svar?</p>
       <div id="confidence-row">
         <button class="conf-btn c-hard" onclick="revealWithConfidence('hard')">Osäker</button>
         <button class="conf-btn c-unsure" onclick="revealWithConfidence('unsure')">Ganska säker</button>
@@ -1136,7 +1136,7 @@ const STORAGE_KEY="bio7_samspel_v8";
 
 let selCat="all",selN=20;
 let queue=[],spacingBuf=[];
-let completedCount=0,correct=0,streak=0,bestStreak=0;
+let completedCount=0,correct=0,streak=0,bestStreak=0,lastBonusAt=-5;
 let current=null;
 let catStats={},selfRatings={},answeredKeys=new Set();
 let waitingForConfidence=false,waitingForBonus=false,waitingForRecall=false;
@@ -1218,7 +1218,7 @@ function startGame(){
   let effectiveN=Math.min(selN,built.length);
   queue=built.slice(0,effectiveN).map(item=>({item,isRetry:false}));
   selN=effectiveN;
-  catStats={};selfRatings={};completedCount=0;correct=0;streak=0;bestStreak=0;
+  catStats={};selfRatings={};completedCount=0;correct=0;streak=0;bestStreak=0;lastBonusAt=-5;
   answeredKeys=new Set();waitingForConfidence=false;waitingForBonus=false;waitingForRecall=false;
   currentIsFirst=true;lastCat=null;lastConcept=null;spacingBuf=[];pendingAnswer=null;
   if(autoAdvanceTimer){clearTimeout(autoAdvanceTimer);autoAdvanceTimer=null;}
@@ -1299,7 +1299,15 @@ function renderQ(){
   document.getElementById('result-card').style.display='none';
   document.getElementById('result-card').className='';
   hideInputs();
+  // Also reset bonus and next button explicitly
+  document.getElementById('bonus-area').style.display='none';
+  document.getElementById('next-btn').style.display='none';
   document.getElementById('bonus-fb').style.display='none';
+  document.getElementById('bonus-fb').textContent='';
+  let bi=document.getElementById('bonus-input');
+  if(bi){bi.value='';bi.disabled=false;}
+  let bsb=document.getElementById('bonus-submit-btn');
+  if(bsb){bsb.disabled=false;bsb.textContent='Få återkoppling';}
   document.getElementById('options-grid').innerHTML='';
   clickedBtn=null;waitingForConfidence=false;waitingForBonus=false;waitingForRecall=false;
 
@@ -1351,11 +1359,12 @@ function revealOptions(){
 
 function selectMC(isOk,btn,correctText){
   if(waitingForRecall)return;
-  // Mark selected visually
-  document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;b.classList.remove('selected');});
+  // Highlight selection but keep buttons enabled so user can change answer
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   clickedBtn=btn;
   pendingAnswer={isOk,correctText};
+  // Show confidence prompt — user can still click a different option to change mind
   waitingForConfidence=true;
   document.getElementById('confidence-prompt').style.display='block';
 }
@@ -1385,26 +1394,14 @@ function revealWithConfidence(rating){
 }
 
 function handle(isOk,correctText,rating){
-  // Mark correct/wrong on the option buttons so feedback is clear
+  // Mark correct/wrong on option buttons briefly, then transition
   document.querySelectorAll('.opt-btn').forEach(b=>{
     b.classList.remove('selected');
-    if(b.textContent===correctText){b.classList.add('correct');}
-    else if(b===clickedBtn&&!isOk){b.classList.add('wrong');}
+    if(b.textContent===correctText) b.classList.add('correct');
+    else if(b===clickedBtn&&!isOk) b.classList.add('wrong');
   });
 
-  // Brief pause so student sees the option feedback, then switch to result card
-  setTimeout(()=>{
-    document.getElementById('card').style.display='none';
-    hideInputs();
-  },400);
-
-  if(currentIsFirst)completedCount++;
-
-  let rc=document.getElementById('result-card');
-  setTimeout(()=>{
-    rc.style.display='block';
-    rc.className=isOk?'result-ok visible':'result-err visible';
-  },420);
+  if(currentIsFirst) completedCount++;
 
   let verdict=document.getElementById('result-verdict');
   let correctWrap=document.getElementById('result-correct-wrap');
@@ -1419,7 +1416,7 @@ function handle(isOk,correctText,rating){
     verdict.textContent=streak>=3?`Rätt! ${streak} i rad! +${gain} XP`:`Rätt! +${gain} XP`;
     correctWrap.style.display='none';
     popXP(gain);
-    if(streak>=3&&streak%3===0)popStreak(`🔥 ${streak} i rad!`);
+    if(streak>=3&&streak%3===0) popStreak(`🔥 ${streak} i rad!`);
   }else{
     streak=0;
     verdict.textContent='Inte rätt den här gången';
@@ -1430,15 +1427,34 @@ function handle(isOk,correctText,rating){
   expEl.textContent=current.exp||'';
   updateHUD();
 
-  // Always show bonus for first encounter, regardless of right/wrong
-  if(current.bonus&&currentIsFirst){
-    showBonus();
-  }else{
-    document.getElementById('next-btn').style.display='block';
-    if(isOk&&rating==='easy'&&!current.bonus){
-      autoAdvanceTimer=setTimeout(()=>{autoAdvanceTimer=null;showNext();},3500);
+  // After brief pause showing option colours, swap to result card
+  setTimeout(()=>{
+    document.getElementById('card').style.display='none';
+    // Hide inputs but NOT bonus-area (showBonus may have opened it)
+    document.getElementById('recall-area').style.display='none';
+    document.getElementById('options-reveal-label').style.display='none';
+    document.getElementById('options-grid').style.display='none';
+    document.getElementById('confidence-prompt').style.display='none';
+
+    let rc=document.getElementById('result-card');
+    rc.style.display='block';
+    rc.className=isOk?'result-ok visible':'result-err visible';
+
+    // Show bonus ~40% of the time when available, spaced at least 2 questions apart
+    const shouldShowBonus = current.bonus && currentIsFirst &&
+      (completedCount - lastBonusAt >= 2) &&
+      Math.random() < 0.42;
+
+    if(shouldShowBonus){
+      lastBonusAt = completedCount;
+      showBonus();
+    }else{
+      document.getElementById('next-btn').style.display='block';
+      if(isOk&&rating==='easy'){
+        autoAdvanceTimer=setTimeout(()=>{autoAdvanceTimer=null;showNext();},3500);
+      }
     }
-  }
+  },350);
 }
 
 function showBonus(){
@@ -1464,10 +1480,9 @@ async function showBonusAnswer(){
   if(!studentAnswer){
     fbEl.className='fb-done';
     fbEl.style.display='block';
-    fbEl.innerHTML='<strong>Modellsvar:</strong> '+current.bonus.a;
-    waitingForBonus=false;
-    document.getElementById('next-btn').style.display='block';
-    if(bsb)bsb.textContent='Visat ✓';
+    fbEl.textContent='Skriv ett svar för att få återkoppling, eller hoppa över.';
+    inp.disabled=false;
+    if(bsb){bsb.disabled=false;bsb.textContent='Få återkoppling';}
     return;
   }
 
@@ -1478,35 +1493,33 @@ async function showBonusAnswer(){
   try{
     let resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'anthropic-version':'2023-06-01'
+      },
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:280,
         system:`Du är en erfaren biologilärare för åk 7-9 som ger formativ återkoppling på fördjupnings- och resonemangsfrågor inom ekologi.
 
 Din återkoppling ska följa detta mönster:
-1. Peka ut konkret vad eleven förstått rätt i sitt resonemang (var specifik — citera gärna från svaret).
-2. Identifiera det viktigaste som saknas eller kan fördjupas (ett tydligt utvecklingsområde).
+1. Peka ut konkret vad eleven förstått rätt i sitt resonemang (var specifik).
+2. Identifiera det viktigaste som saknas eller kan fördjupas.
 3. Ge en kort modellförklaring (2–3 meningar) som visar hur ett fullständigt resonemang ser ut.
 
-Använd biologisk terminologi men förklara termer som eleven kanske inte kan. Max 4 meningar totalt. Var varm och precis — undvik vaga fraser som "bra försök" utan kontext.`,
-        messages:[{role:'user',content:`Ämne: Ekologi åk 7-9
-Fråga: ${current.bonus.q}
-Modellsvar (facit): ${current.bonus.a}
-Elevens svar: "${studentAnswer}"
-
-Ge formativ återkoppling på elevens resonemang.`}]
+Max 4 meningar totalt. Var varm och precis — undvik vaga fraser utan kontext.`,
+        messages:[{role:'user',content:`Ämne: Ekologi åk 7-9\nFråga: ${current.bonus.q}\nElevens svar: "${studentAnswer}"\n\nGe formativ återkoppling på elevens resonemang.`}]
       })
     });
     let data=await resp.json();
     let text=data.content&&data.content[0]&&data.content[0].text;
     fbEl.className='fb-done';
-    fbEl.innerHTML=(text||'<strong>Modellsvar:</strong> '+current.bonus.a);
+    fbEl.textContent=text||'Tack för ditt svar!';
   }catch(e){
     fbEl.className='fb-done';
-    fbEl.innerHTML='<strong>Modellsvar:</strong> '+current.bonus.a;
+    fbEl.textContent='Kunde inte hämta återkoppling just nu. Gå vidare!';
   }
-  if(bsb)bsb.textContent='Visat ✓';
+  if(bsb) bsb.textContent='Visat ✓';
   waitingForBonus=false;
   document.getElementById('next-btn').style.display='block';
 }
@@ -1666,7 +1679,7 @@ function startFocusWeak(){
   if(allWeak.length===0){startGame();return;}
   queue=shuffle(allWeak).map(item=>({item,isRetry:true}));
   spacingBuf=[];
-  completedCount=0;correct=0;streak=0;bestStreak=0;
+  completedCount=0;correct=0;streak=0;bestStreak=0;lastBonusAt=-5;
   answeredKeys=new Set();selfRatings={};catStats={};
   waitingForConfidence=false;waitingForBonus=false;waitingForRecall=false;
   currentIsFirst=true;lastCat=null;lastConcept=null;selN=allWeak.length;
