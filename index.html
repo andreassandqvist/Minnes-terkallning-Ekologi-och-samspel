@@ -1493,31 +1493,27 @@ async function showBonusAnswer(){
   try{
     let resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'anthropic-version':'2023-06-01'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
-        max_tokens:280,
-        system:`Du är en erfaren biologilärare för åk 7-9 som ger formativ återkoppling på fördjupnings- och resonemangsfrågor inom ekologi.
-
-Din återkoppling ska följa detta mönster:
-1. Peka ut konkret vad eleven förstått rätt i sitt resonemang (var specifik).
-2. Identifiera det viktigaste som saknas eller kan fördjupas.
-3. Ge en kort modellförklaring (2–3 meningar) som visar hur ett fullständigt resonemang ser ut.
-
-Max 4 meningar totalt. Var varm och precis — undvik vaga fraser utan kontext.`,
-        messages:[{role:'user',content:`Ämne: Ekologi åk 7-9\nFråga: ${current.bonus.q}\nElevens svar: "${studentAnswer}"\n\nGe formativ återkoppling på elevens resonemang.`}]
+        max_tokens:400,
+        system:'Du är en erfaren biologilärare för åk 7-9. Ge alltid svar på svenska. Ge formativ återkoppling i tre delar: (1) Lyft specifikt vad eleven förstått rätt — citera gärna elevens egna ord. (2) Peka ut det viktigaste som saknas eller kan utvecklas. (3) Ge en kort modellförklaring på 2–3 meningar. Max 5 meningar totalt. Var varm och konkret.',
+        messages:[{role:'user',content:'Fråga: '+current.bonus.q+'\n\nElevens svar: "'+studentAnswer+'"\n\nGe formativ återkoppling.'}]
       })
     });
     let data=await resp.json();
-    let text=data.content&&data.content[0]&&data.content[0].text;
-    fbEl.className='fb-done';
-    fbEl.textContent=text||'Tack för ditt svar!';
+    let text=data&&data.content&&data.content[0]&&data.content[0].text;
+    if(text){
+      fbEl.className='fb-done';
+      fbEl.textContent=text;
+    }else{
+      let errMsg=(data&&data.error&&data.error.message)||'Okänt fel';
+      fbEl.className='fb-done';
+      fbEl.textContent='Fel vid hämtning: '+errMsg;
+    }
   }catch(e){
     fbEl.className='fb-done';
-    fbEl.textContent='Kunde inte hämta återkoppling just nu. Gå vidare!';
+    fbEl.textContent='Nätverksfel — försök igen.';
   }
   if(bsb) bsb.textContent='Visat ✓';
   waitingForBonus=false;
