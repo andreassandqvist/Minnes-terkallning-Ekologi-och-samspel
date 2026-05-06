@@ -1472,52 +1472,53 @@ function showBonus(){
 async function showBonusAnswer(){
   let inp=document.getElementById('bonus-input');
   let studentAnswer=inp.value.trim();
-  inp.disabled=true;
   let fbEl=document.getElementById('bonus-fb');
   let bsb=document.getElementById('bonus-submit-btn');
-  if(bsb){bsb.disabled=true;bsb.textContent='…';}
 
   if(!studentAnswer){
     fbEl.className='fb-done';
     fbEl.style.display='block';
     fbEl.textContent='Skriv ett svar för att få återkoppling, eller hoppa över.';
-    inp.disabled=false;
-    if(bsb){bsb.disabled=false;bsb.textContent='Få återkoppling';}
     return;
   }
 
+  inp.disabled=true;
+  if(bsb){bsb.disabled=true;bsb.textContent='…';}
   fbEl.className='fb-loading';
   fbEl.style.display='block';
   fbEl.textContent='Läser ditt resonemang…';
 
   try{
-    let resp=await fetch('https://api.anthropic.com/v1/messages',{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
-        max_tokens:400,
-        system:'Du är en erfaren biologilärare för åk 7-9. Ge alltid svar på svenska. Ge formativ återkoppling i tre delar: (1) Lyft specifikt vad eleven förstått rätt — citera gärna elevens egna ord. (2) Peka ut det viktigaste som saknas eller kan utvecklas. (3) Ge en kort modellförklaring på 2–3 meningar. Max 5 meningar totalt. Var varm och konkret.',
-        messages:[{role:'user',content:'Fråga: '+current.bonus.q+'\n\nElevens svar: "'+studentAnswer+'"\n\nGe formativ återkoppling.'}]
+        max_tokens:1000,
+        messages:[{
+          role:'user',
+          content:'Du är en erfaren biologilärare för åk 7-9. Svara alltid på svenska.\n\nGe formativ återkoppling i tre delar:\n1. Lyft specifikt vad eleven förstått rätt — citera gärna elevens egna ord.\n2. Peka ut det viktigaste som saknas eller kan utvecklas.\n3. Ge en kort modellförklaring på 2–3 meningar som visar hur ett fullständigt svar ser ut.\n\nMax 5 meningar totalt. Var varm och konkret.\n\nFråga: '+current.bonus.q+'\n\nElevens svar: "'+studentAnswer+'"'
+        }]
       })
     });
-    let data=await resp.json();
-    let text=data&&data.content&&data.content[0]&&data.content[0].text;
+    const data = await resp.json();
+    const text = data.content && data.content[0] && data.content[0].text;
     if(text){
       fbEl.className='fb-done';
       fbEl.textContent=text;
+      if(bsb) bsb.textContent='Visat ✓';
+      waitingForBonus=false;
+      document.getElementById('next-btn').style.display='block';
     }else{
-      let errMsg=(data&&data.error&&data.error.message)||'Okänt fel';
-      fbEl.className='fb-done';
-      fbEl.textContent='Fel vid hämtning: '+errMsg;
+      throw new Error((data.error && data.error.message)||'Tomt svar');
     }
   }catch(e){
     fbEl.className='fb-done';
-    fbEl.textContent='Nätverksfel — försök igen.';
+    fbEl.style.display='block';
+    fbEl.textContent='Återkoppling kunde inte hämtas just nu. Försök igen.';
+    inp.disabled=false;
+    if(bsb){bsb.disabled=false;bsb.textContent='Försök igen';}
   }
-  if(bsb) bsb.textContent='Visat ✓';
-  waitingForBonus=false;
-  document.getElementById('next-btn').style.display='block';
 }
 
 function skipBonus(){
