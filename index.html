@@ -15,7 +15,6 @@
   --streak:#EF9F27;--streakl:#FAEEDA;
   --bl:#E6F1FB;--bd:#0C447C;
   --lvl:#534AB7;--lvll:#EEEDFE;--lvld:#26215C;
-  --bonus-bg:#FAEEDA;--bonus-text:#633806;
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#1e1e1c;--bg2:#2a2a27;--bg3:#323230;
@@ -25,7 +24,6 @@
   --wrongl:#501313;--streakl:#412402;
   --bl:#042C53;--bd:#85B7EB;
   --lvll:#26215C;--lvld:#CECBF6;
-  --bonus-bg:#412402;--bonus-text:#FAC775;
 }}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 4rem;}
@@ -58,7 +56,6 @@ h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;l
 @keyframes fadeIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
 #result-card.visible{animation:fadeIn 0.3s ease-out;}
 #badges-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-#mode-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;background:var(--xpl);color:var(--xpd);}
 #cat-badge{display:none;font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;border:0.5px solid;}
 #retry-badge{display:none;font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;background:var(--wrongl);color:var(--wrong);border:0.5px solid rgba(226,75,74,0.3);}
 #question-text{font-size:17px;font-weight:500;color:var(--text);line-height:1.5;}
@@ -86,18 +83,6 @@ h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;l
 .conf-btn.c-unsure{background:var(--streakl);border-color:rgba(239,159,39,0.3);color:#7a4800;}
 .conf-btn.c-easy{background:var(--xpl);border-color:rgba(29,158,117,0.3);color:var(--xpd);}
 @media(prefers-color-scheme:dark){.conf-btn.c-hard{color:#fca5a5;}.conf-btn.c-unsure{color:#d4900a;}}
-#bonus-area{display:none;margin-bottom:10px;border:0.5px solid var(--border);border-radius:var(--r);padding:14px 16px;background:var(--bonus-bg);}
-.bonus-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--bonus-text);display:inline-block;margin-bottom:8px;}
-#bonus-question{font-size:14px;color:var(--text);line-height:1.55;margin-bottom:10px;font-weight:500;}
-#bonus-input{width:100%;padding:9px 12px;font-size:14px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg);color:var(--text);outline:none;font-family:inherit;margin-bottom:8px;resize:vertical;min-height:80px;transition:border-color 0.15s;}
-#bonus-input:focus{border-color:var(--streak);}
-#bonus-fb{display:none;font-size:13px;padding:10px 13px;border-radius:var(--r);margin-top:8px;line-height:1.65;border:0.5px solid var(--border);}
-#bonus-fb.fb-loading{background:var(--bg2);color:var(--text2);font-style:italic;}
-#bonus-fb.fb-done{background:var(--bg);color:var(--text);border-color:var(--border2);}
-.bonus-btn-row{display:flex;gap:8px;align-items:center;}
-.bonus-btn-row button{padding:8px 16px;font-size:13px;font-weight:500;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--r);cursor:pointer;color:var(--text);font-family:inherit;}
-.bonus-btn-row button:hover{background:var(--bg2);}
-.bonus-btn-row .skip-link{font-size:12px;color:var(--text2);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0;}
 #next-btn{width:100%;padding:11px;font-size:15px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);cursor:pointer;color:var(--text);display:none;transition:background 0.1s;font-family:inherit;}
 #next-btn:hover{background:var(--bg3);}
 .xp-pop{position:absolute;right:1.75rem;font-size:18px;font-weight:500;color:var(--xp);pointer-events:none;animation:floatUp 1.1s ease-out forwards;}
@@ -163,7 +148,6 @@ h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;l
 #start-btn:hover{background:var(--bg3);}
 #start-history{margin-top:1.5rem;text-align:left;}
 #game-area{display:none;}
-/* Cognitive-science info panel */
 .cog-info{margin-top:1rem;padding:10px 12px;background:var(--bg2);border-radius:var(--r);font-size:12px;color:var(--text2);line-height:1.6;border:0.5px solid var(--border);}
 .cog-info strong{color:var(--text);}
 @media(max-width:480px){
@@ -221,7 +205,6 @@ h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;l
 
     <div id="card">
       <div id="badges-row">
-        <div id="mode-badge">Flerval</div>
         <div id="cat-badge"></div>
         <div id="retry-badge">🔄 Återkommer</div>
       </div>
@@ -254,17 +237,6 @@ h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;l
       </div>
     </div>
 
-    <div id="bonus-area">
-      <span class="bonus-label">Fördjupningsfråga</span>
-      <div id="bonus-question"></div>
-      <textarea id="bonus-input" rows="4" placeholder="Förklara med egna ord..."></textarea>
-      <div class="bonus-btn-row">
-        <button id="bonus-submit-btn" onclick="showBonusAnswer()">Få återkoppling</button>
-        <button class="skip-link" onclick="skipBonus()">Hoppa över</button>
-      </div>
-      <div id="bonus-fb"></div>
-    </div>
-
     <button id="next-btn" onclick="nextQ()">Nästa fråga</button>
   </div>
 
@@ -293,197 +265,223 @@ h1.logo{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:1.5rem;l
       <button id="restart-btn" onclick="startGame()">Spela igen</button>
     </div>
     <div class="cog-info" style="margin-top:1rem;">
-      <strong>Hur programmet lär dig bättre:</strong> Frågor blandas mellan områden (<em>interfoliering</em>) för att du ska lära dig skilja begrepp åt. Du formulerar svar innan du ser alternativen (<em>aktiv återkallning</em>). Osäkra och felaktiga svar återkommer senare i sessionen och vid nästa tillfälle (<em>fördelat lärande</em>). Fördjupningsfrågorna kräver resonemang — det kallas <em>elaborering</em> och stärker minnesspåren.
+      <strong>Hur programmet lär dig bättre:</strong> Frågor blandas mellan områden (<em>interfoliering</em>) för att du ska lära dig skilja begrepp åt. Du formulerar svar innan du ser alternativen (<em>aktiv återkallning</em>). Osäkra och felaktiga svar återkommer senare i sessionen och vid nästa tillfälle (<em>fördelat lärande</em>).
     </div>
   </div>
 </div>
 
 <script>
 // ════════════════════════════════════════════════════════════
-// QUESTION BANK — all TF converted to MC, bonus = reasoning
+// QUESTION BANK
 // ════════════════════════════════════════════════════════════
 const BANK = [
 
 // ═══ FOTOSYNTES OCH CELLANDNING ═══════════════════════════
 
-{cat:"Fotosyntes och cellandning",concept:"Fotosyntes: råvaror",
- q:"Vad behöver växter för att utföra fotosyntes?",
- opts:["Solljus, koldioxid och vatten","Syre, glukos och klorofyll","Kväve, fosfor och syre","Druvsocker, vatten och koldioxid"],
+{cat:"Fotosyntes och cellandning",concept:"Fotosyntes råvaror",
+ q:"Vad behöver växter för att tillverka sin egen föda via fotosyntesen?",
+ opts:["Koldioxid, vatten och ljusenergi","Syre, glukos och klorofyll","Kväve, fosfor och syre","Druvsocker, vatten och koldioxid"],
  correct:0,
- exp:"Fotosyntesens tre råvaror är solljus (energikällan), koldioxid (kolatomer) och vatten (väteatomer). Utan någon av dessa stannar processen.",
- bonus:{
-   q:"En elev säger: 'Om vi vattnar en växt och ger den koldioxid borde den växa utan solljus.' Förklara med hjälp av fotosyntesens formel varför eleven har fel, och vad som faktiskt händer med växten i mörker."
- }},
+ exp:"Fotosyntesens tre råvaror är koldioxid från luften, vatten från marken och ljusenergi från solen. Utan någon av dessa stannar processen."},
 
-{cat:"Fotosyntes och cellandning",concept:"Fotosyntes: produkter",
+{cat:"Fotosyntes och cellandning",concept:"Klorofyll",
+ q:"Vad är klorofyll och var finns det?",
+ opts:["Ett grönt färgämne i växtcellerna som fångar solljusets energi","Ett ämne i marken som växter tar upp via rötterna","En gas i luften som driver igång fotosyntesen","Ett socker som bildas när ljuset träffar bladen"],
+ correct:0,
+ exp:"Klorofyll är det gröna färgämnet i växtceller som absorberar ljusenergi och driver igång fotosyntesen. Det sitter i kloroplasterna."},
+
+{cat:"Fotosyntes och cellandning",concept:"Fotosyntes produkter",
  q:"Vad bildas vid fotosyntesen?",
  opts:["Druvsocker och syre","Koldioxid och vatten","Klorofyll och energi","Koldioxid och energi"],
  correct:0,
- exp:"Fotosyntesen producerar glukos (druvsocker) som är växtens energilagring, och syre som är en biprodukt som frisätts i luften.",
- bonus:{
-   q:"Förklara varför syret som bildas vid fotosyntesen kallas 'avfall' för växten, men är livsnödvändigt för oss. Vad händer med syret och varför bryr sig inte växten om det?"
- }},
+ exp:"Fotosyntesen producerar glukos (druvsocker) som lagrar energi, och syre som är en biprodukt som frisätts i luften."},
 
 {cat:"Fotosyntes och cellandning",concept:"Fotosyntesformeln",
  q:"Vilken formel beskriver fotosyntesen korrekt?",
- opts:["Koldioxid + Vatten + ljusenergi → Socker + Syre","Socker + Syre → Koldioxid + Vatten + energi","Koldioxid + Syre → Vatten + Socker + energi","Socker + Koldioxid → Vatten + Syre"],
+ opts:["Koldioxid + vatten + ljusenergi → druvsocker + syre","Druvsocker + syre → koldioxid + vatten + energi","Koldioxid + syre → vatten + druvsocker + energi","Druvsocker + koldioxid → vatten + syre"],
  correct:0,
- exp:"Formeln visar att ljusenergi driver ihopsättningen av koldioxid och vatten till glukos och syre. Energi är en inmatning — inte en produkt.",
- bonus:{
-   q:"Fotosyntesen och cellandningen kallas 'varandras motreaktioner'. Förklara med hjälp av formlerna varför de bildar ett kretslopp, och varför det är viktigt för allt liv på jorden."
- }},
+ exp:"Formeln visar att ljusenergi driver ihopsättningen av koldioxid och vatten till druvsocker och syre. Energi är en inmatning — inte en produkt."},
 
-{cat:"Fotosyntes och cellandning",concept:"Cellandningsformeln",
- q:"Vilken formel beskriver cellandningen korrekt?",
- opts:["Socker + Syre → Koldioxid + Vatten + energi","Koldioxid + Vatten + energi → Socker + Syre","Koldioxid + Syre → Vatten + Socker","Socker + Koldioxid → Vatten + Syre + energi"],
- correct:0,
- exp:"Cellandning är förbränning i kontrollerad form. Glukos och syre reagerar och frigör energi; koldioxid och vatten är avfallsprodukter.",
- bonus:{
-   q:"Cellandning beskrivs ibland som 'kontrollerad förbränning'. Förklara vad det betyder: vad är likt en eldsvåda och vad är annorlunda? Varför är det bra att det sker kontrollerat i kroppen?"
- }},
-
-{cat:"Fotosyntes och cellandning",concept:"Klorofyll och kloroplaster",
- q:"Varför kan inte djurceller utföra fotosyntes?",
- opts:["Djurceller saknar klorofyll och kloroplaster","Djurceller saknar cellkärna och kan inte lagra energi","Djurceller saknar cellvägg och klarar inte trycket","Djurceller saknar glukos som behövs för att starta processen"],
- correct:0,
- exp:"Fotosyntes kräver klorofyll för att fånga solenergi. Klorofyllet sitter i kloroplaster — organeller som bara finns i växtceller och algceller.",
- bonus:{
-   q:"Föreställ dig att en forskare lyckas sätta in kloroplaster i en mänsklig hudcell. Resonera om varför det ändå troligen inte skulle fungera att äta mat av solljus — vilka andra hinder finns?"
- }},
-
-{cat:"Fotosyntes och cellandning",concept:"Vilka utför vad",
+{cat:"Fotosyntes och cellandning",concept:"Vilka organismer har fotosyntes",
  q:"Vilka organismer utför fotosyntes?",
  opts:["Växter, alger och cyanobakterier","Alla organismer med cellkärna","Växter, djur och svampar","Enbart landlevande växter med gröna blad"],
  correct:0,
- exp:"Fotosyntes kräver klorofyll. Utöver landväxter utför även alger och cyanobakterier (blågrönbakterier) fotosyntes — cyanobakterier saknar faktiskt cellkärna men har klorofyll.",
- bonus:{
-   q:"Cyanobakterier anses ha skapat jordens syrerika atmosfär för miljarder år sedan. Förklara hur det är möjligt att en mikroorganism utan cellkärna kan ha förändrat hela planetens atmosfär — koppla till fotosyntes och geologi."
- }},
+ exp:"Fotosyntes kräver klorofyll. Växter, alger och cyanobakterier (blågrönbakterier) utför fotosyntes. Cyanobakterier saknar cellkärna men har klorofyll."},
+
+{cat:"Fotosyntes och cellandning",concept:"Druvsocker används till",
+ q:"Till vad används druvsockret som bildas vid fotosyntesen?",
+ opts:["Som energikälla i cellandningen och som byggmaterial till cellulosa","Det avges direkt som syre till luften när det inte behövs","Det omvandlas till klorofyll och lagras i bladen","Det transporteras till marken och ges till djur"],
+ correct:0,
+ exp:"Glukos har två roller: energikälla (cellandning) och byggnadsmaterial. Av glukos bildas cellulosa (cellväggar), stärkelse (lagring) och andra organiska föreningar."},
+
+{cat:"Fotosyntes och cellandning",concept:"Mörkt rum",
+ q:"Vad händer med en växt som ställs i ett mörkt rum under lång tid?",
+ opts:["Fotosyntesen stannar, sockret förbrukas och växten dör till slut","Växten överlever eftersom cellandningen kompenserar för fotosyntesen","Växten tar upp färdig föda via rötterna istället","Växten lagrar mer socker och klarar sig längre utan ljus"],
+ correct:0,
+ exp:"Utan ljus kan ingen fotosyntes ske. Sockerförrådet töms av cellandning och klorofyllet bryts ned. Om mörkret fortsätter svälter växten trots att cellandningen pågår."},
+
+{cat:"Fotosyntes och cellandning",concept:"Cellandning definition",
+ q:"Vad kallas processen där levande celler frigör energi ur druvsocker?",
+ opts:["Cellandning","Fotosyntes","Nedbrytning","Jäsning"],
+ correct:0,
+ exp:"Cellandning är kroppens 'motor'. Det är en kontrollerad förbränning inuti cellerna där druvsocker och syre reagerar och frigör energi."},
 
 {cat:"Fotosyntes och cellandning",concept:"Vilka utför cellandning",
  q:"Vilka organismer utför cellandning?",
- opts:["Alla levande organismer, inklusive växter och svampar","Enbart djur och svampar — växter använder fotosyntes istället","Enbart djur med lungor eller gälar","Enbart organismer med cellkärna"],
+ opts:["Alla levande organismer — växter, djur, svampar och bakterier","Enbart djur och svampar — växter använder fotosyntes istället","Enbart djur med lungor eller gälar","Enbart organismer med cellkärna"],
  correct:0,
- exp:"Cellandning är det universella sättet för celler att frigöra energi från socker. Alla levande organismer — från bakterier till blåvalar — utför cellandning.",
- bonus:{
-   q:"En elev tror att växter inte behöver cellandning på dagen eftersom de 'lever på solljus'. Förklara varför det är fel, och ge minst två konkreta exempel på vad växtcellerna behöver energi till under dagen."
- }},
+ exp:"Cellandning är det universella sättet för celler att frigöra energi från socker. Alla levande organismer utför cellandning — även växter, hela dygnet."},
+
+{cat:"Fotosyntes och cellandning",concept:"Cellandning råvaror",
+ q:"Vad behöver djur för att utföra cellandning?",
+ opts:["Druvsocker (från maten) och syre (från luften)","Koldioxid och solljus","Klorofyll och vatten","Cellulosa och kväve"],
+ correct:0,
+ exp:"Djur får druvsocker genom att äta och syre genom att andas. Båda behövs för cellandningen som frigör energin ur maten."},
+
+{cat:"Fotosyntes och cellandning",concept:"Cellandning produkter",
+ q:"Vad bildas vid cellandningen?",
+ opts:["Koldioxid, vatten och energi","Druvsocker och syre","Klorofyll och koldioxid","Syre och energi"],
+ correct:0,
+ exp:"Cellandning: druvsocker + syre → koldioxid + vatten + energi. Koldioxid och vatten är avfallsprodukter som andas ut eller avges."},
+
+{cat:"Fotosyntes och cellandning",concept:"Cellandningsformeln",
+ q:"Vilken formel beskriver cellandningen korrekt?",
+ opts:["Druvsocker + syre → koldioxid + vatten + energi","Koldioxid + vatten + energi → druvsocker + syre","Koldioxid + syre → vatten + druvsocker","Druvsocker + koldioxid → vatten + syre + energi"],
+ correct:0,
+ exp:"Cellandning är förbränning i kontrollerad form. Glukos och syre reagerar och frigör energi; koldioxid och vatten är avfallsprodukter."},
 
 {cat:"Fotosyntes och cellandning",concept:"Energins användning",
- q:"Vad används energin till som frigörs vid cellandningen?",
- opts:["Rörelse, tillväxt, kroppsvärme och cellreparation","Fotosyntes, klorofyllproduktion och fotosyntes","Att bilda koldioxid och vatten som avges till luften","Att lagra socker i blad och rötter för vintern"],
+ q:"Till vad används energin som frigörs vid cellandningen?",
+ opts:["Rörelse, tillväxt, kroppsvärme och att bilda nya celler","Fotosyntes och klorofyllproduktion","Att bilda koldioxid och vatten","Att lagra socker i blad och rötter"],
  correct:0,
- exp:"Energin från cellandningen driver alla livets processer: muskelrörelse, proteinsyntes (tillväxt), underhåll av kroppsvärme och celldelning.",
- bonus:{
-   q:"Förklara varför du känner dig varm efter en löptur. Koppla ditt svar till cellandningens formel och begreppet energiomvandling — vad händer med energin och varför lämnar en del kroppen som värme?"
- }},
+ exp:"Energin från cellandningen driver alla livets processer: muskelrörelse, tillväxt, underhåll av kroppsvärme och celldelning."},
 
-{cat:"Fotosyntes och cellandning",concept:"Klorofyll och kloroplaster",
- q:"Vad händer med en växt som placeras i totalt mörker under lång tid?",
- opts:["Klorofyllet bryts ned, sockerförrådet töms och växten svälter ihjäl","Växten överlever eftersom cellandningen kompenserar för fotosyntesen","Växten övergår till att enbart ta upp näring via rötterna","Växten lagrar mer socker och klarar sig längre utan ljus"],
+{cat:"Fotosyntes och cellandning",concept:"Varför inte djur fotosyntes",
+ q:"Varför kan inte djur utföra fotosyntes?",
+ opts:["Djurceller saknar klorofyll och kan därför inte fånga solenergi","Djurceller saknar cellkärna och kan inte lagra energi","Djurceller saknar cellvägg och klarar inte trycket","Djurceller saknar vatten som behövs för att starta processen"],
  correct:0,
- exp:"Utan ljus kan ingen fotosyntes ske. Sockerförrådet töms av cellandning, klorofyllet bryts ned (bladen gulnar). Om mörkret fortsätter svälter växten trots att cellandningen pågår.",
- bonus:{
-   q:"Förklara steg för steg vad som händer i en växt under de första veckorna i totalt mörker. Börja med fotosyntesen, gå sedan vidare till sockerreserver, bladen och till sist rötterna."
- }},
+ exp:"Fotosyntes kräver klorofyll för att fånga solenergi. Klorofyllet sitter i kloroplaster — organeller som bara finns i växtceller och algceller."},
 
-{cat:"Fotosyntes och cellandning",concept:"Sockrets användning",
- q:"Till vad används sockret som bildas vid fotosyntesen i en växt?",
- opts:["Som energikälla i cellandningen och som byggmaterial för cellulosa","Det avges direkt som syre till luften när det inte behövs","Det omvandlas till klorofyll och lagras i bladen","Det transporteras ned och avges till djur via marken"],
+{cat:"Fotosyntes och cellandning",concept:"Fotosyntes och cellandning sambandet",
+ q:"Vilket samband finns det mellan fotosyntesen och cellandningen?",
+ opts:["De är varandras motreaktioner — det som bildas vid fotosyntesen används vid cellandningen och tvärtom","De är exakt samma process men sker i olika celler","Fotosyntesen sker på dagen och cellandningen sker bara på natten","De sker alltid i samma organell och kan inte skiljas åt"],
  correct:0,
- exp:"Glukos har två roller: energikälla (cellandning) och byggnadsmaterial. Av glukos bildas cellulosa (cellväggar), stärkelse (lagring) och andra organiska föreningar.",
- bonus:{
-   q:"Förklara med hjälp av begreppen glukos, cellulosa och cellandning hur en björk om våren kan bygga nya blad och grenar. Varifrån kommer energin och materialet?"
- }},
+ exp:"Fotosyntes: koldioxid + vatten + ljus → druvsocker + syre. Cellandning: druvsocker + syre → koldioxid + vatten + energi. Det som bildas i den ena processen används i den andra — ett kretslopp."},
 
-{cat:"Fotosyntes och cellandning",concept:"Fotosyntesen skapar syre",
- q:"Vad händer med det syre som bildas vid fotosyntesen?",
- opts:["Det avges som avfall genom klyvöppningarna till luften","Det lagras i växtens rötter för vintern","Det används direkt av klorofyllet i nästa fotosyntes","Det omvandlas till koldioxid via cellandning i samma cell"],
+{cat:"Fotosyntes och cellandning",concept:"Växt natten",
+ q:"Vilken process sker i en växt på natten men inte på dagen?",
+ opts:["Bara cellandning — fotosyntesen kräver ljus och är avstängd","Bara fotosyntes — cellandningen sker bara när solen lyser","Varken fotosyntes eller cellandning — växten vilar","Båda processerna, precis som på dagen"],
  correct:0,
- exp:"Syret är en biprodukt — 'sopor' för växten — och avges via klyvöppningarna. Det är detta 'avfall' som skapar jordens syrerika atmosfär.",
- bonus:{
-   q:"Beskriv ett tankexperiment: om alla fotosyntiserande organismer försvann från jorden idag — förklara vad som skulle hända med syrehalten i atmosfären, hur lång tid det skulle ta och vilka organismer som skulle drabbas först."
- }},
+ exp:"Cellandning pågår dygnet runt i alla levande celler. Fotosyntesen kräver ljus och är avstängd på natten. På dagen sker alltså båda samtidigt."},
 
-{cat:"Fotosyntes och cellandning",concept:"Klorofyllets roll",
- q:"Vad kallas det gröna färgämnet i växtcellerna som fångar solljusets energi?",
- opts:["Klorofyll","Glukos","Cellulosa","Koldioxid"],
+{cat:"Fotosyntes och cellandning",concept:"Cellulosa",
+ q:"Vad kallas det ämne som bildas av glukos och används som byggmaterial i växtens cellväggar?",
+ opts:["Cellulosa","Klorofyll","Stärkelse","Koldioxid"],
  correct:0,
- exp:"Klorofyll är det gröna färgämnet i växtceller som absorberar ljusenergi och driver igång fotosyntesen."},
-
-{cat:"Fotosyntes och cellandning",concept:"Sockrets namn",
- q:"Vad kallas det socker som bildas vid fotosyntesen?",
- opts:["Druvsocker (glukos)","Cellulosa","Klorofyll","Stärkelse"],
- correct:0,
- exp:"Glukos (C₆H₁₂O₆) är växtens primära energivaluta. Det är identiskt med druvsocker som vi köper i mataffären."},
-
-{cat:"Fotosyntes och cellandning",concept:"Cellandning: definition",
- q:"Vad kallas processen där levande celler förbränner socker med hjälp av syre och frigör energi?",
- opts:["Cellandning","Fotosyntes","Nedbrytning","Jäsning"],
- correct:0,
- exp:"Cellandning är kroppens 'motor'. Det är en kontrollerad förbränning inuti cellerna — inte eld, men samma grundkemi."},
-
-{cat:"Fotosyntes och cellandning",concept:"Fotosyntes: definition",
- q:"Vad kallas processen där växter omvandlar koldioxid och vatten till socker med hjälp av solenergi?",
- opts:["Fotosyntes","Cellandning","Nedbrytning","Ämnesomsättning"],
- correct:0,
- exp:"Fotosyntes är grunden för nästan allt liv på jorden — utan den hade det inte funnits någon mat att äta för djur eller människor."},
+ exp:"Cellulosa bildar de starka cellväggarna i växtceller och är det som gör att växter kan stå upprätta. Det tillverkas av glukos från fotosyntesen."},
 
 {cat:"Fotosyntes och cellandning",concept:"Ordets betydelse",
  q:"Vad betyder ordet 'fotosyntes'?",
  opts:["Foto = ljus, syntes = sätta samman","Foto = vatten, syntes = dela upp","Foto = energi, syntes = lagra","Foto = grön, syntes = tillverka"],
  correct:0,
- exp:"Att känna till ordets etymologi hjälper dig komma ihåg processen: ljusenergi används för att sätta samman (syntetisera) socker."},
+ exp:"Att känna till ordets etymologi hjälper: ljusenergi används för att sätta samman (syntetisera) druvsocker av koldioxid och vatten."},
 
-{cat:"Fotosyntes och cellandning",concept:"Växter och föda",
- q:"Hur får växter sin föda?",
- opts:["De tillverkar den själva via fotosyntesen","De tar upp färdig föda via rötterna från marken","De absorberar organiska ämnen via bladen från luften","De tar upp föda från marken via rötterna och från luften via bladen"],
- correct:0,
- exp:"Växter är autotrofa — de tillverkar sin egen organiska föda. Rötterna tar upp vatten och mineraler, inte färdig energirik föda.",
- bonus:{
-   q:"Förklara varför det är fel att säga 'träd äter jord'. Vad tar egentligen ett träd upp från marken, vad tar det från luften, och vad tillverkar det själv? Förklara sambandet."
- }},
+// ═══ EKOSYSTEM ════════════════════════════════════════════
 
-{cat:"Fotosyntes och cellandning",concept:"Cellulosa",
- q:"Vad kallas det ämne som bildas av glukos och används som byggmaterial i växtens cellväggar?",
- opts:["Cellulosa","Klorofyll","Glukos","Stärkelse"],
+{cat:"Ekosystem",concept:"Ekologi definition",
+ q:"Vad kallas vetenskapen som studerar hur organismer samspelar med varandra och sin omgivning?",
+ opts:["Ekologi","Biologi","Geologi","Zoologi"],
  correct:0,
- exp:"Cellulosa bildar de starka cellväggarna i växtceller och är det som gör att växter kan stå upprätta. Bomull är nästan ren cellulosa."},
+ exp:"Ekologi är läran om hur organismer samspelar med varandra och sin omgivning. Det handlar om sambanden i naturen."},
 
-{cat:"Fotosyntes och cellandning",concept:"Växter och cellandning",
- q:"En växt står i ett soligt fönster. Vilken av dessa påståenden är korrekt?",
- opts:["Växten utför både fotosyntes och cellandning samtidigt","Växten utför bara fotosyntes på dagen och bara cellandning på natten","Cellandning stängs av när fotosyntesen är igång","Fotosyntes och cellandning använder samma molekyler och kan inte ske samtidigt"],
+{cat:"Ekosystem",concept:"Ekosystem definition",
+ q:"Vad är ett ekosystem?",
+ opts:["Alla organismer och deras miljö inom ett visst område","Alla individer av samma art i ett område","Enbart de levande delarna av naturen i ett område","Alla populationer av samma art på hela jordklotet"],
  correct:0,
- exp:"Växter utför cellandning hela dygnet — det är en konstant process i alla levande celler. Fotosyntesen sker bara i tillräckligt ljus.",
- bonus:{
-   q:"Under dagen producerar en växts blad mer syre än de förbrukar, men på natten förbrukar de syre utan att producera något. Förklara varför det är så och vad det betyder för om man ska ha växter i ett sovrum."
- }},
+ exp:"Ett ekosystem är alla levande organismer och deras omgivning (mark, vatten, luft) i ett visst område. Ekologer studerar hur delarna påverkar varandra."},
 
-{cat:"Fotosyntes och cellandning",concept:"Rötterna och energi",
- q:"Varför behöver växtens rötter ta emot glukos från bladen?",
- opts:["Rötterna är i mörker och kan inte utföra fotosyntes, men behöver energi för cellandning","Rötterna har klorofyll men behöver extra socker under vintern","Rötterna utför fotosyntes men producerar inte tillräckligt med energi","Rötterna lagrar glukos inför blomning och frösättning"],
+{cat:"Ekosystem",concept:"Individ definition",
+ q:"Vad är en individ?",
+ opts:["En enskild levande varelse, till exempel en fågel eller en växt","Alla individer av samma art inom ett område","Alla populationer av olika arter i ett ekosystem","Alla levande organismer på hela jorden"],
  correct:0,
- exp:"Rötterna sitter under jord i mörker — ingen fotosyntes möjlig. Socker transporteras via ledningsvävnaden ned till rötterna, som använder det som bränsle i cellandningen.",
- bonus:{
-   q:"En trädstubbe kan ibland överleva i decennier efter att trädet kapats — utan blad och utan fotosyntes. Förklara hur det är möjligt. Vad lever stubben på och vad håller den vid liv?"
- }},
+ exp:"Individ är den minsta enheten i ekologins hierarki: individ → population → samhälle → ekosystem."},
+
+{cat:"Ekosystem",concept:"Population definition",
+ q:"Vad är en population?",
+ opts:["Alla individer av samma art som lever inom ett avgränsat område","Alla individer av alla arter i ett ekosystem","En enskild levande varelse i ett ekosystem","Alla levande organismer på hela jordklotet"],
+ correct:0,
+ exp:"Population = alla av samma art i ett område. Hierarki: individ → population → samhälle → ekosystem."},
+
+{cat:"Ekosystem",concept:"Samhälle definition",
+ q:"Vad är ett samhälle i ekologisk mening?",
+ opts:["Alla populationer av olika arter i ett ekosystem","Alla individer av samma art inom ett område","En enskild levande varelse i ett ekosystem","Alla levande organismer på hela jordklotet"],
+ correct:0,
+ exp:"Samhälle: alla populationer som lever och interagerar i ett och samma område. Det är en nivå ovanför populationen men under hela ekosystemet."},
+
+{cat:"Ekosystem",concept:"Abiotiska faktorer definition",
+ q:"Vad kallas icke-levande faktorer som temperatur, ljus och markens pH som påverkar ekosystemet?",
+ opts:["Abiotiska faktorer","Biotiska faktorer","Ekologiska faktorer","Klimatfaktorer"],
+ correct:0,
+ exp:"Abiotiska faktorer är icke-levande (fysiska och kemiska) faktorer. De sätter de fysiska ramarna för vilket liv som kan existera i ett ekosystem."},
+
+{cat:"Ekosystem",concept:"Abiotiska faktorer exempel",
+ q:"Vilka av dessa är abiotiska faktorer?",
+ opts:["Temperatur, ljustillgång och markens pH-värde","Rovdjur, bytesdjur och konkurrenter","Svampar, bakterier och växter","Populationsstorlek och bärkraft"],
+ correct:0,
+ exp:"Kom ihåg: abiotiska = icke-levande. Temperatur, ljus och pH är kemiska/fysiska faktorer — de lever inte."},
+
+{cat:"Ekosystem",concept:"Biotiska faktorer definition",
+ q:"Vad kallas levande faktorer som rovdjur och konkurrenter som påverkar ekosystemet?",
+ opts:["Biotiska faktorer","Abiotiska faktorer","Ekologiska faktorer","Miljöfaktorer"],
+ correct:0,
+ exp:"Biotiska faktorer inkluderar alla levande organismer och deras interaktioner med varandra — rovdjur, konkurrenter, parasiter m.m."},
+
+{cat:"Ekosystem",concept:"Biotiska faktorer exempel",
+ q:"Vilket av dessa är ett exempel på en biotisk faktor?",
+ opts:["Att ett rovdjur jagar och minskar antalet växtätare","Temperaturen under sommaren","Markens pH-värde och mineralinnehåll","Mängden ljus som når skogsmarken"],
+ correct:0,
+ exp:"Biotisk = levande. En rovdjurs jakt är en levande organisms påverkan på en annan — det är en biotisk faktor."},
+
+{cat:"Ekosystem",concept:"Ekosystemet hänger ihop",
+ q:"Vad kan hända i ett ekosystem om en del av det förändras?",
+ opts:["Det kan ge oväntade kedjereaktioner som påverkar hela ekosystemet","Bara den förändrade arten påverkas, resten är stabilt","Ekosystemet återställer sig automatiskt på kort tid","Förändringen påverkar bara abiotiska faktorer, inte levande organismer"],
+ correct:0,
+ exp:"Ekosystem är dynamiska och sammankopplade. Bortfall av en art, förändrat klimat eller en ny invasiv art kan skapa kaskadeffekter genom hela ekosystemet."},
+
+{cat:"Ekosystem",concept:"Störst ekosystem",
+ q:"Vilket är det största möjliga ekosystemet?",
+ opts:["Hela jordens biosfär med alla levande organismer och deras miljö","En stor tropisk regnskog med extremt hög artrikedom","Världshaven med allt marint liv","Den afrikanska savannen"],
+ correct:0,
+ exp:"Hela jordens biosfär kan ses som ett enda jätteekosystem — alla levande organismer och deras omgivning på hela planeten."},
 
 // ═══ EKOLOGISKA MODELLER ══════════════════════════════════
 
-{cat:"Ekologiska modeller",concept:"Producenter",
+{cat:"Ekologiska modeller",concept:"Producent definition",
  q:"Vad kallas organismer som tillverkar energirika ämnen via fotosyntesen?",
  opts:["Producenter","Konsumenter","Nedbrytare","Parasiter"],
  correct:0,
- exp:"Producenter tillverkar energirik mat (socker) från enkla ämnen som koldioxid, vatten och solljus. De är grunden för all näring i ekosystemet."},
+ exp:"Producenter tillverkar energirik mat (druvsocker) från enkla ämnen som koldioxid, vatten och solljus. De är grunden för all näring i ekosystemet."},
 
-{cat:"Ekologiska modeller",concept:"Producenter: vilka är de",
- q:"Tre grupper av organismer kan utföra fotosyntes och är producenter. Vilka är de?",
- opts:["Växter, alger och cyanobakterier","Svampar, bakterier och maskar","Rovdjur, växtätare och allätare","Fåglar, fiskar och kräldjur"],
+{cat:"Ekologiska modeller",concept:"Producenter vilka",
+ q:"Vilka organismer räknas som producenter?",
+ opts:["Växter, alger och cyanobakterier","Svampar, bakterier och maskar","Rovdjur, växtätare och allätare","Fåglar, fiskar och insekter"],
  correct:0,
- exp:"Alla producenter har gemensamt att de utför fotosyntes. Cyanobakterier är bakterier men har klorofyll och kan fotosyntisera."},
+ exp:"Alla producenter utför fotosyntes. Förutom landväxter är alger och cyanobakterier viktiga producenter — cyanobakterier saknar cellkärna men har klorofyll."},
 
-{cat:"Ekologiska modeller",concept:"Konsumenter",
- q:"Vad kallas organismer som äter växter eller andra djur för att få energi?",
+{cat:"Ekologiska modeller",concept:"Producenter identifiera",
+ q:"Vilka av dessa är producenter: spindel – björnmossa – sill – björk – daggmask – huggorm – grönalg?",
+ opts:["Björnmossa, björk och grönalg","Spindel, sill och huggorm","Daggmask, spindel och björk","Sill, daggmask och björnmossa"],
+ correct:0,
+ exp:"Producenter har fotosyntes. Björnmossa och björk är landväxter, grönalg är en alg — alla tre är producenter. De övriga är konsumenter eller nedbrytare."},
+
+{cat:"Ekologiska modeller",concept:"Varför kallas producenter",
+ q:"Varför kallas växter och alger producenter?",
+ opts:["De producerar energirika kemiska ämnen via fotosyntesen","De producerar syre som alla djur andas in","De producerar mineraler ur marken","De producerar klorofyll som färgar bladen gröna"],
+ correct:0,
+ exp:"Producenttiteln handlar om organisk materia — druvsocker och andra kolföreningar som lagrar solenergi och är mat för alla konsumenter."},
+
+{cat:"Ekologiska modeller",concept:"Konsument definition",
+ q:"Vad kallas organismer som får sin energi genom att äta andra organismer?",
  opts:["Konsumenter","Producenter","Nedbrytare","Parasiter"],
  correct:0,
  exp:"Konsumenter kan inte tillverka sin egen mat — de måste äta andra organismer för att få energi."},
@@ -492,7 +490,7 @@ const BANK = [
  q:"Vad kallas en växtätande konsument i en näringskedja?",
  opts:["Förstahandskonsument","Andrahandskonsument","Toppkonsument","Nedbrytare"],
  correct:0,
- exp:"Förstahandskonsumenten är ett steg ovan producenten i kedjan. Kallas också växtätare eller herbivore."},
+ exp:"Förstahandskonsumenten äter direkt av producenterna. Kallas också växtätare eller herbivore. Det är det första djurledet i kedjan."},
 
 {cat:"Ekologiska modeller",concept:"Andrahandskonsument",
  q:"Vad kallas ett rovdjur som äter växtätande djur?",
@@ -500,246 +498,133 @@ const BANK = [
  correct:0,
  exp:"Andrahandskonsumenten äter förstahandskonsumenten. En lodjur som äter harar är andrahandskonsument i den kedjan."},
 
-{cat:"Ekologiska modeller",concept:"Nedbrytare",
- q:"Vilka organismer bryter ned döda djur och växter i naturen?",
- opts:["Svampar, bakterier och maskar","Växter, alger och mossor","Rovdjur, fiskar och fåglar","Insekter, groddjur och kräldjur"],
- correct:0,
- exp:"Svampar bryter ned döda växtdelar med hjälp av enzymer de utsöndrar. Bakterier fortsätter nedbrytningen tills enkla mineraler frigörs.",
- bonus:{
-   q:"Förklara varför nedbrytarna är lika viktiga som producenterna för att ett ekosystem ska fungera. Vad händer om nedbrytarna försvinner? Gå igenom konsekvenserna steg för steg."
- }},
-
-{cat:"Ekologiska modeller",concept:"Toppkonsument",
- q:"Vad kallas konsumenten överst i en näringspyramid som saknar naturliga fiender?",
- opts:["Toppkonsument","Andrahandskonsument","Förstahandskonsument","Producent"],
+{cat:"Ekologiska modeller",concept:"Toppkonsument definition",
+ q:"Vad är en toppkonsument?",
+ opts:["Den sista organismen i en näringskedja — den som inte har några egna naturliga fiender","Den organism som äter flest olika bytesdjur","Den organism som är vanligast i ett ekosystem","Den organism med störst biomassa i ekosystemet"],
  correct:0,
  exp:"Toppkonsumenten saknar naturliga fiender och påverkar hela ekosystemet genom att hålla nere antalet djur under sig. Exempel: varg, späckhuggare och haj."},
 
+{cat:"Ekologiska modeller",concept:"Toppkonsument exempel",
+ q:"Vilka är exempel på toppkonsumenter?",
+ opts:["Isbjörn, kungsörn och späckhuggare","Hare, rådjur och älg","Björk, ek och tall","Daggmask, svamp och bakterie"],
+ correct:0,
+ exp:"Toppkonsumenter saknar naturliga fiender. Isbjörnen äter sälar, kungsörnen äter harar och rävar, späckhuggaren jagar sälar och hajar."},
+
+{cat:"Ekologiska modeller",concept:"Nedbrytare definition",
+ q:"Vad kallas organismer som lever av döda växter och djur och bryter ned dem till enklare ämnen?",
+ opts:["Nedbrytare (destruenter)","Konsumenter","Producenter","Toppkonsumenter"],
+ correct:0,
+ exp:"Nedbrytare (destruenter) bryter ned döda organismer till enkla mineraler som producenterna kan ta upp igen. De sluter kretsloppet i naturen."},
+
+{cat:"Ekologiska modeller",concept:"Nedbrytare exempel",
+ q:"Vilka organismer är nedbrytare?",
+ opts:["Svampar, bakterier, daggmaskar och tordyvlar","Växter, alger och mossor","Rovdjur, fiskar och fåglar","Insekter, groddjur och kräldjur"],
+ correct:0,
+ exp:"Svampar och bakterier bryter ned med enzymer. Daggmaskar och tordyvlar äter och sönderdelar döda organismer mekaniskt."},
+
 {cat:"Ekologiska modeller",concept:"Nedbrytarnas roll",
  q:"Varför är nedbrytarna viktiga för producenterna?",
- opts:["De frigör mineraler ur döda organismer som producenterna kan ta upp","De tillverkar klorofyll som producenterna behöver","De skyddar producenterna mot att bli uppätna","De skapar syre som producenterna behöver"],
+ opts:["De frigör mineraler ur döda organismer som producenterna kan ta upp via rötterna","De tillverkar klorofyll som producenterna behöver","De skyddar producenterna mot att bli uppätna","De skapar syre som producenterna behöver"],
  correct:0,
- exp:"Mineraler (kväve, fosfor, kalium) låser sig i döda organismer. Nedbrytarna frigör dem som enkla salter som plantorna kan ta upp via rötterna.",
- bonus:{
-   q:"Förklara med egna ord varför en skog inte kan vara självförsörjande utan svampar och bakterier. Vad händer med kvävet och fosforn om nedbrytarna försvinner?"
- }},
-
-{cat:"Ekologiska modeller",concept:"Varför producenter kallas producenter",
- q:"Varför kallas växter producenter?",
- opts:["De producerar energirika kemiska ämnen via fotosyntesen","De producerar syre som alla djur andas in","De producerar mineraler ur marken","De producerar klorofyll som färgar bladen gröna"],
- correct:0,
- exp:"Producenttiteln handlar om organisk materia — socker och andra kolföreningar som lagrar solenergi. Syre är en biprodukt, inte 'poängen'."},
-
-{cat:"Ekologiska modeller",concept:"Energiflöde och toppkonsumenter",
- q:"Varför finns det alltid relativt få toppkonsumenter i ett ekosystem?",
- opts:["Energin minskar med ~90% per nivå i kedjan, vilket sätter ett tak för hur många toppkonsumenter som kan livnäras","Det finns för lite vatten för att försörja fler toppkonsumenter","Toppkonsumenter behöver mer syre än atmosfären kan ge","Nedbrytarna konkurrerar med toppkonsumenterna om födan"],
- correct:0,
- exp:"Bara ~10 % av energin förs vidare vid varje nivå. Producenterna sätter ett energitak — toppkonsumenternas population kan aldrig bli större än vad energiflödet tillåter.",
- bonus:{
-   q:"Förklara med hjälp av 10%-regeln varför det är omöjligt att ha lika många vargar som ekar i ett skogsekosystem. Hur många ton ek krävs för att försörja ett ton varg via rådjuren?"
- }},
-
-{cat:"Ekologiska modeller",concept:"Ekologi: definition",
- q:"Vad studerar ekologer?",
- opts:["Hur olika organismer samspelar med varandra och sin miljö","Hur arter uppstår och försvinner under evolutionen","Hur celler är uppbyggda och fungerar inuti","Hur genetisk information förs vidare mellan generationer"],
- correct:0,
- exp:"Ekologi handlar om hur organismer samspelar med varandra och med sin miljö — sambanden i naturen, inte cellernas inre."},
+ exp:"Mineraler (kväve, fosfor, kalium) låser sig i döda organismer. Nedbrytarna frigör dem som enkla salter som plantorna kan ta upp via rötterna — kretsloppet sluts."},
 
 {cat:"Ekologiska modeller",concept:"Destruent",
  q:"Vad kallas ett annat ord för nedbrytare?",
  opts:["Destruent","Konsument","Predator","Parasit"],
  correct:0,
- exp:"Destruent är ett annat ord för nedbrytare. Det är den term som används i biologiböcker och på prov."},
-
-{cat:"Ekologiska modeller",concept:"Biomassa",
- q:"Vad kallas den samlade massan av alla levande organismer i ett ekosystem?",
- opts:["Biomassa","Bärkraft","Ekosystem","Population"],
- correct:0,
- exp:"Biomassa mäts ofta i kg torrsubstans per kvadratmeter. Det är ett mått på hur mycket liv ett ekosystem producerar."},
-
-{cat:"Ekologiska modeller",concept:"Ekosystem: definition",
- q:"Vad kallas systemet av organismer och den miljö de lever i?",
- opts:["Ekosystem","Population","Samhälle","Ekologi"],
- correct:0,
- exp:"Ekosystem är ett öppet system — energi och materia flödar in och ut. Ekologer studerar hur delarna påverkar varandra."},
+ exp:"Destruent är det vetenskapliga begreppet för nedbrytare. Det är den term som används i biologiböcker och på prov."},
 
 {cat:"Ekologiska modeller",concept:"Näringskedja",
  q:"Vad visar en näringskedja?",
- opts:["Vem som äter vem, och i vilken riktning energin flödar","Hur populationernas storlek förändras över tid","Hur mycket syre producenterna tillverkar per år","Vilka arter som lever i samma ekosystem"],
+ opts:["Vem som äter vem — den börjar alltid med en producent","Hur populationernas storlek förändras över tid","Hur mycket syre producenterna tillverkar per år","Vilka arter som lever i samma ekosystem"],
  correct:0,
- exp:"Näringkedjans pilar pekar i riktning från det som äts till det som äter — de visar energins väg."},
+ exp:"Näringkedjans pilar pekar i riktning från det som äts till det som äter — de visar energins väg. Kedjan börjar alltid med en producent."},
 
 {cat:"Ekologiska modeller",concept:"Kedjan börjar med producent",
  q:"Vad måste en korrekt näringskedja alltid börja med?",
  opts:["En producent","En konsument","En nedbrytare","En toppkonsument"],
  correct:0,
- exp:"Producenten är energikällan för hela kedjan. Utan producent finns inget att äta i nästa led.",
- bonus:{
-   q:"En elev ritar en näringskedja som börjar med en mask (nedbrytare). Förklara varför det är fel, och var masken egentligen hör hemma i ekosystemets energiflöde."
- }},
-
-{cat:"Ekologiska modeller",concept:"Näringsväv",
- q:"Vad är en näringsväv?",
- opts:["Flera sammankopplade näringskedjor som visar verkliga matrelationer i ett ekosystem","En enda lång kedja från producent till toppkonsument","En tabell som visar biomassan på varje nivå","En karta som visar var olika organismer lever"],
- correct:0,
- exp:"I verkligheten äter de flesta djur flera saker — och äts av flera saker. Näringsväven visar den verkliga komplexiteten.",
- bonus:{
-   q:"Förklara varför ett ekosystem med en komplex näringsväv (många arter) är mer stabilt än ett med en enkel kedja. Vad händer om en art försvinner i varje fall?"
- }},
-
-{cat:"Ekologiska modeller",concept:"Näringspyramid",
- q:"Vad visar en näringspyramid?",
- opts:["Hur biomassan och energin fördelar sig — störst bas hos producenter, minst topp hos toppkonsumenter","Hur många arter som finns på varje nivå i ekosystemet","Hur snabbt olika organismer rör sig i ekosystemet","Vilka organismer som konkurrerar om samma föda"],
- correct:0,
- exp:"Näringspyramiden visualiserar energiförlusten: varje nivå uppåt har bara ~10 % av energin från nivån under."},
-
-{cat:"Ekologiska modeller",concept:"10%-regeln",
- q:"Ungefär hur stor andel av energin förs vidare till nästa nivå i en näringskedja?",
- opts:["Ungefär 10 procent","Ungefär 50 procent","Ungefär 90 procent","Ungefär 1 procent"],
- correct:0,
- exp:"90 % av energin förbrukas i rörelse, kroppsvärme och avföring. Bara ~10 % lagras i biomassa och förs vidare.",
- bonus:{
-   q:"Förklara varför det är mer energieffektivt för människor att äta växter direkt än att äta djur som ätit växter. Beräkna hur mycket mer grönsaker du kan livnäras av jämfört med nötkött från ett djur som ätit samma mängd gräs."
- }},
-
-{cat:"Ekologiska modeller",concept:"Energiförlust som värme",
- q:"Vad händer med den energi som inte förs vidare i en näringskedja?",
- opts:["Den avges som värme och kan inte återanvändas i kedjan","Den återförs direkt till producenterna via marken","Den lagras permanent i nedbrytarnas celler","Den omvandlas till klorofyll hos producenterna"],
- correct:0,
- exp:"All energiomvandling i celler producerar värme som biprodukt. Det är därför vi känner oss varma efter rörelse.",
- bonus:{
-   q:"Varför kan en energikedja aldrig bli hur lång som helst? Förklara med hjälp av 10%-regeln vad som händer med energin i steg 1, 2, 3, 4 och 5 om producenten har 10 000 kg biomassa."
- }},
+ exp:"Producenten är energikällan för hela kedjan. Utan producent finns inget att äta i nästa led. En kedja som börjar med ett djur är alltid fel."},
 
 {cat:"Ekologiska modeller",concept:"Rätt ordnad kedja",
  q:"Vilken av dessa kedjor är rätt uppbyggd?",
  opts:["Ek → sork → snok → ormvråk","Sork → ek → snok → ormvråk","Ormvråk → snok → sork → ek","Snok → sork → ek → ormvråk"],
  correct:0,
- exp:"Eken är producenten. Sorken äter ekollon (förstahandskonsument). Snoken äter sorken (andrahandskonsument). Ormvråken är toppkonsument. Kedjan börjar alltid med en producent."},
+ exp:"Eken är producenten. Sorken äter ekollon (förstahandskonsument). Snoken äter sorken (andrahandskonsument). Ormvråken är toppkonsument. Kedjan börjar alltid med producenten."},
+
+{cat:"Ekologiska modeller",concept:"Kedjans roll",
+ q:"I kedjan gräs → hare → räv, vad kallas rävens roll?",
+ opts:["Andrahandskonsument — den äter en förstahandskonsument (haren)","Förstahandskonsument — den äter direkt av producenten","Producent — den bildar energirika ämnen via fotosyntesen","Nedbrytare — den bryter ned döda organismer"],
+ correct:0,
+ exp:"Räven äter haren (förstahandskonsument) som äter gräs (producent). Räven är därför andrahandskonsument i denna kedja."},
+
+{cat:"Ekologiska modeller",concept:"Näringsväv",
+ q:"Vad är en näringsväv?",
+ opts:["Flera sammankopplade näringskedjor som ger en verklighetsnära bild av ekosystemet","En enda lång kedja från producent till toppkonsument","En tabell som visar biomassan på varje nivå","En karta som visar var olika organismer lever"],
+ correct:0,
+ exp:"I verkligheten äter de flesta djur flera saker — och äts av flera saker. Näringsväven visar den verkliga komplexiteten, till skillnad från en enkel kedja."},
+
+{cat:"Ekologiska modeller",concept:"Näringspyramid",
+ q:"Vad visar en näringspyramid?",
+ opts:["Hur biomassan och energin fördelar sig — störst bas hos producenter, minst topp hos toppkonsumenter","Hur många arter som finns på varje nivå i ekosystemet","Hur snabbt olika organismer rör sig i ekosystemet","Vilka organismer som konkurrerar om samma föda"],
+ correct:0,
+ exp:"Näringspyramiden visualiserar energiförlusten: varje nivå uppåt har bara ~10 % av energin från nivån under. Basen är störst — den har mest biomassa."},
 
 {cat:"Ekologiska modeller",concept:"Pyramidens bas",
  q:"Vilken organism bildar basen i en näringspyramid?",
  opts:["Producenten — den har mest biomassa och energi","Toppkonsumenten — den styr systemet ovanifrån","Nedbrytaren — den frigör energi från döda organismer","Andrahandskonsumenten — den är vanligast förekommande"],
  correct:0,
- exp:"Basen är störst — den har mest biomassa och energi. Toppkonsumenten är liten och smal högst upp."},
+ exp:"Basen är störst — den har mest biomassa och energi. Toppkonsumenten är liten och smal högst upp eftersom energin minskat i varje steg."},
+
+{cat:"Ekologiska modeller",concept:"10%-regeln",
+ q:"Ungefär hur stor andel av energin förs vidare till nästa nivå i en näringskedja?",
+ opts:["Ungefär 10 procent","Ungefär 50 procent","Ungefär 90 procent","Ungefär 1 procent"],
+ correct:0,
+ exp:"90 % av energin förbrukas i rörelse, kroppsvärme och avföring. Bara ~10 % lagras i biomassa och förs vidare till nästa nivå."},
+
+{cat:"Ekologiska modeller",concept:"Energiförlust som värme",
+ q:"Vad händer med den energi som inte förs vidare i en näringskedja?",
+ opts:["Den avges som värme och kan inte återanvändas i kedjan","Den återförs direkt till producenterna via marken","Den lagras permanent i nedbrytarnas celler","Den omvandlas till klorofyll hos producenterna"],
+ correct:0,
+ exp:"All energiomvandling i celler producerar värme som biprodukt. Det är därför vi känner oss varma efter rörelse — och varför kedjor inte kan bli hur långa som helst."},
+
+{cat:"Ekologiska modeller",concept:"Få toppkonsumenter",
+ q:"Varför finns det alltid relativt få toppkonsumenter i ett ekosystem?",
+ opts:["Energin minskar med ~90% per nivå i kedjan, vilket sätter ett tak för hur många toppkonsumenter som kan livnäras","Det finns för lite vatten för att försörja fler toppkonsumenter","Toppkonsumenter behöver mer syre än atmosfären kan ge","Nedbrytarna konkurrerar med toppkonsumenterna om födan"],
+ correct:0,
+ exp:"Bara ~10 % av energin förs vidare vid varje nivå. Producenterna sätter ett energitak — toppkonsumenternas population kan aldrig bli större än vad energiflödet tillåter."},
 
 {cat:"Ekologiska modeller",concept:"Individantal i pyramiden",
  q:"Varför finns det färre individer i pyramidens topp än i basen?",
  opts:["Energin minskar med ~90% per nivå, vilket räcker till färre individer","Toppkonsumenter lever längre och behöver inte vara lika många","Nedbrytarna tar energi från varje nivå uppåt","Producenterna konkurrerar aktivt ut konsumenterna"],
  correct:0,
- exp:"Med bara 10 % energiöverföring behövs 10 gånger mer biomassa på nivån under för att försörja nästa nivå.",
- bonus:{
-   q:"En varg väger 40 kg. Kedjan är: gräs → rådjur → varg. Beräkna med 10%-regeln hur mycket gräs som behövdes för att bygga upp vargen. Förklara sedan vad det säger om hur mycket natur som krävs för att ha ett livskraftigt vargbestånd."
- }},
-
-{cat:"Ekologiska modeller",concept:"Kaskadeffekter",
- q:"Vad händer med de andra arterna om en art försvinner ur en näringsväv?",
- opts:["Det kan ge kaskadeffekter — bytesdjur ökar och predatorer förlorar föda","Ingenting förändras eftersom ekosystemet alltid är stabilt","Bara toppkonsumenten påverkas av förlusten","Enbart producenten påverkas om en art försvinner"],
- correct:0,
- exp:"Kaskadeffekter (trofiska kaskader) är väldokumenterade. Om en art försvinner påverkas alla som är beroende av den, uppåt och nedåt i kedjan.",
- bonus:{
-   q:"I en svensk skog äter vargen rådjur som i sin tur äter buskar och örter. Förklara vad som händer med vegetationen om vargen försvinner från skogen — gå minst tre steg i konsekvenskedjan.",
- }},
+ exp:"Med bara 10 % energiöverföring behövs 10 gånger mer biomassa på nivån under för att försörja nästa nivå uppåt."},
 
 {cat:"Ekologiska modeller",concept:"Kedjans maximala längd",
  q:"Varför kan en näringskedja sällan bli längre än tre eller fyra steg?",
- opts:["90% av energin försvinner som värme i varje steg — i steg fem finns nästan ingen energi kvar","Fler steg gör kedjan instabil och den kollapsar av sig själv","Toppkonsumenten äter alltid upp alla arter under sig","Nedbrytarna bryter ned energin innan den hinner nå fler steg"],
+ opts:["90% av energin försvinner som värme i varje steg — i steg fem finns nästan ingen energi kvar","Fler steg gör kedjan instabil och den kollapsar","Toppkonsumenten äter alltid upp alla arter under sig","Nedbrytarna bryter ned energin innan den hinner nå fler steg"],
  correct:0,
- exp:"I steg 5 finns bara 0,001 % av producentens ursprungliga energi. Det räcker inte för att försörja en individ av rimlig storlek.",
- bonus:{
-   q:"I en sjö finns alger, mört som äter alger, abborre som äter mört och gädda som äter abborre. Förklara med 10%-regeln varför det behövs mycket mer algbiomassa än vad gäddans vikt ger sken av. Vad säger det om hur många gäddor sjön kan försörja?",
- }},
+ exp:"I steg 5 finns bara 0,001 % av producentens ursprungliga energi. Det räcker inte för att försörja en individ av rimlig storlek."},
 
-{cat:"Ekologiska modeller",concept:"Roll i kedjan",
- q:"I kedjan gräs → hare → räv, vad kallas rävens roll?",
- opts:["Andrahandskonsument — den äter en förstahandskonsument (haren)","Förstahandskonsument — den äter direkt av producenten","Producent — den bildar energirika ämnen via fotosyntesen","Nedbrytare — den bryter ned döda organismer"],
+{cat:"Ekologiska modeller",concept:"Kaskadeffekter",
+ q:"Vad kan hända med de andra arterna om en art försvinner ur en näringsväv?",
+ opts:["Det kan ge kaskadeffekter — bytesdjur ökar och predatorer förlorar föda","Ingenting förändras eftersom ekosystemet alltid är stabilt","Bara toppkonsumenten påverkas","Enbart producenten påverkas"],
  correct:0,
- exp:"I den här specifika kedjan äter räven haren (förstahandskonsument) som i sin tur äter gräs (producent). Räven är därför andrahandskonsument i denna kedja."},
+ exp:"Kaskadeffekter (trofiska kaskader) är väldokumenterade. Om en art försvinner påverkas alla som är beroende av den, uppåt och nedåt i kedjan."},
 
-// ═══ EKOSYSTEM ════════════════════════════════════════════
-
-{cat:"Ekosystem",concept:"Abiotiska faktorer",
- q:"Abiotiska faktorer är icke-levande delar av miljön. Vilka av dessa är abiotiska?",
- opts:["Temperatur, ljus, pH-värde och vattentillgång","Rovdjur, bytesdjur och konkurrenter","Svampar, bakterier och växter","Populationsstorlek och bärkraft"],
+{cat:"Ekologiska modeller",concept:"Biomassa",
+ q:"Vad kallas den samlade massan av alla levande organismer i ett ekosystem?",
+ opts:["Biomassa","Bärkraft","Ekosystem","Population"],
  correct:0,
- exp:"Kom ihåg: abiotiska = icke-levande. Temperatur, ljus, pH och vatten är kemiska/fysiska faktorer."},
-
-{cat:"Ekosystem",concept:"Biotiska faktorer",
- q:"Biotiska faktorer är levande delar av miljön. Vilket av dessa är ett exempel på en biotisk faktor?",
- opts:["Att ett rovdjur jagar och äter växtätare och minskar deras antal","Temperaturen i ett område under sommaren","Markens pH-värde och mineralinnehåll","Mängden ljus som når skogsmarken"],
- correct:0,
- exp:"Biotisk = levande. En rovdjurs jakt är en levande organisms påverkan på en annan — det är en biotisk faktor.",
- bonus:{
-   q:"Förklara hur en enda abiotisk förändring — till exempel att en sjö värms upp 3°C av klimatförändringar — kan leda till biotiska förändringar som påverkar hela ekosystemet. Gå igenom minst tre steg i kedjan av konsekvenser."
- }},
-
-{cat:"Ekosystem",concept:"Individ: definition",
- q:"Vad är en individ?",
- opts:["En enskild levande varelse, till exempel en fågel eller en växt","Alla individer av samma art inom ett område","Alla populationer av olika arter i ett ekosystem","Alla levande organismer på hela jorden"],
- correct:0,
- exp:"Individ = den minsta enheten i ekologins hierarki: individ → population → samhälle → ekosystem."},
-
-{cat:"Ekosystem",concept:"Population: definition",
- q:"Vad är en population?",
- opts:["Alla individer av samma art som lever inom ett avgränsat område","Alla individer av alla arter i ett ekosystem","En enskild levande varelse i ett ekosystem","Alla levande organismer på hela jordklotet"],
- correct:0,
- exp:"Population = alla av samma art i ett område. Hierarki: individ → population → samhälle → ekosystem."},
-
-{cat:"Ekosystem",concept:"Samhälle: definition",
- q:"Vad är ett samhälle i ekologisk mening?",
- opts:["Alla populationer av olika arter i ett ekosystem","Alla individer av samma art inom ett område","En enskild levande varelse i ett ekosystem","Alla levande organismer på hela jordklotet"],
- correct:0,
- exp:"Samhälle (community): alla populationer som lever och interagerar i ett och samma område."},
-
-{cat:"Ekosystem",concept:"Störst ekosystem",
- q:"Vilket är det största möjliga ekosystemet?",
- opts:["Hela jordens biosfär med alla levande organismer och deras miljö","En stor regnskog med extremt hög artrikedom","Världshaven med allt marint liv","Den afrikanska savannen"],
- correct:0,
- exp:"Hela jordens biosfär kan ses som ett enda jätteekosystem — det enda vi vet om hittills i universum.",
- bonus:{
-   q:"Förklara varför det är rimligt att betrakta hela jordens biosfär som ett enda ekosystem. Vilka kopplingar och flöden binder ihop till exempel en regnskog i Brasilien med ett hav utanför Australien?"
- }},
-
-{cat:"Ekosystem",concept:"Ekosystemets delar hänger ihop",
- q:"Vad menas med att ekosystemets delar hänger ihop?",
- opts:["En förändring i en del kan ge kedjeeffekter som påverkar hela systemet","Alla organismer i ett ekosystem är av samma art","Ekosystemet förändras aldrig om inte människan direkt ingriper","Varje art lever oberoende av de andra arterna"],
- correct:0,
- exp:"Ekosystem är dynamiska och sammankopplade. Bortfall av en art, förändrat klimat eller ny invasiv art kan skapa kaskadeffekter.",
- bonus:{
-   q:"Välj ett konkret exempel — till exempel introducering av mink i Sverige eller avverkning av regnskog. Förklara steg för steg hur en förändring av en art eller ett landområde kan påverka ekosystemet i en kedja av konsekvenser."
- }},
-
-{cat:"Ekosystem",concept:"Temperaturens effekt",
- q:"Hur kan en förändring i temperatur påverka ett ekosystem?",
- opts:["Det kan ändra vilka arter som överlever, vilket sedan påverkar alla arter som är beroende av dem","Det påverkar bara de organismer som lever i vatten","Det har ingen effekt om förändringen sker gradvis över många år","Det påverkar bara abiotiska faktorer och inte biotiska"],
- correct:0,
- exp:"Temperatur påverkar var djur kan leva, hur de beter sig och hur de förökar sig. Klimatförändringar kan tvinga arter att flytta och förändra hela ekosystem."},
-
-{cat:"Ekosystem",concept:"Ekologins definition",
- q:"Vad kallas vetenskapen som studerar hur organismer samspelar med varandra och sin omgivning?",
- opts:["Ekologi","Biologi","Geologi","Zoologi"],
- correct:0,
- exp:"Ekologi grundades av Ernst Haeckel 1866 och har blivit avgörande för att förstå jordens miljöproblem."},
-
-{cat:"Ekosystem",concept:"Abiotisk faktor: definition",
- q:"Vad kallas icke-levande faktorer som temperatur och ljus som påverkar ekosystemet?",
- opts:["Abiotiska faktorer","Biotiska faktorer","Ekologiska faktorer","Miljöfaktorer"],
- correct:0,
- exp:"Abiotiska faktorer sätter de fysiska ramarna för vilket liv som kan existera i ett ekosystem."},
-
-{cat:"Ekosystem",concept:"Biotisk faktor: definition",
- q:"Vad kallas levande faktorer som rovdjur och konkurrenter som påverkar ekosystemet?",
- opts:["Biotiska faktorer","Abiotiska faktorer","Ekologiska faktorer","Klimatfaktorer"],
- correct:0,
- exp:"Biotiska faktorer inkluderar alla levande organismer och deras interaktioner med varandra."},
-
-{cat:"Ekosystem",concept:"Ekologins hierarki",
- q:"Vilken nivå i ekologins hierarki beskriver alla individer av samma art inom ett område?",
- opts:["Population","Individ","Samhälle","Ekosystem"],
- correct:0,
- exp:"Hierarkin: individ → population → samhälle → ekosystem. Population = alla av samma art."},
+ exp:"Biomassa mäts ofta i kg torrsubstans per kvadratmeter. Det är ett mått på hur mycket liv ett ekosystem producerar och bär upp."},
 
 // ═══ POPULATIONENS STORLEK ════════════════════════════════
+
+{cat:"Populationens storlek",concept:"Fyra faktorer",
+ q:"Vilka fyra faktorer avgör hur stor en population är?",
+ opts:["Nativitet (födslar), mortalitet (dödsfall), immigration (inflyttning) och emigration (utflyttning)","Temperatur, ljus, vatten och mineraltillgång","Rovdjur, konkurrenter, parasiter och sjukdomar","Bärkraft, biomassa, revir och migration"],
+ correct:0,
+ exp:"Populationens storlek = nativitet + immigration − mortalitet − emigration. Alla fyra faktorer påverkar hur många individer som finns i ett område."},
 
 {cat:"Populationens storlek",concept:"Nativitet",
  q:"Vad kallas antalet individer som föds in i en population under en period?",
@@ -757,372 +642,351 @@ const BANK = [
  q:"Vad kallas det när individer från ett annat område flyttar in till en population?",
  opts:["Immigration","Emigration","Nativitet","Mortalitet"],
  correct:0,
- exp:"Immigration betyder att individer från ett annat område flyttar in. Det ökar populationens storlek som om nya individer fötts."},
+ exp:"Immigration betyder att individer från ett annat område flyttar in. Det ökar populationens storlek, precis som om nya individer fötts."},
 
 {cat:"Populationens storlek",concept:"Emigration",
  q:"Vad kallas det när individer lämnar sin population och flyttar till ett annat område?",
  opts:["Emigration","Immigration","Nativitet","Mortalitet"],
  correct:0,
- exp:"Emigration minskar populationen. Det är vanligt hos ungdjur som tvingas bort av dominanta vuxna."},
-
-{cat:"Populationens storlek",concept:"J- vs S-kurva",
- q:"Vad är skillnaden mellan en J-formad och en S-formad tillväxtkurva?",
- opts:["J-kurvan visar obegränsad exponentiell tillväxt, S-kurvan visar att tillväxten planar ut vid bärkraften","S-kurvan visar snabbare tillväxt än J-kurvan i början","J-kurvan visar att populationen minskar, S-kurvan att den ökar","De är samma sak men med olika namn i olika länder"],
- correct:0,
- exp:"J-kurvan uppstår när resurser är obegränsade. S-kurvan uppstår i verkligheten när bärkraften bromsar tillväxten.",
- bonus:{
-   q:"Rita med ord hur en J-kurva övergår i en S-kurva. Förklara vad som händer i de tre faserna: exponentiell tillväxt, avmattning och platå. Vad är det som konkret bromsar tillväxten i varje fas?"
- }},
+ exp:"Emigration minskar populationen. Det är vanligt hos ungdjur som tvingas bort av dominanta vuxna när resurser är begränsade."},
 
 {cat:"Populationens storlek",concept:"Bärkraft",
- q:"Vad kallas det maximala antal individer som ett ekosystems resurser kan försörja?",
- opts:["Bärkraft","Biomassa","Population","Nativitet"],
+ q:"Vad menas med bärkraft?",
+ opts:["Det maximala antal individer som ett ekosystems resurser kan försörja","Den snabbaste möjliga tillväxttakten för en population","Antalet födslar minus antalet dödsfall under ett år","Den minsta möjliga populationsstorlek som är livskraftig"],
  correct:0,
- exp:"Bärkraften (K) varierar beroende på resurstillgång. Torka kan sänka K; en varm fuktig sommar kan höja den.",
- bonus:{
-   q:"Förklara hur ett ekosystems bärkraft kan variera med årstiderna och med klimatförändringar. Vad händer med en population om bärkraften plötsligt sjunker kraftigt — till exempel vid en torka?"
- }},
+ exp:"Bärkraften (K) är det max-antal individer miljön kan försörja med tillgängliga resurser. Den varierar beroende på tillgång till föda, vatten och utrymme."},
 
-{cat:"Populationens storlek",concept:"Jämviktsarter",
- q:"Vad kallas djur som satsar på få ungar, lång omsorg och lång livslängd?",
- opts:["Jämviktsarter","Opportunister","Generalister","Specialister"],
+{cat:"Populationens storlek",concept:"Viktigaste faktorn",
+ q:"Vad är den viktigaste faktorn som påverkar hur stor en population kan bli?",
+ opts:["Tillgången på föda — den sätter gränsen för hur många individer som kan överleva","Temperaturen i området","Antalet rovdjur i ekosystemet","Hur stor yta ekosystemet har"],
  correct:0,
- exp:"Jämviktsarter lever länge, får få ungar och vårdar dem länge. De håller sin population stabil nära bärkraften. Exempel: elefant, människa, blåval."},
+ exp:"Föda är den mest grundläggande resursen. Utan tillräckligt med mat kan individer inte överleva och föröka sig, oavsett hur gott om utrymme det finns."},
 
-{cat:"Populationens storlek",concept:"Opportunister",
- q:"Vad kallas djur som satsar på många ungar, kort omsorg och snabb könsmognad?",
- opts:["Opportunister","Jämviktsarter","Generalister","Specialister"],
+{cat:"Populationens storlek",concept:"Revir definition",
+ q:"Vad kallas det hemområde ett djur kontrollerar och försvarar mot artfränder?",
+ opts:["Revir","Ekologisk nisch","Population","Habitat"],
  correct:0,
- exp:"Opportunister kan föröka sig mycket snabbt och utnyttjar situationer med gott om resurser. Populationen kan växa kraftigt men också krascha snabbt. Exempel: råttor, möss.",
- bonus:{
-   q:"Förklara varför opportuniststrategi (många ungar, lite omsorg) är en bra strategi i vissa miljöer, och varför jämviktsstrategin (få ungar, mycket omsorg) är bättre i andra. Vilken strategi passar en stabil, förutsägbar miljö respektive en oprediktabel miljö — och varför?"
- }},
+ exp:"Djur som förlorar revirkamp mister tillgång till resurser — föda, boplatser och partners. Revirbildning begränsar hur många individer som kan häcka i ett område."},
 
-{cat:"Populationens storlek",concept:"Jämviktsart: exempel",
- q:"Vilket djur är det bästa exemplet på en jämviktsart?",
- opts:["Elefant — lång livstid, ett kalv vart 4–5 år, lång omsorg","Råtta — snabb könsmognad och många kullar per år","Groda — lägger hundratals ägg utan omsorg","Insekt — kort livstid och massvis med ägg"],
+{cat:"Populationens storlek",concept:"Revir och population",
+ q:"Hur påverkar revirbildning en populations storlek?",
+ opts:["Den begränsar hur många individer som kan häcka och leva i ett område","Den ökar populationens storlek genom att skydda ungarna bättre","Den hindrar emigration och håller alla individer kvar","Den påverkar inte populationen, bara individernas beteende"],
  correct:0,
- exp:"Elefanter lever ~70 år, har 1 kalv vart 4–5 år och vårdar ungen i ~10 år. Det är definitionen av en jämviktsart."},
+ exp:"Revirbildning begränsar antalet häckande par i ett område. De individer som inte vinner ett revir kan inte föröka sig — populationen hålls nere under bärkraften."},
 
-{cat:"Populationens storlek",concept:"Opportunist: exempel",
- q:"Vilket djur är det bästa exemplet på en opportunist?",
- opts:["Råtta — könsmogen vid 5–6 veckor, 8–12 ungar per kull, 5–7 kullar per år","Elefant — ett kalv vart 4–5 år och lång omsorg","Gorilla — ett barn vart 4–6 år och lång social inlärning","Isbjörn — 1–3 ungar var 3:e år och lång omsorg"],
- correct:0,
- exp:"Råttor könsmognar vid 5–6 veckor, kan få 8–12 ungar per kull och 5–7 kullar per år. Typisk opportunist."},
-
-{cat:"Populationens storlek",concept:"Populationskrasch",
- q:"Vad menas med att en population kraschar?",
- opts:["Populationen minskar kraftigt i antal efter att ha vuxit över bärkraften tills resurser tagit slut","Populationen stabiliserar sig vid bärkraften och bildar en S-kurva","Populationen dör ut helt och permanent","Populationen splittras i flera separata grupper"],
- correct:0,
- exp:"Krasch uppstår när resurser tar slut efter överpopulation. Populationen kan sedan återhämta sig och ge upprepade J-kurvor (t.ex. lämlar).",
- bonus:{
-   q:"Lämlar är kända för sina kraftiga populationssvängningar — de ökar dramatiskt och kraschar sedan. Förklara mekanismen bakom dessa svängningar med hjälp av begreppen bärkraft, nativitet, mortalitet och resurstillgång."
- }},
-
-{cat:"Populationens storlek",concept:"Emigration och resurser",
+{cat:"Populationens storlek",concept:"Varför djur flyttar",
  q:"Varför rör sig djur ibland till ett nytt område?",
  opts:["För att hitta mer föda eller undvika konkurrens om resurser","För att söka sig till ett område med fler rovdjur","För att utöka sin ekologiska nisch","För att hjälpa andra individer av sin art"],
  correct:0,
  exp:"Resursbrist och konkurrens är de viktigaste drivkrafterna bakom migration. Ungdjur emigrerar ofta när vuxna tar upp de bästa reviren."},
 
+{cat:"Populationens storlek",concept:"Gnuernas vandring",
+ q:"Varför vandrar gnuer på Afrikas savanner?",
+ opts:["För att följa regnområden och hitta färskt gräs — födan styr rörelsen","För att fly från rovdjur som lejon och krokodiler","För att hitta bättre vattenhål under torrperioden","För att söka varmare klimat under vintersäsongen"],
+ correct:0,
+ exp:"Gnuernas vandring styrs av regnmönster — de följer grönt gräs som vuxit upp efter regn. Det är ett tydligt exempel på hur tillgång till föda driver migration."},
+
+{cat:"Populationens storlek",concept:"Jämviktsarter definition",
+ q:"Vad kallas djur som satsar på få ungar, lång omsorg och lång livslängd?",
+ opts:["Jämviktsarter","Opportunister","Generalister","Specialister"],
+ correct:0,
+ exp:"Jämviktsarter lever länge, får få ungar och vårdar dem länge. De håller sin population stabil nära bärkraften. Exempel: elefant, människa, blåval."},
+
+{cat:"Populationens storlek",concept:"Opportunister definition",
+ q:"Vad kallas djur som satsar på många ungar, kort omsorg och snabb könsmognad?",
+ opts:["Opportunister","Jämviktsarter","Generalister","Specialister"],
+ correct:0,
+ exp:"Opportunister kan föröka sig mycket snabbt och utnyttjar situationer med gott om resurser. Populationen kan växa kraftigt men också krascha snabbt. Exempel: råttan."},
+
+{cat:"Populationens storlek",concept:"Jämviktsart exempel",
+ q:"Vilket djur är det bästa exemplet på en jämviktsart?",
+ opts:["Elefant — lång livstid, ett kalv vart 4–5 år, lång omsorg","Råtta — snabb könsmognad och många kullar per år","Groda — lägger hundratals ägg utan omsorg","Insekt — kort livstid och massvis med ägg"],
+ correct:0,
+ exp:"Elefanter lever ~70 år, har 1 kalv vart 4–5 år och vårdar ungen i ~10 år. Det är definitionen av en jämviktsart."},
+
+{cat:"Populationens storlek",concept:"Opportunist exempel",
+ q:"Vilket djur är det bästa exemplet på en opportunist?",
+ opts:["Råtta — könsmogen vid 5–6 veckor, 8–12 ungar per kull, 5–7 kullar per år","Elefant — ett kalv vart 4–5 år och lång omsorg","Gorilla — ett barn vart 4–6 år och lång social inlärning","Isbjörn — 1–3 ungar var 3:e år och lång omsorg"],
+ correct:0,
+ exp:"Råttor könsmognar vid 5–6 veckor, kan få 8–12 ungar per kull och 5–7 kullar per år. Typisk opportunist — snabb förökning med liten omsorg per unge."},
+
+{cat:"Populationens storlek",concept:"Känsligast vid hög dödlighet",
+ q:"Vilken strategi är mest känslig om många individer dör på kort tid?",
+ opts:["Jämviktsarter — de reproducerar sig långsamt och kan inte snabbt återhämta populationen","Opportunister — de har för få ungar för att kompensera","Generalister — de klarar bara en typ av miljö","Specialister — de lever för länge för att ersättas"],
+ correct:0,
+ exp:"Jämviktsarter är känsligast. De förökar sig så långsamt att en kraftig minskning tar decennier att återhämta. En elefantpopulation som halveras kan ta 50–100 år att återhämta sig."},
+
+{cat:"Populationens storlek",concept:"J-kurva",
+ q:"Hur ser en J-formad tillväxtkurva ut och när uppstår den?",
+ opts:["Snabb tillväxt utan begränsningar — uppstår när en art etablerar sig i ett nytt område med gott om resurser","Tillväxt som planar ut när populationen når bärkraften","En population som minskar kraftigt efter att ha vuxit för snabbt","En stabil population som varken ökar eller minskar"],
+ correct:0,
+ exp:"J-kurvan uppstår när resurser är obegränsade — ju fler individer, desto fler föds. Det sker typiskt när en art är ny i ett område med lite konkurrens."},
+
+{cat:"Populationens storlek",concept:"S-kurva",
+ q:"Hur ser en S-formad tillväxtkurva ut och varför planar den ut?",
+ opts:["Tillväxten saktar in och planar ut när populationen når bärkraften på grund av ökad konkurrens och resursbrist","Tillväxten ökar allt snabbare utan gräns","Populationen minskar kraftigt och sedan ökar igen i ett mönster","Populationen är konstant — varken ökande eller minskande"],
+ correct:0,
+ exp:"S-kurvan uppstår i verkligheten när bärkraften bromsar tillväxten. När populationen växer ökar konkurrensen och dödligheten — tillväxten avtar och planar ut."},
+
+{cat:"Populationens storlek",concept:"Populationskrasch",
+ q:"Vad menas med en populationskrasch och varför uppstår den?",
+ opts:["Populationen minskar kraftigt och snabbt — till exempel på grund av svält efter att ha vuxit över bärkraften","Populationen stabiliserar sig vid bärkraften och bildar en S-kurva","Populationen dör ut helt och permanent","Populationen splittras i flera separata grupper"],
+ correct:0,
+ exp:"Krasch uppstår när resurser tar slut efter överpopulation. Populationen kan sedan återhämta sig och ge upprepade svängningar."},
+
+{cat:"Populationens storlek",concept:"J- vs S-kurva",
+ q:"Vad är skillnaden mellan en J-formad och en S-formad tillväxtkurva?",
+ opts:["J-kurvan visar obegränsad exponentiell tillväxt, S-kurvan visar att tillväxten planar ut vid bärkraften","S-kurvan visar snabbare tillväxt än J-kurvan i början","J-kurvan visar att populationen minskar, S-kurvan att den ökar","De är samma sak men med olika namn i olika länder"],
+ correct:0,
+ exp:"J-kurvan uppstår när resurser är obegränsade. S-kurvan uppstår i verkligheten när bärkraften bromsar tillväxten — de tre faserna är: snabb tillväxt, avmattning och platå."},
+
 {cat:"Populationens storlek",concept:"Rovdjur-bytesdjur-dynamik",
  q:"Varför ökar och minskar populationer av rovdjur och bytesdjur i takt med varandra?",
- opts:["Fler bytesdjur → fler rovdjur → färre bytesdjur → färre rovdjur — en cykel","Rovdjur och bytesdjur samarbetar om att hålla sina populationer stabila","Klimatförändringar påverkar båda populationerna exakt lika","Bärkraften är densamma för rovdjur och bytesdjur"],
+ opts:["Fler bytesdjur → fler rovdjur → färre bytesdjur → färre rovdjur — en återkommande cykel","Rovdjur och bytesdjur samarbetar om att hålla sina populationer stabila","Klimatförändringar påverkar båda populationerna exakt lika","Bärkraften är densamma för rovdjur och bytesdjur"],
  correct:0,
- exp:"Det fungerar som en cykel: fler bytesdjur → mer mat för rovdjur → rovdjuren ökar → bytesdjuren minskar → rovdjuren minskar — och sedan börjar det om.",
- bonus:{
-   q:"Förklara varför populationskurvorna för varg och älg ser ut som vågformiga kurvor som förskjuts i tid — vargen når sin topp lite efter älgen. Varför är det så, och vad händer i systemet under varje fas?"
- }},
-
-{cat:"Populationens storlek",concept:"Revir",
- q:"Vad kallas det hemområde ett djur kontrollerar och försvarar mot artfränder?",
- opts:["Revir","Ekologisk nisch","Population","Habitat"],
- correct:0,
- exp:"Djur som förlorar revirkamp mister tillgång till resurser — föda, boplatser och partners."},
-
-{cat:"Populationens storlek",concept:"Revir och reproduktion",
- q:"Varför bildar rödhakehannar revir på våren?",
- opts:["För att skydda resurser och locka honor — reviret ökar chansen att föröka sig","För att skydda sig mot rovdjur under häckningssäsongen","För att markera var de ska övervintra nästa höst","För att visa sin rang för andra fågelarter"],
- correct:0,
- exp:"Reviret ger hannen exklusiv tillgång till föda och boplatser — faktorer som gör honom attraktiv för honor och ökar hans reproduktiva framgång.",
- bonus:{
-   q:"Förklara sambandet mellan revirförsvar och evolution: varför har naturligt urval favoriserat individer som försvarar revir? Koppla till begreppen nativitet och resurser."
- }},
-
-{cat:"Populationens storlek",concept:"Population: definition",
- q:"Vad kallas alla individer av en bestämd art som lever inom ett avgränsat område?",
- opts:["Population","Samhälle","Ekosystem","Art"],
- correct:0,
- exp:"Population är kärnbegreppet i populationsekologi. Biologer räknar populationsstorlekar för att förstå en arts bevarandestatus."},
+ exp:"Det fungerar som en cykel: fler bytesdjur → mer mat för rovdjur → rovdjuren ökar → bytesdjuren minskar → rovdjuren minskar — och sedan börjar det om igen."},
 
 // ═══ ATT LEVA TILLSAMMANS ════════════════════════════════
 
-{cat:"Att leva tillsammans",concept:"Samma nisch — konkurrens",
- q:"Vad händer när två arter utnyttjar exakt samma ekologiska nisch?",
- opts:["De konkurrerar tills den bäst anpassade utkonkurrerar den andra","De anpassar sig automatiskt och delar nischen utan konflikt","Båda arterna gynnas av att dela resurser","Båda arterna dör ut på grund av för hård konkurrens"],
- correct:0,
- exp:"Två arter som behöver exakt samma saker kan inte leva sida vid sida på lång sikt — den som är bäst anpassad konkurrerar ut den andra.",
- bonus:{
-   q:"En invasiv art introduceras till ett ekosystem och råkar ha exakt samma nisch som en inhemsk art. Förklara vad som kan hända och varför invasiva arter ibland vinner konkurrensen mot inhemska — trots att de är 'utlänningar'."
- }},
-
-{cat:"Att leva tillsammans",concept:"Generalist: exempel",
- q:"En generalist äter många olika saker och klarar sig i många miljöer. Vilket djur är det bästa exemplet?",
- opts:["Räv — äter frukter, bär, insekter, gnagare, ägg och avfall i många miljöer","Koala — äter nästan bara eukalyptusblad i specifika skogar","Jättepanda — äter nästan bara bambu","Isbjörn — specialiserad på säl i arktisk miljö"],
- correct:0,
- exp:"Räven äter frukter, bär, insekter, gnagare, ägg och avfall. Den lever i städer, skogar och på fjället. Typisk generalist."},
-
-{cat:"Att leva tillsammans",concept:"Specialist: exempel",
- q:"En specialist är helt beroende av en viss typ av föda eller miljö. Vilket djur är bäst exempel?",
- opts:["Koala — äter nästan enbart eukalyptusblad i Australien","Räv — äter brett och lever i många miljöer","Kråka — allätare som lever i städer, skogar och åkrar","Vildsvin — allätare som lever i många biotoper"],
- correct:0,
- exp:"Koalan äter nästan uteslutande eukalyptusblad och lever bara i eukalyptusskogar i Australien. Extrem specialist.",
- bonus:{
-   q:"Förklara varför koalan är sårbar för klimatförändringar och skogsbränder på ett sätt som räven inte är. Koppla till begreppen specialisering och ekologisk nisch."
- }},
-
-{cat:"Att leva tillsammans",concept:"Konkurrens: definition",
- q:"Vad menas med konkurrens i biologin?",
- opts:["Att organismer tävlar om samma begränsade resurser — mat, utrymme eller partners","Att organismer samarbetar för att överleva i svåra förhållanden","Att organismer anpassar sig till olika ekologiska nischer","Att organismer byter näring med varandra"],
- correct:0,
- exp:"Konkurrens finns i två former: intraspesifik (inom arten) och interspesifik (mellan arter). Den driver evolution och nischuppdelning."},
-
-{cat:"Att leva tillsammans",concept:"Växter konkurrerar",
- q:"Vad konkurrerar växter om?",
- opts:["Solljus, vatten och mineraler i marken","Mat, boplatser och partners","Syre, koldioxid och druvsocker","Klorofyll, glukos och kväve"],
- correct:0,
- exp:"Växter kan inte röra sig, så konkurrensen utspelar sig om vad som finns på platsen: ljus (höjd och bladyta), vatten och närsalter (rotdjup).",
- bonus:{
-   q:"Förklara hur konkurrens om ljus kan leda till att träd i en tät skog väljer att växa rakt upp istället för att breda ut sig som ett fridstående träd. Koppla till naturligt urval — vilka individer 'vinner'?"
- }},
-
-{cat:"Att leva tillsammans",concept:"Djur konkurrerar",
- q:"Vad konkurrerar djur om?",
- opts:["Mat, boplatser, vatten och partners","Solljus, vatten och mineraler","Syre, koldioxid och klorofyll","Glukos, biomassa och cellandning"],
- correct:0,
- exp:"Djur rör sig och kan aktivt försvara resurser via revir, rang och aggressivt beteende."},
-
-{cat:"Att leva tillsammans",concept:"Konkurrens driver evolution",
- q:"Hur driver konkurrensen på evolutionen?",
- opts:["De bäst anpassade individerna överlever och för sina egenskaper vidare — arten förändras över tid","Konkurrensen utrotar alla individer och tvingar fram helt nya arter","Konkurrensen hindrar evolution eftersom individer dödar varandra","De svagaste individerna bär evolutionen framåt"],
- correct:0,
- exp:"Naturligt urval: individer med bättre anpassning vinner konkurrensen, överlever och fortplantar sig mer. Egenskaper som ger fördelar sprids i populationen.",
- bonus:{
-   q:"I en skog konkurrerar träd om ljus. Träd som växer snabbare och rakt upp skuggar sina grannar. Förklara hur denna konkurrens kan leda till att träd i en tät skog ser annorlunda ut än ett ensamt träd på en äng — koppla till begreppen naturligt urval och arv.",
- }},
-
-{cat:"Att leva tillsammans",concept:"Nischuppdelning",
- q:"Varför kan giraff och dikdikantilop leva i samma ekosystem utan att direkt konkurrera?",
- opts:["De äter blad på olika höjder av akaciabusken och har olika ekologiska nischer","De äter exakt samma föda men vid olika tider på dygnet","De bildar en social flock och delar resurserna lika","De reglerar varandras populationer"],
- correct:0,
- exp:"Giraffen äter blad högt upp, dikdikantilopen äter nere vid marken. Samma buske — men de konkurrerar inte eftersom de använder olika delar. Det kallas nischuppdelning.",
- bonus:{
-   q:"Nischuppdelning sägs vara en viktig mekanism bakom hög artrikedom i regnskogar. Förklara hur det fungerar — hur kan hundratals fågelarter leva i samma skog utan att alla utkonkurreras av den starkaste arten?"
- }},
-
-{cat:"Att leva tillsammans",concept:"Mutualism: definition",
- q:"Vad kallas samspel där båda arterna tjänar på relationen?",
- opts:["Mutualism","Parasitism","Kommensalism","Predation"],
- correct:0,
- exp:"Mutualism är ett stabilt samarbete — bägge arterna klarar sig bättre tillsammans än var för sig."},
-
-{cat:"Att leva tillsammans",concept:"Parasitism: definition",
- q:"Vad kallas samspel där en art gynnas och den andra tar skada?",
- opts:["Parasitism","Mutualism","Kommensalism","Predation"],
- correct:0,
- exp:"Parasitism är extremt vanlig i naturen — majoriteten av alla djurarter har minst en parasit."},
-
-{cat:"Att leva tillsammans",concept:"Kommensalism: definition",
- q:"Vad kallas samspel där en art gynnas och den andra inte påverkas?",
- opts:["Kommensalism","Mutualism","Parasitism","Predation"],
- correct:0,
- exp:"Kommensalism: en art drar nytta medan den andra är neutral. Det är svårt att bevisa i praktiken."},
-
-{cat:"Att leva tillsammans",concept:"Mutualism: bi och blomma",
- q:"Blomväxter och pollinerande insekter är ett exempel på vilket samspel?",
- opts:["Mutualism — blomman ger nektar och insekten ger pollinering","Kommensalism — insekten tjänar och blomman påverkas inte","Parasitism — insekten tar nektar och blomman tar skada","Predation — insekten äter blomman"],
- correct:0,
- exp:"Bi + blomma: biet får socker (nektar och pollen), blomman får pollinering. Ömsesidig nytta — klassisk mutualism.",
- bonus:{
-   q:"Förklara varför mutualism kallas ett 'stabilt' samarbete i evolutionär mening — varför 'fusk' inte fungerar långsiktigt. Vad händer om en blomma slutar ge nektar men fortfarande lockar bin?"
- }},
-
-{cat:"Att leva tillsammans",concept:"Parasitism: fästing",
- q:"Fästing och hund är ett exempel på vilket samspel?",
- opts:["Parasitism — fästingen tar blod och hunden riskerar sjukdomar","Mutualism — fästingen äter parasiter och hunden hålls ren","Kommensalism — fästingen tjänar och hunden påverkas inte","Predation — fästingen dödar och äter hunden"],
- correct:0,
- exp:"Fästingen suger blod (tjänar) och hunden försvågas och riskerar sjukdomar (förlorar). Klassisk parasitism."},
-
-{cat:"Att leva tillsammans",concept:"Kommensalism: lejon och gamar",
- q:"Lejon och gamar — gamarna äter resterna av lejonets byte. Vilket samspel är det?",
- opts:["Kommensalism — gamarna tjänar och lejonet påverkas inte","Mutualism — gamarna rensar upp och lejonet slipper ruttna rester","Parasitism — gamarna tar mat och lejonet tar skada","Predation — gamarna jagar och dödar lejonet"],
- correct:0,
- exp:"Gamarna äter resterna av lejonets byte — de tjänar på det. Lejonet har redan ätit och bryr sig inte. En part tjänar, den andra är neutral.",
- bonus:{
-   q:"Det är svårt att bevisa att en relation verkligen är kommensalism (att den ena parten är helt neutral). Förklara varför, och ge ett exempel på hur man kan testa om ett till synes kommensalistiskt förhållande faktiskt är mutualism eller parasitism."
- }},
-
-{cat:"Att leva tillsammans",concept:"Värdorganism",
- q:"Vad kallas den organism som en parasit lever på och tar näring från?",
- opts:["Värdorganism","Toppkonsument","Producent","Generalist"],
- correct:0,
- exp:"Värden (host) är parasitens 'hem och mataffär'. Parasiten är evolutionärt anpassad att inte döda värden för snabbt."},
-
-{cat:"Att leva tillsammans",concept:"Mykorrhiza",
- q:"Vad är mykorrhiza?",
- opts:["Samarbete där svampens trådar växer med trädets rötter — svampen ger mineraler mot socker","Samarbete mellan alg och svamp som bildar en lav","En parasit som lever på trädets rötter","En nedbrytare som bryter ned döda löv"],
- correct:0,
- exp:"Mykorrhiza: svampens tunna trådar växer in i och runt trädets rötter. Svampen hjälper trädet ta upp vatten och mineraler, trädet ger svampen socker.",
- bonus:{
-   q:"Mykorrhizanätverk kallas ibland 'skogens internet'. Förklara vad det innebär — hur kan träd kommunicera och hjälpa varandra via svampar? Vad flödar och i vilken riktning?"
- }},
-
-{cat:"Att leva tillsammans",concept:"Lav",
- q:"Vad är en lav?",
- opts:["En symbios mellan en svamp och en alg","En typ av mossa som lever på steniga ytor","En parasit som lever på trädbarken","En nedbrytare som bryter ned döda växtdelar"],
- correct:0,
- exp:"Laven är ett klassiskt exempel på mutualism: svampen ger skydd och vatten, algen ger socker via fotosyntes.",
- bonus:{
-   q:"Lavar kan leva på kala klippor där inga andra organismer kan överleva. Förklara hur symbiosen gör det möjligt — vad bidrar svampen med och vad bidrar algen med, och varför kan ingen av dem klara sig ensam?"
- }},
-
-{cat:"Att leva tillsammans",concept:"Flock: fördelar",
+{cat:"Att leva tillsammans",concept:"Flock fördelar",
  q:"Vad är en fördel med att leva i flock?",
  opts:["Faror upptäcks snabbare och det är lättare att jaga stora byten","Varje individ får mer mat eftersom resurser delas lika","Rovdjur angriper aldrig stora flockar","Individer i flock förökar sig alltid snabbare"],
  correct:0,
- exp:"Fler ögon och öron minskar risken att bli överrumplad. I grupp kan djur också jaga större byten och försvara sig bättre.",
- bonus:{
-   q:"Förklara varför ett fiskstim är svårare att anfalla än en ensam fisk. Vad är det konkret som förvirrar rovdjuret, och varför har naturligt urval favoriserat stimbildning hos bytesfiskar?"
- }},
+ exp:"Fler ögon och öron minskar risken att bli överrumplad. I grupp kan djur också jaga större byten och försvara sig bättre."},
 
-{cat:"Att leva tillsammans",concept:"Flock: nackdelar",
+{cat:"Att leva tillsammans",concept:"Flock nackdelar",
  q:"Vad är en nackdel med att leva i flock?",
  opts:["Maten räcker kanske inte till alla och flocken är mer synlig för rovdjur","Individerna måste alltid dela sin föda med svagare flockkamrater","Det går inte att kommunicera effektivt i en stor flock","Rovdjur angriper alltid den starka kärnan i flocken"],
  correct:0,
- exp:"En stor flock syns och hörs bättre. Och mat/boplatser måste delas — konkurrensen inom flocken ökar med gruppstorlek."},
+ exp:"En stor flock syns och hörs bättre. Och mat och boplatser måste delas — konkurrensen inom flocken ökar med gruppstorlek."},
+
+{cat:"Att leva tillsammans",concept:"Social flock",
+ q:"Vad är utmärkande för en social flock?",
+ opts:["Den har en ledare och en tydlig rangordning — individerna samarbetar vid jakt eller uppfostran av ungar","Alla individer i flocken är lika starka och inga har ledarposition","Flocken är tillfällig och upplöses direkt efter att faran är över","Flocken består alltid av individer av flera olika arter"],
+ correct:0,
+ exp:"En social flock har en ledare och tydlig rangordning. Alla tillhör oftast samma art och samarbetar — till exempel elefanter, vargar och schimpanser."},
 
 {cat:"Att leva tillsammans",concept:"Elefantflock",
  q:"Vilket djur leder en elefantflock?",
  opts:["Den äldsta och mest erfarna honan — matriarken","Den starkaste hanen i flocken","Den yngsta honan som nyligen fött ungar","Den individ som fött flest ungar totalt"],
  correct:0,
- exp:"Den äldsta honan leder flocken. Hon har bäst minne av var vatten och säkra flyktvägar finns. Erfarenhet och kunskap, inte styrka, avgör.",
- bonus:{
-   q:"Förklara ur ett evolutionärt perspektiv varför det är fördelaktigt för elefantflocken att ledas av den äldsta honan snarare än den starkaste hanen. Vilken information bär hon på, och varför är den livsviktig?"
- }},
+ exp:"Den äldsta honan leder flocken. Hon har bäst minne av var vatten och säkra flyktvägar finns. Erfarenhet och kunskap, inte styrka, avgör ledarskapet."},
 
-{cat:"Att leva tillsammans",concept:"Varningsfärger",
- q:"Varför har giftiga djur ofta starka, klara färger?",
- opts:["Färgerna signalerar till rovdjur att djuret är farligt — rovdjur undviker dem","Starka färger lockar partners och ökar chansen att föröka sig","Starka färger är kamouflage i tropiska miljöer","Djuren kan inte kontrollera sin färgpigmentering"],
+{cat:"Att leva tillsammans",concept:"Symbios definition",
+ q:"Vad kallas samlevnad och nära samspel mellan olika organismer?",
+ opts:["Symbios","Mutualism","Kommensalism","Predation"],
  correct:0,
- exp:"Varningsfärger (röd, gul, orange) kallas aposematism. Rovdjur lär sig koppla de klara färgerna till dålig smak eller gift — och undviker dem.",
- bonus:{
-   q:"Förklara hur aposematism (varningsfärger) kan ha uppstått via naturligt urval, trots att en giftig individ som äts av ett rovdjur inte kan förmedla lärdom. Vad är det som selekteras för och varför?"
- }},
+ exp:"Symbios är det övergripande begreppet för nära samlevnad. Det inkluderar mutualism (+/+), kommensalism (+/0) och parasitism (+/−)."},
 
-{cat:"Att leva tillsammans",concept:"Kamouflage",
- q:"Vad kallas det när ett djur smälter ihop med sin omgivning för att inte synas?",
- opts:["Kamouflage","Mimikry","Mutualism","Parasitism"],
+{cat:"Att leva tillsammans",concept:"Mutualism definition",
+ q:"Vad kallas samspel där båda arterna tjänar på relationen?",
+ opts:["Mutualism","Parasitism","Kommensalism","Predation"],
  correct:0,
- exp:"Kamouflage används av både bytesdjur (för att gömma sig) och rovdjur (för att smyga in mot byten)."},
+ exp:"Mutualism är ett stabilt samarbete — bägge arterna klarar sig bättre tillsammans än var för sig."},
 
-{cat:"Att leva tillsammans",concept:"Mimikry",
- q:"Vad kallas det när ett ofarligt djur liknar en farlig eller giftig art?",
- opts:["Mimikry","Kamouflage","Mutualism","Kommensalism"],
+{cat:"Att leva tillsammans",concept:"Kommensalism definition",
+ q:"Vad kallas samspel där en art gynnas och den andra inte påverkas?",
+ opts:["Kommensalism","Mutualism","Parasitism","Predation"],
  correct:0,
- exp:"Mimikry fungerar bäst när imitatören och originalet lever i samma område och möter samma rovdjur.",
- bonus:{
-   q:"En blomfluga (ofarlig) liknar en geting (giftig). Förklara varför denna strategi fungerar utan att blomflugan behöver vara giftig — vad är det rovdjuret egentligen undviker och hur har mimikrin uppstått?"
- }},
+ exp:"Kommensalism: en art drar nytta medan den andra varken gynnas eller skadas. Det är svårt att bevisa i praktiken."},
 
-{cat:"Att leva tillsammans",concept:"Predation",
+{cat:"Att leva tillsammans",concept:"Parasitism definition",
+ q:"Vad kallas samspel där en art gynnas och den andra tar skada?",
+ opts:["Parasitism","Mutualism","Kommensalism","Predation"],
+ correct:0,
+ exp:"Parasitism är extremt vanlig i naturen. Parasiten lever på eller i sin värd och tar näring från den utan att (genast) döda den."},
+
+{cat:"Att leva tillsammans",concept:"Mutualism exempel bi",
+ q:"Blomväxter och pollinerande insekter är ett exempel på vilket samspel?",
+ opts:["Mutualism — blomman ger nektar och insekten ger pollinering","Kommensalism — insekten tjänar och blomman påverkas inte","Parasitism — insekten tar nektar och blomman tar skada","Predation — insekten äter blomman"],
+ correct:0,
+ exp:"Bi + blomma: biet får socker (nektar och pollen), blomman får pollinering. Ömsesidig nytta — klassisk mutualism."},
+
+{cat:"Att leva tillsammans",concept:"Parasitism exempel fästing",
+ q:"Fästing och hund är ett exempel på vilket samspel?",
+ opts:["Parasitism — fästingen tar blod och hunden riskerar sjukdomar","Mutualism — fästingen äter parasiter och hunden hålls ren","Kommensalism — fästingen tjänar och hunden påverkas inte","Predation — fästingen dödar och äter hunden"],
+ correct:0,
+ exp:"Fästingen suger blod (tjänar) och hunden försvågas och riskerar sjukdomar (förlorar). Klassisk parasitism."},
+
+{cat:"Att leva tillsammans",concept:"Kommensalism exempel gamar",
+ q:"Lejon och gamar — gamarna äter resterna av lejonets byte. Vilket samspel är det?",
+ opts:["Kommensalism — gamarna tjänar och lejonet påverkas inte","Mutualism — gamarna rensar upp och lejonet slipper ruttna rester","Parasitism — gamarna tar mat och lejonet tar skada","Predation — gamarna jagar och dödar lejonet"],
+ correct:0,
+ exp:"Gamarna äter resterna av lejonets byte — de tjänar på det. Lejonet har redan ätit och bryr sig inte. En part tjänar, den andra är neutral."},
+
+{cat:"Att leva tillsammans",concept:"Värdorganism",
+ q:"Vad kallas den organism som en parasit lever på och tar näring från?",
+ opts:["Värdorganism","Toppkonsument","Producent","Generalist"],
+ correct:0,
+ exp:"Värden (host) är parasitens 'hem och mataffär'. Parasiten är evolutionärt anpassad att inte döda värden för snabbt — en död värd ger ingen näring."},
+
+{cat:"Att leva tillsammans",concept:"Parasiter exempel",
+ q:"Vilka av dessa är exempel på parasiter?",
+ opts:["Fästingen, göken och rovstekeln","Lejonet, örnen och hajen","Daggmasken, svampen och bakterien","Biet, fjärilen och blomflugan"],
+ correct:0,
+ exp:"Fästingen suger blod, göken lägger ägg i andras bon (boparasit), rovstekeln lägger ägg inuti en annan insekts larv. Alla tre är parasiter."},
+
+{cat:"Att leva tillsammans",concept:"Mykorrhiza",
+ q:"Vad är mykorrhiza?",
+ opts:["Samarbete där svampens trådar växer med trädets rötter — svampen ger mineraler och vatten mot socker","Samarbete mellan alg och svamp som bildar en lav","En parasit som lever på trädets rötter","En nedbrytare som bryter ned döda löv"],
+ correct:0,
+ exp:"Mykorrhiza: svampens tunna trådar växer in i och runt trädets rötter. Svampen hjälper trädet ta upp vatten och mineraler, trädet ger svampen socker. Klassisk mutualism."},
+
+{cat:"Att leva tillsammans",concept:"Lav",
+ q:"Vad är en lav?",
+ opts:["En symbios (mutualism) mellan en svamp och en alg","En typ av mossa som lever på steniga ytor","En parasit som lever på trädbarken","En nedbrytare som bryter ned döda växtdelar"],
+ correct:0,
+ exp:"Laven är ett klassiskt exempel på mutualism: svampen ger skydd och vatten, algen ger socker via fotosyntes. Tillsammans klarar de miljöer ingen av dem klarar ensam."},
+
+{cat:"Att leva tillsammans",concept:"Predation definition",
  q:"Vad är predation?",
  opts:["Samspel där ett rovdjur dödar och äter ett bytesdjur","Samspel där en parasit lever på en värdorganism utan att döda den direkt","Samspel där båda arterna gynnas","Samspel där en art gynnas och den andra inte påverkas"],
  correct:0,
- exp:"Predation är direkt, snabb och dödlig (för bytesdjuret). Det skiljer den från parasitism där värden överlever.",
- bonus:{
-   q:"Predation driver evolution i båda arterna — hos rovdjuret och hos bytesdjuret. Förklara vad som selekteras i varje art och varför det kallas ett 'evolutionärt kapprustningskrig'."
- }},
+ exp:"Predation är direkt, snabb och dödlig (för bytesdjuret). Det skiljer den från parasitism där värden överlever — åtminstone ett tag."},
 
-{cat:"Att leva tillsammans",concept:"Predation och selektion",
- q:"Varför kan predation vara positivt för bytesdjurens population trots att individer dör?",
- opts:["Rovdjuret tar bort sjuka och svaga — de friskaste överlever och förökar sig","Rovdjuret ökar den totala energin i ekosystemet","Bytesdjuren förökar sig snabbare när rovdjuret är nära","Rovdjuret sprider frön från bytesdjurens föda"],
+{cat:"Att leva tillsammans",concept:"Predation positivt för flocken",
+ q:"Hur kan det vara positivt för en flock antiloper att några dödas av lejon?",
+ opts:["Lejonen tar oftast de svagaste individerna — de starkaste och friskaste överlever och förökar sig","Fler dödsfall minskar konkurrensen och alla övriga får mer mat","Antalet rovdjur minskar om de äter för mycket","Predationen ökar nativiteten hos de överlevande"],
  correct:0,
- exp:"Predation reglerar populationen, tar bort sjuka individer och driver evolution mot bättre anpassning."},
+ exp:"Lejon tar oftast de svagaste individerna — sjuka, gamla eller långsamma. Det minskar konkurrensen om föda och gör att de starkaste och friskaste överlever och fortplantar sig."},
 
-{cat:"Att leva tillsammans",concept:"Parasitism vs predation",
+{cat:"Att leva tillsammans",concept:"Predation vs parasitism",
  q:"Hur skiljer sig parasitism från predation?",
  opts:["Parasiten dödar sällan sin värd direkt — relationen är utdragen och värden lever vidare","Parasitism gynnar båda parter medan predation skadar båda","Parasiten lever alltid utanför värden","Predation är alltid positivt för ekosystemet, parasitism alltid negativt"],
  correct:0,
- exp:"Nyckelskillnad: tidsaspekten. Predation är omedelbart dödlig. Parasitism är ett utdraget förhållande där värden håller sig vid liv.",
- bonus:{
-   q:"Förklara varför det vore evolutionärt dumt av en parasit att döda sin värd snabbt. Vad händer med parasiten om värden dör? Hur formar detta parasitens biologi och beteende?"
- }},
+ exp:"Nyckelskillnad: tidsaspekten. Predation är omedelbart dödlig. Parasitism är ett utdraget förhållande — parasiten behöver värden vid liv för att fortsätta leva och föröka sig."},
 
-{cat:"Att leva tillsammans",concept:"Göken: boparasit",
+{cat:"Att leva tillsammans",concept:"Göken boparasit",
  q:"Göken lägger sina ägg i andra fåglars bon. Vilket samspel är det?",
  opts:["Parasitism — göken tjänar och lövsångaren tar skada","Mutualism — båda arterna tjänar på samarbetet","Kommensalism — göken tjänar och lövsångaren påverkas inte","Predation — göken äter lövsångarens ungar"],
  correct:0,
- exp:"Göken är en boparasit — den lägger ägg i en annan fågels bo. Lövsångaren matar gökungens unge istället för sina egna — stor kostnad.",
- bonus:{
-   q:"Förklara det evolutionära kapprustningskriget mellan göken och lövsångaren. Vad selekteras hos göken och vad selekteras hos lövsångaren? Varför har inte lövsångaren 'vunnit' och lärt sig alltid känna igen gökungar?"
- }},
+ exp:"Göken är en boparasit — den lägger ägg i en annan fågels bo. Lövsångaren matar gökungens unge istället för sina egna, vilket är en stor kostnad."},
 
 {cat:"Att leva tillsammans",concept:"Oxhackare",
  q:"Oxhackare äter fästingar från vattenbuffelns hud. Vilket samspel är det?",
  opts:["Mutualism — oxhackaren får mat och buffeln befrias från parasiter","Kommensalism — oxhackaren tjänar och buffeln påverkas inte","Parasitism — oxhackaren tar mat och buffeln tar skada","Predation — oxhackaren jagar och dödar buffeln"],
  correct:0,
- exp:"Oxhackaren äter fästingar och parasiter från buffeln. Oxhackaren får mat, buffeln befrias från plågan — båda tjänar.",
- bonus:{
-   q:"Oxhackaren har ibland setts dricka blod från vattenbuffeln genom att hålla sår öppna. Om det stämmer — hur förändras klassificeringen av samspelet och vad säger det om gränsen mellan mutualism och parasitism?"
- }},
-
-{cat:"Att leva tillsammans",concept:"Symbios: definition",
- q:"Vad kallas samlevnad och nära samspel mellan olika organismer som ett övergripande begrepp?",
- opts:["Symbios","Mutualism","Kommensalism","Parasitism"],
- correct:0,
- exp:"Symbios inkluderar mutualism (+/+), kommensalism (+/0) och parasitism (+/−). Alla är nära samlevnad."},
-
-{cat:"Att leva tillsammans",concept:"Ekologisk nisch",
- q:"Vad kallas det utrymme en art har bäst chans att överleva och föröka sig i?",
- opts:["Ekologisk nisch","Revir","Ekosystem","Habitat"],
- correct:0,
- exp:"Ekologisk nisch är artens 'yrkesbeskrivning' i ekosystemet — vad den äter, var den lever, när den är aktiv."},
-
-{cat:"Att leva tillsammans",concept:"Generalist vs specialist",
- q:"Vad kallas ett djur som äter många saker och klarar sig i många miljöer?",
- opts:["Generalist","Specialist","Opportunist","Predator"],
- correct:0,
- exp:"Generalisten är opportunistisk — tar vad som finns. Människa, råtta och korp är klassiska generalister."},
-
-{cat:"Att leva tillsammans",concept:"Specialist: definition",
- q:"Vad kallas en organism som bara kan överleva i en smal nisch?",
- opts:["Specialist","Generalist","Opportunist","Predator"],
- correct:0,
- exp:"Specialisten är evolutionärt finslipat för sin nisch — men väldigt sårbar om nischen förändras."},
-
-{cat:"Att leva tillsammans",concept:"Fröspridning som mutualism",
- q:"Hur kan det vara positivt för björnbärsväxten att hasselmusen äter dess bär?",
- opts:["Fröna passerar matspjälkningen och sprids med avföringen till nya platser","Hasselmusen pollinerar blomman när den äter bären","Hasselmusen gödslar rötterna med sina exkrementer direkt","Hasselmusen skyddar busken mot andra växtätare"],
- correct:0,
- exp:"Fröet överlever matspjälkningen och sprids till en ny plats. Djuret fick mat och växten fick frön spridda — ömsesidigt utbyte.",
- bonus:{
-   q:"Förklara varför fröspridning via djur (zookori) är en evolutionär fördel för en växt. Varför är det bättre att frön sprids långt bort från moderplantan, och vad händer i ett ekosystem om fröspridarna försvinner?"
- }},
-
-{cat:"Att leva tillsammans",concept:"Predator: annat ord",
- q:"Vad kallas ett rovdjur med ett annat ord?",
- opts:["Predator","Parasit","Konsument","Destruent"],
- correct:0,
- exp:"Predator är ett annat ord för rovdjur. Predation är samspelet där rovdjuret jagar, dödar och äter ett bytesdjur."},
+ exp:"Oxhackaren äter fästingar och parasiter från buffeln. Oxhackaren får mat, buffeln befrias från plågan — båda tjänar. Klassisk mutualism."},
 
 {cat:"Att leva tillsammans",concept:"Putsarfiskar",
  q:"Vad gör putsarfiskar för de stora fiskarna?",
  opts:["De äter parasiter från de stora fiskarna — båda parter tjänar på det","De jagar bytesdjur åt de stora fiskarna och delar bytet","De lever som parasiter på de stora fiskarnas gälar","De äter alger från korallen åt de stora fiskarna"],
  correct:0,
- exp:"Stora fiskar (t.o.m. hajar) håller gälarna öppna medan putsarna äter parasiter och döda celler. Mat mot hälsa — mutualism.",
- bonus:{
-   q:"Putsarstationer kallas 'rengöringsstationer' av biologer. Förklara varför hajar och andra rovfiskar inte äter upp putsarfiskarna trots att de är lätt tillgängliga byten. Vad är evolutionslogiken bakom detta beteende?"
- }},
+ exp:"Stora fiskar håller gälarna öppna medan putsarna äter parasiter och döda celler. Mat mot hälsa — mutualism. Även hajar låter putsarfiskar arbeta utan att äta dem."},
+
+{cat:"Att leva tillsammans",concept:"Konkurrens definition",
+ q:"Vad menas med konkurrens i biologin?",
+ opts:["Att organismer tävlar om samma begränsade resurser — mat, utrymme eller partners","Att organismer samarbetar för att överleva i svåra förhållanden","Att organismer anpassar sig till olika ekologiska nischer","Att organismer byter näring med varandra"],
+ correct:0,
+ exp:"Konkurrens finns i två former: intraspesifik (inom arten) och interspesifik (mellan arter). Den driver evolution och nischuppdelning."},
+
+{cat:"Att leva tillsammans",concept:"Växter konkurrerar om",
+ q:"Vad konkurrerar växter om?",
+ opts:["Solljus, vatten och mineraler i marken","Mat, boplatser och partners","Syre, koldioxid och druvsocker","Klorofyll, glukos och kväve"],
+ correct:0,
+ exp:"Växter kan inte röra sig, så konkurrensen utspelar sig om vad som finns på platsen: ljus (höjd och bladyta), vatten och närsalter (rotdjup)."},
+
+{cat:"Att leva tillsammans",concept:"Djur konkurrerar om",
+ q:"Vad konkurrerar djur om?",
+ opts:["Mat, boplatser, vatten och partners","Solljus, vatten och mineraler","Syre, koldioxid och klorofyll","Glukos, biomassa och cellandning"],
+ correct:0,
+ exp:"Djur rör sig och kan aktivt försvara resurser via revir, rang och aggressivt beteende. De konkurrerar om allt som behövs för överlevnad och fortplantning."},
+
+{cat:"Att leva tillsammans",concept:"Konkurrens driver evolution",
+ q:"Hur driver konkurrensen på evolutionen?",
+ opts:["De bäst anpassade individerna överlever och för sina egenskaper vidare — arten förändras över tid","Konkurrensen utrotar alla individer och tvingar fram helt nya arter","Konkurrensen hindrar evolution eftersom individer dödar varandra","De svagaste individerna bär evolutionen framåt"],
+ correct:0,
+ exp:"Naturligt urval: individer med bättre anpassning vinner konkurrensen, överlever och fortplantar sig mer. Egenskaper som ger fördelar sprids i populationen generation efter generation."},
+
+{cat:"Att leva tillsammans",concept:"Ekologisk nisch",
+ q:"Vad kallas det utrymme i ekosystemet där en art lever, äter och förökar sig — artens 'roll'?",
+ opts:["Ekologisk nisch","Revir","Ekosystem","Habitat"],
+ correct:0,
+ exp:"Ekologisk nisch är artens 'yrkesbeskrivning' i ekosystemet — vad den äter, var den lever, när den är aktiv och hur den samverkar med andra arter."},
+
+{cat:"Att leva tillsammans",concept:"Samma nisch konkurrens",
+ q:"Vad händer om två arter utnyttjar exakt samma ekologiska nisch?",
+ opts:["De konkurrerar tills den bäst anpassade utkonkurrerar den andra","De anpassar sig automatiskt och delar nischen utan konflikt","Båda arterna gynnas av att dela resurser","Båda arterna dör ut på grund av för hård konkurrens"],
+ correct:0,
+ exp:"Två arter som behöver exakt samma saker kan inte leva sida vid sida på lång sikt — den som är bäst anpassad till miljön konkurrerar ut den andra."},
+
+{cat:"Att leva tillsammans",concept:"Generalist definition",
+ q:"Vad kallas ett djur som äter många saker och klarar sig i många olika miljöer?",
+ opts:["Generalist","Specialist","Opportunist","Predator"],
+ correct:0,
+ exp:"Generalisten är opportunistisk — tar vad som finns. Människa, råtta och korp är klassiska generalister som klarar sig i vitt skilda miljöer."},
+
+{cat:"Att leva tillsammans",concept:"Generalist exempel",
+ q:"Vilket djur är det bästa exemplet på en generalist?",
+ opts:["Räv — äter frukter, bär, insekter, gnagare, ägg och avfall i många miljöer","Koala — äter nästan bara eukalyptusblad i specifika skogar","Jättepanda — äter nästan bara bambu","Isbjörn — specialiserad på säl i arktisk miljö"],
+ correct:0,
+ exp:"Räven äter frukter, bär, insekter, gnagare, ägg och avfall. Den lever i städer, skogar och på fjället. Typisk generalist — bred föda, bred miljöanpassning."},
+
+{cat:"Att leva tillsammans",concept:"Specialist definition",
+ q:"Vad kallas en organism som bara kan överleva i en smal nisch med specifik föda eller miljö?",
+ opts:["Specialist","Generalist","Opportunist","Predator"],
+ correct:0,
+ exp:"Specialisten är evolutionärt finslipat för sin nisch — men väldigt sårbar om nischen förändras till exempel av klimatförändringar eller habitatförstörelse."},
+
+{cat:"Att leva tillsammans",concept:"Specialist exempel",
+ q:"Vilket djur är det bästa exemplet på en specialist?",
+ opts:["Koala — äter nästan enbart eukalyptusblad i Australien","Räv — äter brett och lever i många miljöer","Kråka — allätare som lever i städer, skogar och åkrar","Vildsvin — allätare som lever i många biotoper"],
+ correct:0,
+ exp:"Koalan äter nästan uteslutande eukalyptusblad och lever bara i eukalyptusskogar i Australien. Extremt specialiserad — känslig för alla förändringar i sitt habitat."},
+
+{cat:"Att leva tillsammans",concept:"Varför specialist vs generalist geografiskt",
+ q:"Varför finns en del arter bara på få platser medan andra lever nästan överallt?",
+ opts:["Specialister klarar sig bara i en viss miljö, medan generalister klarar många förhållanden","Specialister är starkare och dominerar de bästa platserna","Generalister är sämre anpassade och tvingas leva på sämre platser","Det beror enbart på klimat, inte på arternas egenskaper"],
+ correct:0,
+ exp:"Specialister är perfekt anpassade till en smal nisch men klarar sig inte på andra ställen. Generalister klarar många förhållanden och kan leva på fler platser."},
+
+{cat:"Att leva tillsammans",concept:"Nischuppdelning",
+ q:"Varför kan giraff och dikdikantilop leva i samma ekosystem utan att direkt konkurrera?",
+ opts:["De äter blad på olika höjder av akaciabusken och har olika ekologiska nischer","De äter exakt samma föda men vid olika tider på dygnet","De bildar en social flock och delar resurserna lika","De reglerar varandras populationer"],
+ correct:0,
+ exp:"Giraffen äter blad högt upp, dikdikantilopen äter nere vid marken. Samma buske — men de konkurrerar inte eftersom de använder olika delar. Det kallas nischuppdelning."},
+
+{cat:"Att leva tillsammans",concept:"Varningsfärger",
+ q:"Varför har giftiga djur ofta starka, klara färger?",
+ opts:["Färgerna signalerar till rovdjur att djuret är farligt — rovdjur lär sig undvika dem","Starka färger lockar partners och ökar chansen att föröka sig","Starka färger är kamouflage i tropiska miljöer","Djuren kan inte kontrollera sin färgpigmentering"],
+ correct:0,
+ exp:"Varningsfärger (röd, gul, orange) kallas aposematism. Rovdjur lär sig koppla de klara färgerna till dålig smak eller gift och undviker dem."},
+
+{cat:"Att leva tillsammans",concept:"Kamouflage",
+ q:"Vad kallas det när ett djur smälter ihop med sin omgivning för att inte synas?",
+ opts:["Kamouflage","Mimikry","Mutualism","Parasitism"],
+ correct:0,
+ exp:"Kamouflage används av både bytesdjur (för att gömma sig från rovdjur) och rovdjur (för att smyga in mot byten)."},
+
+{cat:"Att leva tillsammans",concept:"Mimikry",
+ q:"Vad kallas det när ett ofarligt djur liknar en farlig eller giftig art?",
+ opts:["Mimikry","Kamouflage","Mutualism","Kommensalism"],
+ correct:0,
+ exp:"Mimikry fungerar bäst när imitatören och originalet lever i samma område och möter samma rovdjur. Rovdjuret undviker imitatören för att det lärt sig att utseendet = fara."},
+
+{cat:"Att leva tillsammans",concept:"Skillnad kamouflage mimikry",
+ q:"Vad är skillnaden mellan kamouflage och mimikry?",
+ opts:["Kamouflage = smälta in och inte synas. Mimikry = synas men se farlig ut genom att likna en farlig art","Kamouflage = likna en farlig art. Mimikry = smälta in i bakgrunden","Kamouflage är aktivt beteende, mimikry är passivt","De är samma sak men kamouflage används av rovdjur och mimikry av bytesdjur"],
+ correct:0,
+ exp:"Kamouflage handlar om att inte synas alls — smälta in. Mimikry handlar om att synas men se farlig ut — efterlikna en art som rovdjuren lärt sig att frukta."},
+
+{cat:"Att leva tillsammans",concept:"Blomfluga mimikry",
+ q:"Varför kan blomflugan undvika rovdjur trots att den saknar gadd?",
+ opts:["Blomflugan liknar getingen i utseendet — rovdjur som lärt sig att ränder = fara undviker den","Blomflugan smakar illa trots att den är ofarlig","Blomflugan flyger för snabbt för att rovdjur ska kunna fånga den","Blomflugan gömmer sig i blommor och syns inte"],
+ correct:0,
+ exp:"Det är mimikry — blomflugan liknar getingen. Rovdjur som lärt sig att getingens ränder är farliga undviker att attackera blomflugan trots att den är ofarlig."},
+
+{cat:"Att leva tillsammans",concept:"Växter undviker att bli uppätna",
+ q:"Hur kan växter undvika att bli uppätna? Välj det bästa svaret.",
+ opts:["De kan ha vassa taggar, producera gifter eller innehålla ämnen med starka smaker som djur ogillar","De rör sig bort från växtätare som hotar dem","De gömmer sig under marken under perioder med många växtätare","De byter färg för att smälta in mot bakgrunden"],
+ correct:0,
+ exp:"Växter kan inte springa — men de har passiva försvar. Taggar (ros, hagtorn), gifter (nässlor, belladonna) och beska ämnen (malörtens bitterhet) är vanliga strategier."},
+
+{cat:"Att leva tillsammans",concept:"Fröspridning mutualism",
+ q:"Hur kan det vara positivt för björnbärsväxten att hasselmusen äter dess bär?",
+ opts:["Fröna passerar matspjälkningen och sprids med avföringen till nya platser","Hasselmusen pollinerar blomman när den äter bären","Hasselmusen gödslar rötterna med sina exkrementer direkt","Hasselmusen skyddar busken mot andra växtätare"],
+ correct:0,
+ exp:"Fröet överlever matspjälkningen och sprids till en ny plats. Djuret fick mat och växten fick frön spridda — ömsesidigt utbyte. Det kallas zookori (fröspridning via djur)."},
 
 ];
 
@@ -1132,14 +996,14 @@ const BANK = [
 const CAT_COLORS={"Fotosyntes och cellandning":"#1D9E75","Ekosystem":"#534AB7","Ekologiska modeller":"#EF9F27","Populationens storlek":"#E24B4A","Att leva tillsammans":"#0C447C"};
 const LVL_NAMES=["Nybörjare","Lärling","Elev","Kunnig","Expert","Mästare"];
 const XP_PER_LVL=50;
-const STORAGE_KEY="bio7_samspel_v8";
+const STORAGE_KEY="bio7_samspel_v9";
 
 let selCat="all",selN=20;
 let queue=[],spacingBuf=[];
-let completedCount=0,correct=0,streak=0,bestStreak=0,lastBonusAt=-5;
+let completedCount=0,correct=0,streak=0,bestStreak=0;
 let current=null;
 let catStats={},selfRatings={},answeredKeys=new Set();
-let waitingForConfidence=false,waitingForBonus=false,waitingForRecall=false;
+let waitingForConfidence=false,waitingForRecall=false;
 let currentIsFirst=true,lastCat=null,lastConcept=null;
 let pendingAnswer=null,clickedBtn=null;
 let autoAdvanceTimer=null;
@@ -1161,11 +1025,6 @@ function pickLen(btn){
   btn.classList.add('active');selN=parseInt(btn.dataset.n);
 }
 
-// ── Cognitive-science scheduling ──────────────────────────
-// Priority queue: questions with hard/wrong history get extra weight
-// Interleaving: no same cat or concept back-to-back
-// Within-session spacing: wrong/unsure questions reinserted at gap=4-6
-// Cross-session: adaptive data persists; hard questions surface first
 function buildQueue(pool){
   let weighted=[];
   pool.forEach(q=>{
@@ -1173,7 +1032,6 @@ function buildQueue(pool){
     let hardScore=(a.hard||0)*3+(a.unsure||0)*1;
     let easyScore=(a.easy||0);
     let net=hardScore-easyScore;
-    // Extra copies for unmastered questions (distributed practice)
     if(net>4)for(let i=0;i<3;i++)weighted.push(q);
     else if(net>2)weighted.push(q,q);
     else weighted.push(q);
@@ -1181,7 +1039,6 @@ function buildQueue(pool){
   weighted=shuffle(weighted);
   let seen=new Set(),deduped=[];
   weighted.forEach(q=>{let k=qKey(q);if(!seen.has(k)){seen.add(k);deduped.push(q);}});
-  // Interleave: no same cat or concept within 4 positions
   return interleave(deduped,4);
 }
 
@@ -1218,8 +1075,8 @@ function startGame(){
   let effectiveN=Math.min(selN,built.length);
   queue=built.slice(0,effectiveN).map(item=>({item,isRetry:false}));
   selN=effectiveN;
-  catStats={};selfRatings={};completedCount=0;correct=0;streak=0;bestStreak=0;lastBonusAt=-5;
-  answeredKeys=new Set();waitingForConfidence=false;waitingForBonus=false;waitingForRecall=false;
+  catStats={};selfRatings={};completedCount=0;correct=0;streak=0;bestStreak=0;
+  answeredKeys=new Set();waitingForConfidence=false;waitingForRecall=false;
   currentIsFirst=true;lastCat=null;lastConcept=null;spacingBuf=[];pendingAnswer=null;
   if(autoAdvanceTimer){clearTimeout(autoAdvanceTimer);autoAdvanceTimer=null;}
   document.getElementById('start-screen').style.display='none';
@@ -1229,27 +1086,23 @@ function startGame(){
 }
 
 function showNext(){
-  if(waitingForConfidence||waitingForBonus||waitingForRecall)return;
+  if(waitingForConfidence||waitingForRecall)return;
   if(completedCount>=selN){showSummary();return;}
 
-  // Decrement delays
   spacingBuf.forEach(e=>e.delay--);
   let ready=spacingBuf.filter(e=>e.delay<=0);
   spacingBuf=spacingBuf.filter(e=>e.delay>0);
 
   let entry=null;
-  // Interleave spaced items back in (prefer ready if low queue)
   if(ready.length>0&&(queue.length===0||Math.random()<0.35)){
     ready.sort((a,b)=>a.delay-b.delay);
     entry=ready.shift();
     ready.forEach(x=>{x.delay=1;spacingBuf.push(x);});
   }else if(queue.length>0){
-    // Avoid same cat back-to-back
     if(lastCat&&queue.length>1){
       let ai=queue.findIndex(e=>e.item.cat!==lastCat);
       if(ai>0&&ai<=5){let t=queue.splice(ai,1)[0];queue.unshift(t);}
     }
-    // Avoid same concept back-to-back
     if(lastConcept&&queue.length>1){
       let ai=queue.findIndex(e=>e.item.concept!==lastConcept);
       if(ai>0&&ai<=3){let t=queue.splice(ai,1)[0];queue.unshift(t);}
@@ -1278,9 +1131,7 @@ function showNext(){
   }
   pendingAnswer=null;
 
-  // Show retry badge
   document.getElementById('retry-badge').style.display=entry.isRetry?'inline-block':'none';
-
   renderQ();
 }
 
@@ -1289,7 +1140,6 @@ function hideInputs(){
   document.getElementById('options-reveal-label').style.display='none';
   document.getElementById('options-grid').style.display='none';
   document.getElementById('confidence-prompt').style.display='none';
-  document.getElementById('bonus-area').style.display='none';
   document.getElementById('next-btn').style.display='none';
 }
 
@@ -1299,20 +1149,10 @@ function renderQ(){
   document.getElementById('result-card').style.display='none';
   document.getElementById('result-card').className='';
   hideInputs();
-  // Also reset bonus and next button explicitly
-  document.getElementById('bonus-area').style.display='none';
-  document.getElementById('next-btn').style.display='none';
-  document.getElementById('bonus-fb').style.display='none';
-  document.getElementById('bonus-fb').textContent='';
-  let bi=document.getElementById('bonus-input');
-  if(bi){bi.value='';bi.disabled=false;}
-  let bsb=document.getElementById('bonus-submit-btn');
-  if(bsb){bsb.disabled=false;bsb.textContent='Få återkoppling';}
   document.getElementById('options-grid').innerHTML='';
-  clickedBtn=null;waitingForConfidence=false;waitingForBonus=false;waitingForRecall=false;
+  clickedBtn=null;waitingForConfidence=false;waitingForRecall=false;
 
   let q=current;
-  document.getElementById('mode-badge').textContent='Flerval';
 
   let catBadge=document.getElementById('cat-badge');
   if(selCat==='all'){
@@ -1328,7 +1168,6 @@ function renderQ(){
 
   document.getElementById('question-text').textContent=q.q;
 
-  // Build shuffled options
   let correctText=q.opts[q.correct];
   let shuffled=shuffle([...q.opts]);
   let grid=document.getElementById('options-grid');
@@ -1339,7 +1178,6 @@ function renderQ(){
     grid.appendChild(b);
   });
 
-  // Always show recall textarea first — elaboration before seeing options
   document.getElementById('recall-area').style.display='block';
   document.getElementById('recall-input').value='';
   document.getElementById('recall-input').disabled=false;
@@ -1359,12 +1197,10 @@ function revealOptions(){
 
 function selectMC(isOk,btn,correctText){
   if(waitingForRecall)return;
-  // Highlight selection but keep buttons enabled so user can change answer
   document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   clickedBtn=btn;
   pendingAnswer={isOk,correctText};
-  // Show confidence prompt — user can still click a different option to change mind
   waitingForConfidence=true;
   document.getElementById('confidence-prompt').style.display='block';
 }
@@ -1379,8 +1215,6 @@ function revealWithConfidence(rating){
   persist.adaptive[k][rating]=(persist.adaptive[k][rating]||0)+1;
   saveData();selfRatings[k]=rating;
 
-  // Within-session spaced repetition scheduling
-  // Wrong → reappear after 4 questions; hard/unsure → after 5
   if(currentIsFirst){
     if(!pendingAnswer.isOk){
       spacingBuf.push({item:current,delay:4,isRetry:true});
@@ -1394,7 +1228,6 @@ function revealWithConfidence(rating){
 }
 
 function handle(isOk,correctText,rating){
-  // Mark correct/wrong on option buttons briefly, then transition
   document.querySelectorAll('.opt-btn').forEach(b=>{
     b.classList.remove('selected');
     if(b.textContent===correctText) b.classList.add('correct');
@@ -1427,10 +1260,8 @@ function handle(isOk,correctText,rating){
   expEl.textContent=current.exp||'';
   updateHUD();
 
-  // After brief pause showing option colours, swap to result card
   setTimeout(()=>{
     document.getElementById('card').style.display='none';
-    // Hide inputs but NOT bonus-area (showBonus may have opened it)
     document.getElementById('recall-area').style.display='none';
     document.getElementById('options-reveal-label').style.display='none';
     document.getElementById('options-grid').style.display='none';
@@ -1440,100 +1271,19 @@ function handle(isOk,correctText,rating){
     rc.style.display='block';
     rc.className=isOk?'result-ok visible':'result-err visible';
 
-    // Show bonus ~40% of the time when available, spaced at least 2 questions apart
-    const shouldShowBonus = current.bonus && currentIsFirst &&
-      (completedCount - lastBonusAt >= 2) &&
-      Math.random() < 0.42;
-
-    if(shouldShowBonus){
-      lastBonusAt = completedCount;
-      showBonus();
-    }else{
-      document.getElementById('next-btn').style.display='block';
-      if(isOk&&rating==='easy'){
-        autoAdvanceTimer=setTimeout(()=>{autoAdvanceTimer=null;showNext();},3500);
-      }
+    document.getElementById('next-btn').style.display='block';
+    if(isOk&&rating==='easy'){
+      autoAdvanceTimer=setTimeout(()=>{autoAdvanceTimer=null;showNext();},3500);
     }
   },350);
 }
 
-function showBonus(){
-  waitingForBonus=true;
-  document.getElementById('bonus-area').style.display='block';
-  document.getElementById('bonus-question').textContent=current.bonus.q;
-  document.getElementById('bonus-fb').style.display='none';
-  let bi=document.getElementById('bonus-input');
-  bi.value='';bi.disabled=false;
-  let bsb=document.getElementById('bonus-submit-btn');
-  if(bsb){bsb.disabled=false;bsb.textContent='Få återkoppling';}
-  setTimeout(()=>bi.focus(),50);
-}
-
-async function showBonusAnswer(){
-  let inp=document.getElementById('bonus-input');
-  let studentAnswer=inp.value.trim();
-  let fbEl=document.getElementById('bonus-fb');
-  let bsb=document.getElementById('bonus-submit-btn');
-
-  if(!studentAnswer){
-    fbEl.className='fb-done';
-    fbEl.style.display='block';
-    fbEl.textContent='Skriv ett svar för att få återkoppling, eller hoppa över.';
-    return;
-  }
-
-  inp.disabled=true;
-  if(bsb){bsb.disabled=true;bsb.textContent='…';}
-  fbEl.className='fb-loading';
-  fbEl.style.display='block';
-  fbEl.textContent='Läser ditt resonemang…';
-
-  try{
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{
-          role:'user',
-          content:'Du är en erfaren biologilärare för åk 7-9. Svara alltid på svenska.\n\nGe formativ återkoppling i tre delar:\n1. Lyft specifikt vad eleven förstått rätt — citera gärna elevens egna ord.\n2. Peka ut det viktigaste som saknas eller kan utvecklas.\n3. Ge en kort modellförklaring på 2–3 meningar som visar hur ett fullständigt svar ser ut.\n\nMax 5 meningar totalt. Var varm och konkret.\n\nFråga: '+current.bonus.q+'\n\nElevens svar: "'+studentAnswer+'"'
-        }]
-      })
-    });
-    const data = await resp.json();
-    const text = data.content && data.content[0] && data.content[0].text;
-    if(text){
-      fbEl.className='fb-done';
-      fbEl.textContent=text;
-      if(bsb) bsb.textContent='Visat ✓';
-      waitingForBonus=false;
-      document.getElementById('next-btn').style.display='block';
-    }else{
-      throw new Error((data.error && data.error.message)||'Tomt svar');
-    }
-  }catch(e){
-    fbEl.className='fb-done';
-    fbEl.style.display='block';
-    fbEl.textContent='Återkoppling kunde inte hämtas just nu. Försök igen.';
-    inp.disabled=false;
-    if(bsb){bsb.disabled=false;bsb.textContent='Försök igen';}
-  }
-}
-
-function skipBonus(){
-  waitingForBonus=false;
-  document.getElementById('bonus-area').style.display='none';
-  document.getElementById('next-btn').style.display='block';
-}
-
 function nextQ(){
   if(autoAdvanceTimer){clearTimeout(autoAdvanceTimer);autoAdvanceTimer=null;}
-  waitingForConfidence=false;waitingForBonus=false;waitingForRecall=false;
+  waitingForConfidence=false;waitingForRecall=false;
   showNext();
 }
 
-// ── HUD ──────────────────────────────────────────────────
 function updateHUD(){
   document.getElementById('streak-val').textContent=streak;
   document.getElementById('correct-val').textContent=correct;
@@ -1559,7 +1309,6 @@ function popStreak(txt){
   setTimeout(()=>el.remove(),1500);
 }
 
-// ── Summary ───────────────────────────────────────────────
 function showSummary(){
   document.getElementById('game-area').style.display='none';
   document.getElementById('summary').style.display='block';
@@ -1582,7 +1331,6 @@ function showSummary(){
   bar.style.background=pct>=70?'var(--xp)':pct>=50?'var(--streak)':'var(--wrong)';
   setTimeout(()=>bar.style.width=pct+'%',100);
 
-  // Category breakdown
   let catHtml='<h3>Resultat per område</h3>',weakCats=[];
   Object.keys(catStats).sort().forEach(cat=>{
     let s=catStats[cat],p=s.q>0?Math.round(s.c/s.q*100):0,col=CAT_COLORS[cat]||'var(--xp)';
@@ -1595,7 +1343,6 @@ function showSummary(){
   });
   document.getElementById('sum-cat').innerHTML=catHtml;
 
-  // Adaptive recommendations
   let wrongQs=[],hardQs=[];
   BANK.forEach(q=>{
     let k=qKey(q),r=selfRatings[k];
@@ -1634,7 +1381,6 @@ function showSummary(){
   }
   if(!hasAny){recHtml+='<p style="font-size:14px;color:var(--text2);margin-top:4px">Inga specifika områden att prioritera — excellent!</p>';}
 
-  // Repeat weak items button
   let allWeak=[...new Set([...weakFromSession,...hardQs])];
   if(allWeak.length>0){
     recHtml+=`<button class="repeat-btn" onclick="startFocusWeak()">🔁 Öva igen på de svåra frågorna (${allWeak.length} st)</button>`;
@@ -1642,7 +1388,6 @@ function showSummary(){
 
   document.getElementById('sum-adaptive').innerHTML=recHtml;
 
-  // History
   let now=new Date();
   let dateStr=now.toLocaleDateString('sv-SE',{day:'numeric',month:'short'})+' '+now.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
   if(!persist.history)persist.history=[];
@@ -1666,7 +1411,6 @@ function showSummary(){
 function startFocusWeak(){
   let allWeak=[];
   let seen=new Set();
-  // Combine session mistakes + cross-session hard
   spacingBuf.forEach(e=>{let k=qKey(e.item);if(!seen.has(k)){seen.add(k);allWeak.push(e.item);}});
   BANK.forEach(q=>{
     let k=qKey(q),a=persist.adaptive[k]||{};
@@ -1676,9 +1420,9 @@ function startFocusWeak(){
   if(allWeak.length===0){startGame();return;}
   queue=shuffle(allWeak).map(item=>({item,isRetry:true}));
   spacingBuf=[];
-  completedCount=0;correct=0;streak=0;bestStreak=0;lastBonusAt=-5;
+  completedCount=0;correct=0;streak=0;bestStreak=0;
   answeredKeys=new Set();selfRatings={};catStats={};
-  waitingForConfidence=false;waitingForBonus=false;waitingForRecall=false;
+  waitingForConfidence=false;waitingForRecall=false;
   currentIsFirst=true;lastCat=null;lastConcept=null;selN=allWeak.length;
   if(autoAdvanceTimer){clearTimeout(autoAdvanceTimer);autoAdvanceTimer=null;}
   document.getElementById('summary').style.display='none';
@@ -1734,7 +1478,7 @@ function shuffle(a){
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'){
     let next=document.getElementById('next-btn');
-    if(next.style.display==='block'&&!waitingForConfidence&&!waitingForBonus&&!waitingForRecall){nextQ();return;}
+    if(next.style.display==='block'&&!waitingForConfidence&&!waitingForRecall){nextQ();return;}
   }
 });
 
